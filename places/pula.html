@@ -1,0 +1,761 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Pula | Kam vyrazit?</title>
+
+  <link
+    rel="stylesheet"
+    href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+  />
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      background: #f4f3ef;
+      color: #111;
+    }
+
+    a {
+      color: inherit;
+    }
+
+    header {
+      padding: 26px 34px 18px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 20px;
+    }
+
+    .back-link {
+      display: inline-block;
+      margin-bottom: 18px;
+      font-size: 13px;
+      text-decoration: none;
+      color: #666;
+    }
+
+    .back-link:hover {
+      color: #111;
+    }
+
+    .title-block h1 {
+      margin: 0;
+      font-size: clamp(42px, 6vw, 82px);
+      line-height: 0.95;
+      letter-spacing: -3px;
+    }
+
+    .title-block p {
+      margin: 16px 0 0;
+      max-width: 700px;
+      color: #666;
+      line-height: 1.55;
+      font-size: 15px;
+    }
+
+    .location-tag {
+      border: 1px solid #ccc;
+      border-radius: 999px;
+      padding: 10px 16px;
+      white-space: nowrap;
+      font-size: 13px;
+    }
+
+    .controls {
+      padding: 0 34px 18px;
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .filter-button {
+      border: 1px solid #ccc;
+      background: transparent;
+      color: #111;
+      padding: 9px 14px;
+      border-radius: 999px;
+      cursor: pointer;
+      font-size: 13px;
+    }
+
+    .filter-button:hover {
+      background: #e8e7e2;
+    }
+
+    .filter-button.active {
+      background: #111;
+      color: white;
+      border-color: #111;
+    }
+
+    .main {
+      padding: 0 24px 24px;
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: 360px minmax(0, 1fr);
+      gap: 16px;
+      min-height: 690px;
+    }
+
+    .sidebar {
+      overflow-y: auto;
+      padding: 4px 4px 4px 0;
+    }
+
+    .place-card {
+      background: white;
+      border-radius: 18px;
+      padding: 16px;
+      margin-bottom: 10px;
+      cursor: pointer;
+      border: 1px solid transparent;
+      transition: 0.2s ease;
+    }
+
+    .place-card:hover {
+      border-color: #bbb;
+      transform: translateY(-1px);
+    }
+
+    .place-card.hidden {
+      display: none;
+    }
+
+    .place-card.active {
+      border-color: #111;
+    }
+
+    .place-header {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+    }
+
+    .icon {
+      width: 38px;
+      height: 38px;
+      flex: 0 0 38px;
+      border-radius: 50%;
+      background: #f1f1ee;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+    }
+
+    .place-info {
+      min-width: 0;
+    }
+
+    .place-info h3 {
+      margin: 0;
+      font-size: 16px;
+      line-height: 1.25;
+    }
+
+    .type {
+      margin-top: 4px;
+      color: #888;
+      font-size: 12px;
+    }
+
+    .description {
+      margin: 12px 0 0;
+      color: #555;
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    .map-shell {
+      position: relative;
+      background: white;
+      border-radius: 30px;
+      padding: 7px;
+      min-width: 0;
+    }
+
+    #map {
+      height: 100%;
+      min-height: 690px;
+      border-radius: 24px;
+      overflow: hidden;
+    }
+
+    .leaflet-bar {
+      border: none !important;
+      box-shadow: none !important;
+    }
+
+    .leaflet-bar a {
+      border: none !important;
+      margin-bottom: 4px;
+      border-radius: 50% !important;
+      width: 42px !important;
+      height: 42px !important;
+      line-height: 42px !important;
+      background: rgba(255,255,255,0.95) !important;
+      color: #111 !important;
+      box-shadow: 0 3px 12px rgba(0,0,0,0.12);
+    }
+
+    .leaflet-control-zoom {
+      margin-top: 20px !important;
+      margin-left: 20px !important;
+    }
+
+    .map-switcher {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      z-index: 1000;
+      display: flex;
+      gap: 4px;
+      padding: 4px;
+      background: rgba(255,255,255,0.92);
+      border-radius: 999px;
+      box-shadow: 0 4px 18px rgba(0,0,0,0.12);
+    }
+
+    .map-switcher button {
+      border: 0;
+      background: transparent;
+      padding: 9px 13px;
+      border-radius: 999px;
+      font-size: 12px;
+      cursor: pointer;
+      font-weight: 600;
+    }
+
+    .map-switcher button.active {
+      background: #111;
+      color: white;
+    }
+
+    .custom-marker {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: #111;
+      color: white;
+      border: 3px solid white;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.25);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 17px;
+    }
+
+    @media (max-width: 900px) {
+      header {
+        padding: 22px 18px 16px;
+        flex-direction: column;
+      }
+
+      .title-block h1 {
+        letter-spacing: -2px;
+      }
+
+      .controls {
+        padding: 0 18px 16px;
+      }
+
+      .main {
+        padding: 0 10px 18px;
+      }
+
+      .layout {
+        display: flex;
+        flex-direction: column;
+        min-height: 0;
+      }
+
+      .map-shell {
+        order: 1;
+        height: 58vh;
+        min-height: 420px;
+      }
+
+      #map {
+        min-height: 0;
+        height: 100%;
+      }
+
+      .sidebar {
+        order: 2;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+<header>
+  <div class="title-block">
+
+    <a href="../index.html" class="back-link">
+      ← Zpět na hlavní mapu
+    </a>
+
+    <h1>PULA</h1>
+
+    <p>
+      Historické centrum stojí za návštěvu, ale za mě je nejzajímavější
+      pobřeží západně od města. Útesy, koupání, místa na skákání,
+      parkování zdarma a pár praktických bodů, které se při návštěvě hodí.
+    </p>
+
+  </div>
+
+  <div class="location-tag">
+    🇭🇷 Chorvatsko · Istrie
+  </div>
+</header>
+
+
+<div class="controls">
+  <button class="filter-button active" data-filter="all">Vše</button>
+  <button class="filter-button" data-filter="parking">🅿️ Parkování</button>
+  <button class="filter-button" data-filter="swimming">🌊 Koupání</button>
+  <button class="filter-button" data-filter="food">🥐 Jídlo</button>
+  <button class="filter-button" data-filter="practical">🚿 Praktické</button>
+  <button class="filter-button" data-filter="sight">🏛️ Památky</button>
+</div>
+
+
+<main class="main">
+
+  <div class="layout">
+
+    <aside class="sidebar" id="placeList"></aside>
+
+    <section class="map-shell">
+
+      <div id="map"></div>
+
+      <div class="map-switcher">
+        <button id="topoButton" class="active">Turistická</button>
+        <button id="classicButton">Klasická</button>
+      </div>
+
+    </section>
+
+  </div>
+
+</main>
+
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+<script>
+
+const places = [
+
+  {
+    id: "parking-centre",
+    name: "Parkoviště zdarma",
+    type: "parking",
+    typeLabel: "Parkování",
+    icon: "🅿️",
+    lat: 44.8724833,
+    lon: 13.8541636,
+    description:
+      "Oficiální parkoviště zdarma kousek od centra. Míst není moc, ale na kratší návštěvu města je použitelné."
+  },
+
+  {
+    id: "parking-cliffs",
+    name: "Parkoviště u klidnějšího pobřeží",
+    type: "parking",
+    typeLabel: "Parkování",
+    icon: "🅿️",
+    lat: 44.8723542,
+    lon: 13.7956197,
+    description:
+      "Neoficiálnější místo na parkování s horší bezpečností. Kousek odtud jsou velmi pěkné a většinou klidné útesy."
+  },
+
+  {
+    id: "private-cliffs",
+    name: "Útesy u klidnějšího pobřeží",
+    type: "swimming",
+    typeLabel: "Koupání",
+    icon: "🌊",
+    lat: 44.8733044,
+    lon: 13.7930622,
+    description:
+      "Doporučuju projít se podél pobřeží a najít si vlastní místo. V jedné části je přibližně 13 m vysoký útes vhodný ke skákání."
+  },
+
+  {
+    id: "public-cliff",
+    name: "Veřejný útes",
+    type: "swimming",
+    typeLabel: "Koupání",
+    icon: "🌊",
+    lat: 44.8611303,
+    lon: 13.8052450,
+    description:
+      "Více lidí než na odlehlejších místech, ale díky tomu působí místo bezpečněji. Často se tu potkávají místní i turisté."
+  },
+
+  {
+    id: "jump-spot",
+    name: "Skákací místo",
+    type: "swimming",
+    typeLabel: "Koupání",
+    icon: "🌊",
+    lat: 44.8609831,
+    lon: 13.8003875,
+    description:
+      "Osobně nevyzkoušeno, ale podle lokality vypadá velmi dobře. Pravděpodobně méně frekventované."
+  },
+
+  {
+    id: "public-parking",
+    name: "Veřejné parkoviště",
+    type: "parking",
+    typeLabel: "Parkování",
+    icon: "🅿️",
+    lat: 44.8615106,
+    lon: 13.8085628,
+    description:
+      "Zdarma a s relativně slušnou kapacitou. Povrch je ale dost rozbitý."
+  },
+
+  {
+    id: "camp-parking",
+    name: "Parkoviště zdarma u kempu",
+    type: "parking",
+    typeLabel: "Parkování",
+    icon: "🅿️",
+    lat: 44.8597583,
+    lon: 13.8142061,
+    description:
+      "Malé parkoviště zdarma. Výhoda je blízkost kempu, kde se dá využít sprcha."
+  },
+
+  {
+    id: "camp-shower",
+    name: "Sprcha v kempu zdarma",
+    type: "practical",
+    typeLabel: "Praktické",
+    icon: "🚿",
+    lat: 44.8587156,
+    lon: 13.8146203,
+    description:
+      "Volně dostupná sprcha v areálu kempu. V areálu je podobných sprch více."
+  },
+
+  {
+    id: "arena",
+    name: "Pula Arena",
+    type: "sight",
+    typeLabel: "Památka",
+    icon: "🏛️",
+    lat: 44.8702519,
+    lon: 13.8457517,
+    description:
+      "Velmi pěkný římský amfiteátr. Silně turistické místo, ale rozhodně stojí za krátkou návštěvu."
+  },
+
+  {
+    id: "bakery",
+    name: "Lokální pekárna",
+    type: "food",
+    typeLabel: "Jídlo",
+    icon: "🥐",
+    lat: 44.8736464,
+    lon: 13.8542283,
+    description:
+      "Otevírá už v 6:00. Působí hodně lokálně, pečivo je výborné a ceny velmi dobré. Vedle je kavárna, která není běžně vidět na mapách."
+  },
+
+  {
+    id: "supermarket-parking",
+    name: "Parkování u supermarketu – 90 min",
+    type: "parking",
+    typeLabel: "Parkování",
+    icon: "🅿️",
+    lat: 44.8732961,
+    lon: 13.8541003,
+    description:
+      "Menší bezplatné parkoviště s omezením přibližně na 90 minut. Vedle je menší supermarket."
+  }
+
+];
+
+
+/* =========================
+   MAP
+========================= */
+
+const map = L.map("map").setView(
+  [44.8665, 13.821],
+  13
+);
+
+const topoLayer = L.tileLayer(
+  "https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png",
+  {
+    maxZoom: 17,
+    attribution:
+      "Map data © OpenStreetMap contributors, SRTM | Map style © OpenTopoMap"
+  }
+);
+
+const classicLayer = L.tileLayer(
+  "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+  {
+    maxZoom: 19,
+    attribution:
+      "© OpenStreetMap contributors"
+  }
+);
+
+topoLayer.addTo(map);
+
+
+/* =========================
+   MARKERS
+========================= */
+
+const markers = {};
+
+function createMarkerIcon(place) {
+
+  return L.divIcon({
+    className: "",
+    html: `
+      <div class="custom-marker">
+        ${place.icon}
+      </div>
+    `,
+    iconSize: [36, 36],
+    iconAnchor: [18, 18],
+    popupAnchor: [0, -20]
+  });
+
+}
+
+
+places.forEach(place => {
+
+  const marker = L.marker(
+    [place.lat, place.lon],
+    {
+      icon: createMarkerIcon(place)
+    }
+  );
+
+  marker.bindPopup(`
+    <strong>${place.name}</strong><br>
+    <small>${place.typeLabel}</small><br><br>
+    ${place.description}
+  `);
+
+  marker.addTo(map);
+
+  markers[place.id] = marker;
+
+});
+
+
+/* =========================
+   LIST
+========================= */
+
+const placeList =
+  document.getElementById("placeList");
+
+function createList() {
+
+  placeList.innerHTML = "";
+
+  places.forEach(place => {
+
+    const card =
+      document.createElement("div");
+
+    card.className = "place-card";
+
+    card.dataset.type = place.type;
+    card.dataset.id = place.id;
+
+    card.innerHTML = `
+      <div class="place-header">
+
+        <div class="icon">
+          ${place.icon}
+        </div>
+
+        <div class="place-info">
+
+          <h3>
+            ${place.name}
+          </h3>
+
+          <div class="type">
+            ${place.typeLabel}
+          </div>
+
+        </div>
+
+      </div>
+
+      <p class="description">
+        ${place.description}
+      </p>
+    `;
+
+    card.addEventListener("click", () => {
+
+      document
+        .querySelectorAll(".place-card")
+        .forEach(c =>
+          c.classList.remove("active")
+        );
+
+      card.classList.add("active");
+
+      map.flyTo(
+        [place.lat, place.lon],
+        16,
+        {
+          duration: 1.2
+        }
+      );
+
+      setTimeout(() => {
+        markers[place.id].openPopup();
+      }, 1100);
+
+    });
+
+    placeList.appendChild(card);
+
+  });
+
+}
+
+createList();
+
+
+/* =========================
+   FILTERS
+========================= */
+
+const filterButtons =
+  document.querySelectorAll(".filter-button");
+
+filterButtons.forEach(button => {
+
+  button.addEventListener("click", () => {
+
+    filterButtons.forEach(btn =>
+      btn.classList.remove("active")
+    );
+
+    button.classList.add("active");
+
+    const filter =
+      button.dataset.filter;
+
+
+    places.forEach(place => {
+
+      const card =
+        document.querySelector(
+          `.place-card[data-id="${place.id}"]`
+        );
+
+      const marker =
+        markers[place.id];
+
+      const visible =
+        filter === "all" ||
+        place.type === filter;
+
+      card.classList.toggle(
+        "hidden",
+        !visible
+      );
+
+      if (visible) {
+
+        if (!map.hasLayer(marker)) {
+          marker.addTo(map);
+        }
+
+      } else {
+
+        if (map.hasLayer(marker)) {
+          map.removeLayer(marker);
+        }
+
+      }
+
+    });
+
+  });
+
+});
+
+
+/* =========================
+   MAP SWITCHER
+========================= */
+
+const topoButton =
+  document.getElementById("topoButton");
+
+const classicButton =
+  document.getElementById("classicButton");
+
+topoButton.addEventListener("click", () => {
+
+  if (!map.hasLayer(topoLayer)) {
+
+    map.removeLayer(classicLayer);
+    topoLayer.addTo(map);
+
+  }
+
+  topoButton.classList.add("active");
+  classicButton.classList.remove("active");
+
+});
+
+classicButton.addEventListener("click", () => {
+
+  if (!map.hasLayer(classicLayer)) {
+
+    map.removeLayer(topoLayer);
+    classicLayer.addTo(map);
+
+  }
+
+  classicButton.classList.add("active");
+  topoButton.classList.remove("active");
+
+});
+
+</script>
+
+</body>
+</html>
