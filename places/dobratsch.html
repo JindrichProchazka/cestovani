@@ -1,0 +1,859 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Dobratsch | Kam vyrazit?</title>
+
+  <link
+    rel="stylesheet"
+    href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+  />
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      background: #f4f3ef;
+      color: #111;
+    }
+
+    header {
+      padding: 26px 34px 18px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 20px;
+    }
+
+    .back-link {
+      display: inline-block;
+      margin-bottom: 18px;
+      font-size: 13px;
+      text-decoration: none;
+      color: #666;
+    }
+
+    .back-link:hover {
+      color: #111;
+    }
+
+    .title-block h1 {
+      margin: 0;
+      font-size: clamp(42px, 6vw, 82px);
+      line-height: 0.95;
+      letter-spacing: -3px;
+    }
+
+    .title-block p {
+      margin: 16px 0 0;
+      max-width: 760px;
+      color: #666;
+      line-height: 1.55;
+      font-size: 15px;
+    }
+
+    .meta {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .tag {
+      border: 1px solid #ccc;
+      border-radius: 999px;
+      padding: 10px 16px;
+      white-space: nowrap;
+      font-size: 13px;
+    }
+
+    .stats {
+      padding: 0 34px 18px;
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .stat {
+      background: white;
+      border-radius: 999px;
+      padding: 9px 14px;
+      font-size: 12px;
+    }
+
+    .main {
+      padding: 0 24px 24px;
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: 360px minmax(0, 1fr);
+      gap: 16px;
+      min-height: 690px;
+    }
+
+    .sidebar {
+      overflow-y: auto;
+      padding: 4px 4px 4px 0;
+    }
+
+    .section-label {
+      margin: 4px 0 12px;
+      font-size: 11px;
+      font-weight: bold;
+      text-transform: uppercase;
+      letter-spacing: 1.4px;
+      color: #888;
+    }
+
+    .place-card {
+      background: white;
+      border-radius: 18px;
+      padding: 16px;
+      margin-bottom: 10px;
+      cursor: pointer;
+      border: 1px solid transparent;
+      transition: 0.2s ease;
+    }
+
+    .place-card:hover {
+      border-color: #bbb;
+      transform: translateY(-1px);
+    }
+
+    .place-card.active {
+      border-color: #111;
+    }
+
+    .place-header {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+    }
+
+    .icon {
+      width: 38px;
+      height: 38px;
+      flex: 0 0 38px;
+      border-radius: 50%;
+      background: #f1f1ee;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+    }
+
+    .place-info h3 {
+      margin: 0;
+      font-size: 16px;
+      line-height: 1.25;
+    }
+
+    .type {
+      margin-top: 4px;
+      color: #888;
+      font-size: 12px;
+    }
+
+    .tags {
+      margin-top: 8px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 5px;
+    }
+
+    .small-tag {
+      font-size: 10px;
+      padding: 4px 7px;
+      border-radius: 999px;
+      background: #f1f1ee;
+      color: #666;
+    }
+
+    .description {
+      margin: 12px 0 0;
+      color: #555;
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    .route-card {
+      background: #111;
+      color: white;
+      border-radius: 18px;
+      padding: 17px;
+      margin-bottom: 16px;
+    }
+
+    .route-card strong {
+      display: block;
+      font-size: 16px;
+      margin-bottom: 7px;
+    }
+
+    .route-card p {
+      color: #ccc;
+      font-size: 12px;
+      line-height: 1.5;
+      margin: 0;
+    }
+
+    .show-route-button {
+      margin-top: 14px;
+      border: 0;
+      background: white;
+      color: #111;
+      padding: 8px 12px;
+      border-radius: 999px;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 12px;
+    }
+
+    .map-shell {
+      position: relative;
+      background: white;
+      border-radius: 30px;
+      padding: 7px;
+      min-width: 0;
+    }
+
+    #map {
+      height: 100%;
+      min-height: 690px;
+      border-radius: 24px;
+      overflow: hidden;
+    }
+
+    .leaflet-bar {
+      border: none !important;
+      box-shadow: none !important;
+    }
+
+    .leaflet-bar a {
+      border: none !important;
+      margin-bottom: 4px;
+      border-radius: 50% !important;
+      width: 42px !important;
+      height: 42px !important;
+      line-height: 42px !important;
+      background: rgba(255,255,255,0.95) !important;
+      color: #111 !important;
+      box-shadow: 0 3px 12px rgba(0,0,0,0.12);
+    }
+
+    .leaflet-control-zoom {
+      margin-top: 20px !important;
+      margin-left: 20px !important;
+    }
+
+    .map-switcher {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      z-index: 1000;
+      display: flex;
+      gap: 4px;
+      padding: 4px;
+      background: rgba(255,255,255,0.92);
+      border-radius: 999px;
+      box-shadow: 0 4px 18px rgba(0,0,0,0.12);
+    }
+
+    .map-switcher button {
+      border: 0;
+      background: transparent;
+      padding: 9px 13px;
+      border-radius: 999px;
+      font-size: 12px;
+      cursor: pointer;
+      font-weight: 600;
+    }
+
+    .map-switcher button.active {
+      background: #111;
+      color: white;
+    }
+
+    .custom-marker {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      background: #111;
+      color: white;
+      border: 3px solid white;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.25);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 17px;
+    }
+
+    @media (max-width: 900px) {
+
+      header {
+        padding: 22px 18px 16px;
+        flex-direction: column;
+      }
+
+      .title-block h1 {
+        letter-spacing: -2px;
+      }
+
+      .meta {
+        justify-content: flex-start;
+      }
+
+      .stats {
+        padding: 0 18px 16px;
+      }
+
+      .main {
+        padding: 0 10px 18px;
+      }
+
+      .layout {
+        display: flex;
+        flex-direction: column;
+        min-height: 0;
+      }
+
+      .map-shell {
+        order: 1;
+        height: 58vh;
+        min-height: 420px;
+      }
+
+      #map {
+        min-height: 0;
+        height: 100%;
+      }
+
+      .sidebar {
+        order: 2;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+<header>
+
+  <div class="title-block">
+
+    <a href="../index.html" class="back-link">
+      ← Zpět na hlavní mapu
+    </a>
+
+    <h1>DOBRATSCH</h1>
+
+    <p>
+      Kratší, ale prudký výstup z Bad Bleibergu směrem na vrcholovou
+      oblast Dobratsche. Hlavním cílem je oblast u Dobratsch-Gipfelhaus
+      a vysílače. Za dobré viditelnosti by odtud měly být velmi pěkné
+      výhledy směrem na Julské Alpy.
+    </p>
+
+  </div>
+
+  <div class="meta">
+    <div class="tag">🇦🇹 Rakousko · Korutany</div>
+    <div class="tag">🥾 Hike</div>
+  </div>
+
+</header>
+
+
+<div class="stats">
+
+  <div class="stat">
+    ↔️ cca 4,2 km nahoru
+  </div>
+
+  <div class="stat">
+    ↗️ cca +1 225 m
+  </div>
+
+  <div class="stat">
+    🏔️ 909 → 2 135 m
+  </div>
+
+  <div class="stat">
+    ⏱️ plán cca 2:49 h
+  </div>
+
+</div>
+
+
+<main class="main">
+
+  <div class="layout">
+
+    <aside class="sidebar" id="placeList">
+
+      <div class="section-label">
+        Trasa
+      </div>
+
+      <div class="route-card">
+
+        <strong>
+          Bad Bleiberg → Dobratsch
+        </strong>
+
+        <p>
+          GPX trasa z parkoviště do vrcholové oblasti.
+          Krátká vzdáleností, ale s velkým převýšením.
+        </p>
+
+        <button
+          class="show-route-button"
+          id="showRouteButton"
+        >
+          Zobrazit celou trasu
+        </button>
+
+      </div>
+
+      <div class="section-label">
+        Body na trase
+      </div>
+
+    </aside>
+
+
+    <section class="map-shell">
+
+      <div id="map"></div>
+
+      <div class="map-switcher">
+
+        <button
+          id="topoButton"
+          class="active"
+        >
+          Turistická
+        </button>
+
+        <button id="classicButton">
+          Klasická
+        </button>
+
+      </div>
+
+    </section>
+
+  </div>
+
+</main>
+
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet-gpx/1.7.0/gpx.min.js"></script>
+
+<script>
+
+
+/* =========================
+   MÍSTA
+========================= */
+
+const places = [
+
+  {
+    id: "parking-1",
+    name: "Parkoviště 1",
+    typeLabel: "Parkování",
+    icon: "🅿️",
+    lat: 46.6252819,
+    lon: 13.6842758,
+    tags: ["zdarma", "asfalt", "menší kapacita"],
+    description:
+      "Menší asfaltové parkoviště zdarma v Bad Bleibergu. Jedna z možností pro začátek výstupu."
+  },
+
+  {
+    id: "parking-2",
+    name: "Parkoviště 2",
+    typeLabel: "Parkování",
+    icon: "🅿️",
+    lat: 46.6247983,
+    lon: 13.6858208,
+    tags: ["zdarma", "asfalt", "menší kapacita"],
+    description:
+      "Další menší asfaltové parkoviště zdarma v těsné blízkosti nástupu na trasu."
+  },
+
+  {
+    id: "parking-3",
+    name: "Parkoviště 3",
+    typeLabel: "Parkování",
+    icon: "🅿️",
+    lat: 46.6251967,
+    lon: 13.6848989,
+    tags: ["zdarma", "asfalt", "menší kapacita"],
+    description:
+      "Třetí možnost parkování zdarma. Všechna tři parkoviště jsou blízko sebe a mají spíš menší kapacitu."
+  },
+
+  {
+    id: "summit-area",
+    name: "Dobratsch – vrcholová oblast",
+    typeLabel: "Cíl · Výhled",
+    icon: "⛰️",
+    lat: 46.6032406,
+    lon: 13.6728044,
+    tags: ["výhled", "vysílač", "Gipfelhaus", "Julské Alpy"],
+    description:
+      "Hlavní cíl výstupu. V okolí je vysílač, Dobratsch-Gipfelhaus, kaplička a další menší cíle. Za dobré viditelnosti by odtud měl být pěkný výhled směrem na Julské Alpy."
+  }
+
+];
+
+
+/* =========================
+   MAPA
+========================= */
+
+const map = L.map("map").setView(
+  [46.614, 13.680],
+  13
+);
+
+
+const topoLayer = L.tileLayer(
+  "https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png",
+  {
+    maxZoom: 17,
+    attribution:
+      "Map data © OpenStreetMap contributors, SRTM | Map style © OpenTopoMap"
+  }
+);
+
+
+const classicLayer = L.tileLayer(
+  "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+  {
+    maxZoom: 19,
+    attribution:
+      "© OpenStreetMap contributors"
+  }
+);
+
+
+topoLayer.addTo(map);
+
+
+/* =========================
+   GPX TRASA
+========================= */
+
+let gpxRoute = null;
+
+
+gpxRoute = new L.GPX(
+  "../routes/dobratsch.gpx",
+  {
+
+    async: true,
+
+    polyline_options: {
+      color: "#111111",
+      opacity: 0.85,
+      weight: 5,
+      lineCap: "round"
+    },
+
+    marker_options: {
+
+      startIconUrl: null,
+      endIconUrl: null,
+      shadowUrl: null
+
+    }
+
+  }
+)
+.on("loaded", function(e) {
+
+  const gpx = e.target;
+
+  map.fitBounds(
+    gpx.getBounds(),
+    {
+      padding: [35, 35]
+    }
+  );
+
+})
+.addTo(map);
+
+
+/* =========================
+   MARKERY
+========================= */
+
+const markers = {};
+
+
+function createMarkerIcon(place) {
+
+  return L.divIcon({
+
+    className: "",
+
+    html: `
+      <div class="custom-marker">
+        ${place.icon}
+      </div>
+    `,
+
+    iconSize: [38, 38],
+    iconAnchor: [19, 19],
+    popupAnchor: [0, -21]
+
+  });
+
+}
+
+
+places.forEach(place => {
+
+  const marker = L.marker(
+    [place.lat, place.lon],
+    {
+      icon: createMarkerIcon(place)
+    }
+  );
+
+
+  marker.bindPopup(`
+    <div style="width:220px;">
+
+      <strong style="font-size:15px;">
+        ${place.name}
+      </strong>
+
+      <div style="
+        margin-top:3px;
+        font-size:12px;
+        color:#777;
+      ">
+        ${place.typeLabel}
+      </div>
+
+      <p style="
+        margin:10px 0 0;
+        line-height:1.45;
+        font-size:13px;
+      ">
+        ${place.description}
+      </p>
+
+    </div>
+  `);
+
+
+  marker.addTo(map);
+
+  markers[place.id] = marker;
+
+});
+
+
+/* =========================
+   SEZNAM
+========================= */
+
+const placeList =
+  document.getElementById("placeList");
+
+
+places.forEach(place => {
+
+  const card =
+    document.createElement("div");
+
+
+  card.className = "place-card";
+  card.dataset.id = place.id;
+
+
+  const tagsHtml = place.tags
+    .map(
+      tag =>
+        `<span class="small-tag">${tag}</span>`
+    )
+    .join("");
+
+
+  card.innerHTML = `
+
+    <div class="place-header">
+
+      <div class="icon">
+        ${place.icon}
+      </div>
+
+      <div class="place-info">
+
+        <h3>
+          ${place.name}
+        </h3>
+
+        <div class="type">
+          ${place.typeLabel}
+        </div>
+
+        <div class="tags">
+          ${tagsHtml}
+        </div>
+
+      </div>
+
+    </div>
+
+    <p class="description">
+      ${place.description}
+    </p>
+
+  `;
+
+
+  card.addEventListener(
+    "click",
+    () => {
+
+      document
+        .querySelectorAll(".place-card")
+        .forEach(
+          c =>
+            c.classList.remove("active")
+        );
+
+
+      card.classList.add("active");
+
+
+      map.flyTo(
+        [place.lat, place.lon],
+        16,
+        {
+          duration: 1.1
+        }
+      );
+
+
+      setTimeout(
+        () => {
+          markers[place.id].openPopup();
+        },
+        1000
+      );
+
+    }
+  );
+
+
+  placeList.appendChild(card);
+
+});
+
+
+/* =========================
+   CELÁ TRASA
+========================= */
+
+document
+  .getElementById("showRouteButton")
+  .addEventListener(
+    "click",
+    () => {
+
+      if (
+        gpxRoute &&
+        gpxRoute.getBounds().isValid()
+      ) {
+
+        map.fitBounds(
+          gpxRoute.getBounds(),
+          {
+            padding: [35, 35]
+          }
+        );
+
+      }
+
+    }
+  );
+
+
+/* =========================
+   MAP SWITCHER
+========================= */
+
+const topoButton =
+  document.getElementById("topoButton");
+
+const classicButton =
+  document.getElementById("classicButton");
+
+
+topoButton.addEventListener(
+  "click",
+  () => {
+
+    if (!map.hasLayer(topoLayer)) {
+
+      map.removeLayer(classicLayer);
+
+      topoLayer.addTo(map);
+
+    }
+
+
+    topoButton.classList.add("active");
+
+    classicButton.classList.remove("active");
+
+  }
+);
+
+
+classicButton.addEventListener(
+  "click",
+  () => {
+
+    if (!map.hasLayer(classicLayer)) {
+
+      map.removeLayer(topoLayer);
+
+      classicLayer.addTo(map);
+
+    }
+
+
+    classicButton.classList.add("active");
+
+    topoButton.classList.remove("active");
+
+  }
+);
+
+</script>
+
+</body>
+</html>
