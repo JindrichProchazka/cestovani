@@ -99,7 +99,7 @@
 
     .travel-container {
       display: grid;
-      grid-template-columns: 260px minmax(0, 1fr);
+      grid-template-columns: 270px minmax(0, 1fr);
       gap: 18px;
       min-height: 680px;
     }
@@ -113,7 +113,7 @@
     }
 
     .sidebar-top {
-      margin-bottom: 32px;
+      margin-bottom: 20px;
     }
 
     .eyebrow {
@@ -138,17 +138,40 @@
       line-height: 1.5;
     }
 
-    .empty-state {
+    .country-group {
       margin-top: 26px;
-      padding-top: 18px;
-      border-top: 1px solid #d7d6d0;
     }
 
-    .empty-state p {
-      margin: 0;
-      color: #777;
-      font-size: 13px;
-      line-height: 1.5;
+    .country-name {
+      padding-bottom: 10px;
+      border-bottom: 1px solid #d7d6d0;
+      font-size: 11px;
+      font-weight: bold;
+      text-transform: uppercase;
+      letter-spacing: 1.3px;
+      color: #888;
+    }
+
+    .destination-link {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 13px 2px;
+      border-bottom: 1px solid #e1e0db;
+      text-decoration: none;
+      color: #111;
+      font-size: 14px;
+      font-weight: 600;
+      transition: 0.15s ease;
+    }
+
+    .destination-link:hover {
+      padding-left: 7px;
+    }
+
+    .destination-icon {
+      width: 25px;
+      text-align: center;
     }
 
     .wishlist {
@@ -191,8 +214,6 @@
       background: #ddd;
     }
 
-    /* Leaflet controls */
-
     .leaflet-bar {
       border: none !important;
       box-shadow: none !important;
@@ -215,24 +236,17 @@
       margin-left: 20px !important;
     }
 
-    /* custom map switch */
-
     .map-switcher {
       position: absolute;
       z-index: 1000;
       top: 20px;
       right: 20px;
-
       display: flex;
       gap: 4px;
-
       padding: 4px;
-
       background: rgba(255,255,255,0.92);
       backdrop-filter: blur(10px);
-
       border-radius: 999px;
-
       box-shadow: 0 4px 18px rgba(0,0,0,0.12);
     }
 
@@ -335,14 +349,18 @@
 <header>
 
   <div class="brand">
+
     <h1>KAM VYRAZIT?</h1>
+
     <p>
       Místa, která stojí za cestu. Výlety, hory, koupání,
       cyklistika a poznámky, které nechci příště hledat znovu.
     </p>
+
   </div>
 
   <nav>
+
     <button class="nav-button active">
       Mapa
     </button>
@@ -350,6 +368,7 @@
     <button class="nav-button">
       Chci navštívit
     </button>
+
   </nav>
 
 </header>
@@ -378,43 +397,8 @@
       </div>
 
 
-      <div class="empty-state">
+      <div id="destinationList"></div>
 
-  <div class="eyebrow">
-    Chorvatsko
-  </div>
-
-  <a
-    href="places/pula.html"
-    style="
-      display: block;
-      padding: 14px 0;
-      border-top: 1px solid #d7d6d0;
-      text-decoration: none;
-      font-weight: 600;
-    "
-  >
-    🇭🇷 Pula
-  </a>
-
-<div class="eyebrow" style="margin-top: 22px;">
-  Slovinsko
-</div>
-
-<a
-  href="places/susec.html"
-  style="
-    display: block;
-    padding: 14px 0;
-    border-top: 1px solid #d7d6d0;
-    text-decoration: none;
-    font-weight: 600;
-  "
->
-  💧 Sušec
-</a>
-        
-</div>
 
       <div class="wishlist">
 
@@ -470,230 +454,375 @@
 
 <script>
 
-  /* =========================
-     MAP
-  ========================= */
+/* =========================
+   MAP
+========================= */
 
-  const map = L.map("map", {
-    zoomControl: true
-  }).setView([46.3, 13.7], 6);
-
-
-  /* TURISTICKÁ MAPA */
-
-  const topoLayer = L.tileLayer(
-    "https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png",
-    {
-      maxZoom: 17,
-      attribution:
-        'Map data © OpenStreetMap contributors, SRTM | Map style © OpenTopoMap'
-    }
-  );
+const map = L.map("map", {
+  zoomControl: true
+}).setView([46.15, 13.65], 7);
 
 
-  /* KLASICKÁ MAPA */
+/* TURISTICKÁ MAPA */
 
-  const classicLayer = L.tileLayer(
-    "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
-    {
-      maxZoom: 19,
-      attribution:
-        "© OpenStreetMap contributors"
-    }
-  );
+const topoLayer = L.tileLayer(
+  "https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png",
+  {
+    maxZoom: 17,
+    attribution:
+      "Map data © OpenStreetMap contributors, SRTM | Map style © OpenTopoMap"
+  }
+);
 
 
-  topoLayer.addTo(map);
+/* KLASICKÁ MAPA */
+
+const classicLayer = L.tileLayer(
+  "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+  {
+    maxZoom: 19,
+    attribution:
+      "© OpenStreetMap contributors"
+  }
+);
+
+
+topoLayer.addTo(map);
+
 
 /* =========================
    DESTINACE
 ========================= */
 
-const pulaIcon = L.divIcon({
-  className: "",
-  html: `
-    <div style="
-      width: 42px;
-      height: 42px;
-      border-radius: 50%;
-      background: #111;
-      color: white;
-      border: 3px solid white;
-      box-shadow: 0 4px 14px rgba(0,0,0,0.25);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 18px;
-    ">
-      🇭🇷
-    </div>
-  `,
-  iconSize: [42, 42],
-  iconAnchor: [21, 21],
-  popupAnchor: [0, -22]
-});
+const destinations = [
 
-
-const pulaMarker = L.marker(
-  [44.8666, 13.8496],
   {
-    icon: pulaIcon
-  }
-).addTo(map);
+    name: "Dobratsch",
+    country: "Rakousko",
+    region: "Korutany",
+    icon: "🥾",
+    lat: 46.6032406,
+    lon: 13.6728044,
+    page: "places/dobratsch.html",
+    description:
+      "Prudší hike z Bad Bleibergu do vrcholové oblasti s výhledem směrem na Julské Alpy.",
+    tags: ["Hike", "Výhled"]
+  },
 
-
-pulaMarker.bindPopup(`
-  <div style="min-width: 210px;">
-
-    <strong style="font-size: 16px;">
-      Pula
-    </strong>
-
-    <div style="
-      margin-top: 4px;
-      font-size: 12px;
-      color: #777;
-    ">
-      Chorvatsko · Istrie
-    </div>
-
-    <p style="
-      margin: 10px 0;
-      font-size: 13px;
-      line-height: 1.45;
-    ">
-      Historické centrum, koupání, útesy, parkování zdarma a praktická místa.
-    </p>
-
-    <a
-      href="places/pula.html"
-      style="
-        display: inline-block;
-        margin-top: 4px;
-        font-weight: 600;
-        text-decoration: none;
-        color: #111;
-      "
-    >
-      Otevřít Pulu →
-    </a>
-
-  </div>
-`);
-
-const susecIcon = L.divIcon({
-  className: "",
-  html: `
-    <div style="
-      width: 42px;
-      height: 42px;
-      border-radius: 50%;
-      background: #111;
-      color: white;
-      border: 3px solid white;
-      box-shadow: 0 4px 14px rgba(0,0,0,0.25);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 18px;
-    ">
-      💧
-    </div>
-  `,
-  iconSize: [42, 42],
-  iconAnchor: [21, 21],
-  popupAnchor: [0, -22]
-});
-
-
-const susecMarker = L.marker(
-  [46.2925364, 13.4876325],
   {
-    icon: susecIcon
+    name: "Millstätter See",
+    country: "Rakousko",
+    region: "Korutany",
+    icon: "🚴",
+    lat: 46.8110856,
+    lon: 13.5481222,
+    page: "places/millstatter-see.html",
+    description:
+      "Jezero, koupání, paddleboard a přibližně 40km cyklistický okruh.",
+    tags: ["Cyklistika", "Paddleboard", "Koupání"]
+  },
+
+  {
+    name: "Sušec",
+    country: "Slovinsko",
+    region: "Soča",
+    icon: "💧",
+    lat: 46.2925364,
+    lon: 13.4876325,
+    page: "places/susec.html",
+    description:
+      "Kaskáda vodopádů a canyoningová lokalita poblíž Srpenice.",
+    tags: ["Vodopády", "Příroda"]
+  },
+
+  {
+    name: "Tolmin",
+    country: "Slovinsko",
+    region: "Soča",
+    icon: "🌊",
+    lat: 46.1818,
+    lon: 13.7425,
+    page: "places/tolmin.html",
+    description:
+      "Vodopád Beri, koupání v Soče, parkování, kafe a praktická místa.",
+    tags: ["Vodopád", "Koupání", "Kafe"]
+  },
+
+  {
+    name: "Most na Soči",
+    country: "Slovinsko",
+    region: "Soča",
+    icon: "🛶",
+    lat: 46.1532875,
+    lon: 13.7401850,
+    page: "places/most-na-soci.html",
+    description:
+      "Klidnější místo na Soče vhodné na paddleboard, koupání a skákání.",
+    tags: ["Paddleboard", "Koupání"]
+  },
+
+  {
+    name: "Tarvisio",
+    country: "Itálie",
+    region: "Friuli-Venezia Giulia",
+    icon: "☕",
+    lat: 46.5038,
+    lon: 13.5808,
+    page: "places/tarvisio.html",
+    description:
+      "Malé horské město, kafe, výborná zmrzlina, parkování a praktické tipy.",
+    tags: ["Kafe", "Jídlo", "Praktické"]
+  },
+
+  {
+    name: "Pula",
+    country: "Chorvatsko",
+    region: "Istrie",
+    icon: "🏖️",
+    lat: 44.8666,
+    lon: 13.8496,
+    page: "places/pula.html",
+    description:
+      "Historické centrum, útesy, koupání, parkování zdarma a praktická místa.",
+    tags: ["Koupání", "Město", "Praktické"]
   }
-).addTo(map);
+
+];
 
 
-susecMarker.bindPopup(`
-  <div style="min-width: 210px;">
+/* =========================
+   MARKERY DESTINACÍ
+========================= */
 
-    <strong style="font-size: 16px;">
-      Sušec
-    </strong>
+function createDestinationIcon(destination) {
 
-    <div style="
-      margin-top: 4px;
-      font-size: 12px;
-      color: #777;
-    ">
-      Slovinsko · údolí Soči
-    </div>
+  return L.divIcon({
 
-    <p style="
-      margin: 10px 0;
-      font-size: 13px;
-      line-height: 1.45;
-    ">
-      Kaskáda vodopádů a canyoningová lokalita poblíž Srpenice.
-    </p>
+    className: "",
 
-    <a
-      href="places/susec.html"
-      style="
+    html: `
+      <div style="
+        width: 44px;
+        height: 44px;
+        border-radius: 50%;
+        background: #111;
+        color: white;
+        border: 3px solid white;
+        box-shadow: 0 4px 14px rgba(0,0,0,0.25);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 19px;
+      ">
+        ${destination.icon}
+      </div>
+    `,
+
+    iconSize: [44, 44],
+    iconAnchor: [22, 22],
+    popupAnchor: [0, -24]
+
+  });
+
+}
+
+
+destinations.forEach(destination => {
+
+  const tags = destination.tags
+    .map(tag => `
+      <span style="
         display: inline-block;
-        margin-top: 4px;
-        font-weight: 600;
-        text-decoration: none;
-        color: #111;
-      "
-    >
-      Otevřít Sušec →
-    </a>
-
-  </div>
-`);
-  
-  /* =========================
-     MAP SWITCHER
-  ========================= */
-
-  const topoButton =
-    document.getElementById("topoButton");
-
-  const classicButton =
-    document.getElementById("classicButton");
+        margin: 3px 3px 0 0;
+        padding: 4px 7px;
+        border-radius: 999px;
+        background: #f1f1ee;
+        color: #666;
+        font-size: 10px;
+      ">
+        ${tag}
+      </span>
+    `)
+    .join("");
 
 
-  topoButton.addEventListener("click", function() {
-
-    if (!map.hasLayer(topoLayer)) {
-
-      map.removeLayer(classicLayer);
-
-      topoLayer.addTo(map);
-
+  const marker = L.marker(
+    [destination.lat, destination.lon],
+    {
+      icon: createDestinationIcon(destination)
     }
+  ).addTo(map);
 
-    topoButton.classList.add("active");
-    classicButton.classList.remove("active");
+
+  marker.bindPopup(`
+    <div style="
+      min-width: 220px;
+      max-width: 260px;
+    ">
+
+      <strong style="font-size: 16px;">
+        ${destination.name}
+      </strong>
+
+      <div style="
+        margin-top: 4px;
+        font-size: 12px;
+        color: #777;
+      ">
+        ${destination.country} · ${destination.region}
+      </div>
+
+      <div style="margin-top: 7px;">
+        ${tags}
+      </div>
+
+      <p style="
+        margin: 10px 0;
+        font-size: 13px;
+        line-height: 1.45;
+      ">
+        ${destination.description}
+      </p>
+
+      <a
+        href="${destination.page}"
+        style="
+          display: inline-block;
+          margin-top: 3px;
+          color: #111;
+          text-decoration: none;
+          font-weight: 600;
+          font-size: 13px;
+        "
+      >
+        Otevřít detail →
+      </a>
+
+    </div>
+  `);
+
+});
+
+
+/* =========================
+   SIDEBAR
+========================= */
+
+const destinationList =
+  document.getElementById("destinationList");
+
+
+const countries = [
+  "Rakousko",
+  "Slovinsko",
+  "Itálie",
+  "Chorvatsko"
+];
+
+
+countries.forEach(country => {
+
+  const countryDestinations =
+    destinations.filter(
+      destination =>
+        destination.country === country
+    );
+
+
+  if (countryDestinations.length === 0) {
+    return;
+  }
+
+
+  const group =
+    document.createElement("div");
+
+
+  group.className =
+    "country-group";
+
+
+  group.innerHTML = `
+    <div class="country-name">
+      ${country}
+    </div>
+  `;
+
+
+  countryDestinations.forEach(destination => {
+
+    const link =
+      document.createElement("a");
+
+
+    link.href =
+      destination.page;
+
+
+    link.className =
+      "destination-link";
+
+
+    link.innerHTML = `
+      <span class="destination-icon">
+        ${destination.icon}
+      </span>
+
+      <span>
+        ${destination.name}
+      </span>
+    `;
+
+
+    group.appendChild(link);
 
   });
 
 
-  classicButton.addEventListener("click", function() {
+  destinationList.appendChild(group);
 
-    if (!map.hasLayer(classicLayer)) {
+});
 
-      map.removeLayer(topoLayer);
 
-      classicLayer.addTo(map);
+/* =========================
+   MAP SWITCHER
+========================= */
 
-    }
+const topoButton =
+  document.getElementById("topoButton");
 
-    classicButton.classList.add("active");
-    topoButton.classList.remove("active");
+const classicButton =
+  document.getElementById("classicButton");
 
-  });
+
+topoButton.addEventListener("click", function() {
+
+  if (!map.hasLayer(topoLayer)) {
+
+    map.removeLayer(classicLayer);
+    topoLayer.addTo(map);
+
+  }
+
+  topoButton.classList.add("active");
+  classicButton.classList.remove("active");
+
+});
+
+
+classicButton.addEventListener("click", function() {
+
+  if (!map.hasLayer(classicLayer)) {
+
+    map.removeLayer(topoLayer);
+    classicLayer.addTo(map);
+
+  }
+
+  classicButton.classList.add("active");
+  topoButton.classList.remove("active");
+
+});
 
 </script>
 
