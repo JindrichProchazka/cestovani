@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>Cestování</title>
+  <title>Kam vyrazit?</title>
 
   <link
     rel="stylesheet"
@@ -16,148 +16,317 @@
       box-sizing: border-box;
     }
 
+    html,
     body {
       margin: 0;
-      font-family: Arial, Helvetica, sans-serif;
-      background: #f3f4f6;
-      color: #1f2937;
+      padding: 0;
     }
 
-    header {
-      height: 86px;
-      padding: 18px 28px;
-      background: white;
-      border-bottom: 1px solid #e5e7eb;
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      background: #f4f3ef;
+      color: #111111;
+    }
 
+    /* =========================
+       HEADER
+    ========================= */
+
+    header {
+      padding: 30px 42px 24px;
       display: flex;
-      align-items: center;
       justify-content: space-between;
-      gap: 20px;
+      align-items: flex-start;
+      gap: 30px;
+    }
+
+    .brand {
+      max-width: 700px;
     }
 
     .brand h1 {
       margin: 0;
-      font-size: 26px;
+      font-size: clamp(38px, 5vw, 76px);
+      line-height: 0.95;
+      letter-spacing: -3px;
       font-weight: 700;
     }
 
     .brand p {
-      margin: 5px 0 0;
-      font-size: 14px;
-      color: #6b7280;
+      margin: 16px 0 0;
+      max-width: 520px;
+      font-size: 16px;
+      line-height: 1.5;
+      color: #666;
     }
 
-    .header-buttons {
+    nav {
       display: flex;
       gap: 10px;
     }
 
-    .header-button {
-      border: 1px solid #d1d5db;
-      background: #ffffff;
-      padding: 9px 14px;
-      border-radius: 8px;
+    .nav-button {
+      appearance: none;
+      border: 1px solid #cfcfc9;
+      background: transparent;
+      color: #111;
+      padding: 11px 18px;
+      border-radius: 999px;
       font-size: 14px;
       cursor: pointer;
+      transition: 0.2s ease;
     }
 
-    .header-button:hover {
-      background: #f9fafb;
+    .nav-button:hover {
+      background: #111;
+      color: white;
+      border-color: #111;
     }
 
-    .layout {
+    .nav-button.active {
+      background: #111;
+      color: white;
+      border-color: #111;
+    }
+
+    /* =========================
+       MAIN
+    ========================= */
+
+    .main {
+      padding: 0 26px 26px;
+    }
+
+    .travel-container {
       display: grid;
-      grid-template-columns: 320px 1fr;
-      height: calc(100vh - 86px);
+      grid-template-columns: 260px minmax(0, 1fr);
+      gap: 18px;
+      min-height: 680px;
     }
+
+    /* =========================
+       SIDEBAR
+    ========================= */
 
     .sidebar {
-      background: white;
-      border-right: 1px solid #e5e7eb;
-      padding: 22px;
-      overflow-y: auto;
+      padding: 20px 10px 20px 4px;
+    }
+
+    .sidebar-top {
+      margin-bottom: 32px;
+    }
+
+    .eyebrow {
+      margin-bottom: 8px;
+      font-size: 11px;
+      font-weight: bold;
+      text-transform: uppercase;
+      letter-spacing: 1.4px;
+      color: #888;
     }
 
     .sidebar h2 {
-      margin: 0 0 8px;
-      font-size: 20px;
+      margin: 0;
+      font-size: 28px;
+      letter-spacing: -1px;
     }
 
-    .sidebar-text {
-      margin: 0 0 20px;
-      color: #6b7280;
+    .sidebar-description {
+      margin: 10px 0 0;
+      color: #777;
       font-size: 14px;
       line-height: 1.5;
     }
 
-    .empty-box {
-      border: 1px dashed #cbd5e1;
-      background: #f8fafc;
-      border-radius: 10px;
-      padding: 18px;
-      text-align: center;
-      color: #64748b;
+    .empty-state {
+      margin-top: 26px;
+      padding-top: 18px;
+      border-top: 1px solid #d7d6d0;
+    }
+
+    .empty-state p {
+      margin: 0;
+      color: #777;
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    .wishlist {
+      margin-top: 46px;
+    }
+
+    .wishlist-title {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-bottom: 12px;
+      border-bottom: 1px solid #d7d6d0;
       font-size: 14px;
+      font-weight: 600;
     }
 
-    .section {
-      margin-top: 28px;
+    .wishlist-title span:last-child {
+      font-size: 18px;
+      font-weight: normal;
     }
 
-    .section h3 {
-      font-size: 16px;
-      margin-bottom: 10px;
-    }
+    /* =========================
+       MAP
+    ========================= */
 
-    .placeholder-row {
-      height: 42px;
-      border-radius: 8px;
-      background: #f3f4f6;
-      margin-bottom: 8px;
-    }
-
-    .map-wrapper {
+    .map-shell {
       position: relative;
-      padding: 14px;
-      background: #e5e7eb;
+      min-width: 0;
+      padding: 7px;
+      background: #ffffff;
+      border-radius: 30px;
     }
 
     #map {
       width: 100%;
       height: 100%;
-      border-radius: 12px;
+      min-height: 680px;
+      border-radius: 24px;
       overflow: hidden;
-      box-shadow: 0 4px 18px rgba(0,0,0,0.08);
+      background: #ddd;
     }
 
-    @media (max-width: 800px) {
+    /* Leaflet controls */
+
+    .leaflet-bar {
+      border: none !important;
+      box-shadow: none !important;
+    }
+
+    .leaflet-bar a {
+      border: none !important;
+      margin-bottom: 4px;
+      border-radius: 50% !important;
+      width: 42px !important;
+      height: 42px !important;
+      line-height: 42px !important;
+      background: rgba(255,255,255,0.94) !important;
+      color: #111 !important;
+      box-shadow: 0 3px 12px rgba(0,0,0,0.12);
+    }
+
+    .leaflet-control-zoom {
+      margin-top: 20px !important;
+      margin-left: 20px !important;
+    }
+
+    /* custom map switch */
+
+    .map-switcher {
+      position: absolute;
+      z-index: 1000;
+      top: 20px;
+      right: 20px;
+
+      display: flex;
+      gap: 4px;
+
+      padding: 4px;
+
+      background: rgba(255,255,255,0.92);
+      backdrop-filter: blur(10px);
+
+      border-radius: 999px;
+
+      box-shadow: 0 4px 18px rgba(0,0,0,0.12);
+    }
+
+    .map-switcher button {
+      border: 0;
+      background: transparent;
+      padding: 9px 14px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .map-switcher button.active {
+      background: #111;
+      color: white;
+    }
+
+    /* =========================
+       FOOTER NOTE
+    ========================= */
+
+    .bottom-line {
+      display: flex;
+      justify-content: space-between;
+      gap: 20px;
+      padding: 14px 4px 0;
+      color: #777;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+    }
+
+    /* =========================
+       MOBILE
+    ========================= */
+
+    @media (max-width: 850px) {
+
       header {
-        height: auto;
-        align-items: flex-start;
+        padding: 24px 20px 20px;
         flex-direction: column;
       }
 
-      .layout {
-        grid-template-columns: 1fr;
-        grid-template-rows: 55vh auto;
-        height: auto;
+      .brand h1 {
+        letter-spacing: -2px;
       }
 
-      .map-wrapper {
+      nav {
+        width: 100%;
+      }
+
+      .nav-button {
+        flex: 1;
+      }
+
+      .main {
+        padding: 0 12px 20px;
+      }
+
+      .travel-container {
+        display: flex;
+        flex-direction: column;
+        min-height: 0;
+      }
+
+      .map-shell {
         order: 1;
-        height: 55vh;
+        height: 60vh;
+        min-height: 420px;
+        border-radius: 22px;
+      }
+
+      #map {
+        min-height: 0;
+        height: 100%;
+        border-radius: 17px;
       }
 
       .sidebar {
         order: 2;
-        border-right: none;
-        border-top: 1px solid #e5e7eb;
+        padding: 18px 8px;
       }
 
-      .header-buttons {
-        width: 100%;
+      .map-switcher {
+        top: 16px;
+        right: 16px;
+      }
+
+      .bottom-line {
+        display: none;
       }
     }
+
   </style>
 </head>
 
@@ -166,62 +335,194 @@
 <header>
 
   <div class="brand">
-    <h1>Kam vyrazit?</h1>
-    <p>Moje místa, výlety, trasy a cestovatelské poznámky.</p>
+    <h1>KAM VYRAZIT?</h1>
+    <p>
+      Místa, která stojí za cestu. Výlety, hory, koupání,
+      cyklistika a poznámky, které nechci příště hledat znovu.
+    </p>
   </div>
 
-  <div class="header-buttons">
-    <button class="header-button">Mapa</button>
-    <button class="header-button">Chci navštívit</button>
-  </div>
+  <nav>
+    <button class="nav-button active">
+      Mapa
+    </button>
+
+    <button class="nav-button">
+      Chci navštívit
+    </button>
+  </nav>
 
 </header>
 
-<div class="layout">
 
-  <aside class="sidebar">
+<main class="main">
 
-    <h2>Místa</h2>
+  <div class="travel-container">
 
-    <p class="sidebar-text">
-      Seznam destinací bude postupně rozdělený podle zemí a oblastí.
-    </p>
+    <!-- SIDEBAR -->
 
-    <div class="empty-box">
-      Zatím nejsou přidaná žádná místa.
-    </div>
+    <aside class="sidebar">
 
-    <div class="section">
-      <h3>Země</h3>
+      <div class="sidebar-top">
 
-      <div class="placeholder-row"></div>
-      <div class="placeholder-row"></div>
-      <div class="placeholder-row"></div>
-    </div>
+        <div class="eyebrow">
+          Explore
+        </div>
 
-  </aside>
+        <h2>Místa</h2>
 
-  <main class="map-wrapper">
-    <div id="map"></div>
-  </main>
+        <p class="sidebar-description">
+          Vyber zemi nebo oblast a zobraz místa na mapě.
+        </p>
 
-</div>
+      </div>
+
+
+      <div class="empty-state">
+
+        <div class="eyebrow">
+          Destinace
+        </div>
+
+        <p>
+          Zatím tu nic není.<br>
+          Místa postupně přidáme.
+        </p>
+
+      </div>
+
+
+      <div class="wishlist">
+
+        <div class="wishlist-title">
+          <span>Chci navštívit</span>
+          <span>→</span>
+        </div>
+
+      </div>
+
+    </aside>
+
+
+    <!-- MAP -->
+
+    <section class="map-shell">
+
+      <div id="map"></div>
+
+      <div class="map-switcher">
+
+        <button id="topoButton" class="active">
+          Turistická
+        </button>
+
+        <button id="classicButton">
+          Klasická
+        </button>
+
+      </div>
+
+    </section>
+
+  </div>
+
+
+  <div class="bottom-line">
+
+    <span>
+      Cestování / Evropa
+    </span>
+
+    <span>
+      Mapa & poznámky
+    </span>
+
+  </div>
+
+</main>
+
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
 <script>
 
-  const map = L.map('map', {
-    zoomControl: true
-  }).setView([46.5, 13.5], 6);
+  /* =========================
+     MAP
+  ========================= */
 
-  L.tileLayer(
-    'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+  const map = L.map("map", {
+    zoomControl: true
+  }).setView([46.3, 13.7], 6);
+
+
+  /* TURISTICKÁ MAPA */
+
+  const topoLayer = L.tileLayer(
+    "https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png",
+    {
+      maxZoom: 17,
+      attribution:
+        'Map data © OpenStreetMap contributors, SRTM | Map style © OpenTopoMap'
+    }
+  );
+
+
+  /* KLASICKÁ MAPA */
+
+  const classicLayer = L.tileLayer(
+    "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
     {
       maxZoom: 19,
-      attribution: '&copy; OpenStreetMap'
+      attribution:
+        "© OpenStreetMap contributors"
     }
-  ).addTo(map);
+  );
+
+
+  topoLayer.addTo(map);
+
+
+  /* =========================
+     MAP SWITCHER
+  ========================= */
+
+  const topoButton =
+    document.getElementById("topoButton");
+
+  const classicButton =
+    document.getElementById("classicButton");
+
+
+  topoButton.addEventListener("click", function() {
+
+    if (!map.hasLayer(topoLayer)) {
+
+      map.removeLayer(classicLayer);
+
+      topoLayer.addTo(map);
+
+    }
+
+    topoButton.classList.add("active");
+    classicButton.classList.remove("active");
+
+  });
+
+
+  classicButton.addEventListener("click", function() {
+
+    if (!map.hasLayer(classicLayer)) {
+
+      map.removeLayer(topoLayer);
+
+      classicLayer.addTo(map);
+
+    }
+
+    classicButton.classList.add("active");
+    topoButton.classList.remove("active");
+
+  });
 
 </script>
 
