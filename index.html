@@ -631,28 +631,56 @@ const destinations = [
 
 
 /* =========================
+   HIERARCHIE MAPY
+========================= */
+
+/*
+Zoom:
+0–3  = Evropa
+4–5  = větší cestovatelské oblasti
+6    = země
+7+   = konkrétní destinace
+*/
+
+
+/* =========================
+   OBLASTI
+========================= */
+
+const regionsData = {
+
+  "Alpy & severní Jadran": {
+    short: "ALPY & JADRAN",
+    countries: [
+      "Rakousko",
+      "Slovinsko",
+      "Itálie",
+      "Chorvatsko"
+    ]
+  }
+
+};
+
+
+/* =========================
    ZEMĚ
 ========================= */
 
 const countriesData = {
 
   "Rakousko": {
-    flag: "🇦🇹",
     short: "AT"
   },
 
   "Slovinsko": {
-    flag: "🇸🇮",
     short: "SI"
   },
 
   "Itálie": {
-    flag: "🇮🇹",
     short: "IT"
   },
 
   "Chorvatsko": {
-    flag: "🇭🇷",
     short: "HR"
   }
 
@@ -669,8 +697,17 @@ const destinationLayer =
 const countryLayer =
   L.layerGroup();
 
+const regionLayer =
+  L.layerGroup();
+
+const continentLayer =
+  L.layerGroup();
+
+
 destinationLayer.addTo(map);
 countryLayer.addTo(map);
+regionLayer.addTo(map);
+continentLayer.addTo(map);
 
 
 /* =========================
@@ -788,6 +825,59 @@ destinations.forEach(destination => {
 
 
 /* =========================
+   OBECNÝ MARKER
+========================= */
+
+function createGroupIcon(text, big = false) {
+
+  const width =
+    big ? 110 : 72;
+
+
+  return L.divIcon({
+
+    className: "",
+
+    html: `
+      <div
+        style="
+          min-width:${width}px;
+          height:44px;
+          padding:0 15px;
+
+          border-radius:999px;
+
+          background:#111;
+          color:white;
+
+          border:3px solid white;
+
+          box-shadow:
+            0 4px 14px rgba(0,0,0,0.25);
+
+          display:flex;
+          align-items:center;
+          justify-content:center;
+
+          font-size:${big ? 12 : 13}px;
+          font-weight:700;
+
+          white-space:nowrap;
+        "
+      >
+        ${text}
+      </div>
+    `,
+
+    iconSize: [width, 44],
+    iconAnchor: [width / 2, 22]
+
+  });
+
+}
+
+
+/* =========================
    COUNTRY MARKERS
 ========================= */
 
@@ -822,40 +912,14 @@ Object.keys(countriesData)
       ) / countryDestinations.length;
 
 
-    const countryInfo =
-      countriesData[country];
-
-
-    const countryIcon =
-      L.divIcon({
-
-        className: "",
-
-        html: `
-          <div class="country-marker">
-
-            <span class="flag">
-              ${countryInfo.flag}
-            </span>
-
-            <span>
-              ${countryInfo.short}
-            </span>
-
-          </div>
-        `,
-
-        iconSize: [70, 44],
-        iconAnchor: [35, 22]
-
-      });
-
-
     const marker =
       L.marker(
         [latAverage, lonAverage],
         {
-          icon: countryIcon
+          icon:
+            createGroupIcon(
+              countriesData[country].short
+            )
         }
       );
 
@@ -873,13 +937,35 @@ Object.keys(countriesData)
         );
 
 
-      map.fitBounds(
-        bounds,
-        {
-          padding: [80, 80],
-          maxZoom: 9
-        }
-      );
+      /*
+      U země s jedinou destinací by fitBounds
+      mohl přiblížit až příliš.
+      */
+
+      if (countryDestinations.length === 1) {
+
+        map.flyTo(
+          [
+            countryDestinations[0].lat,
+            countryDestinations[0].lon
+          ],
+          8,
+          {
+            duration: 1
+          }
+        );
+
+      } else {
+
+        map.fitBounds(
+          bounds,
+          {
+            padding: [80, 80],
+            maxZoom: 8
+          }
+        );
+
+      }
 
     });
 
@@ -890,10 +976,166 @@ Object.keys(countriesData)
 
 
 /* =========================
+   REGION MARKERS
+========================= */
+
+Object.keys(regionsData)
+  .forEach(regionName => {
+
+    const regionInfo =
+      regionsData[regionName];
+
+
+    const regionDestinations =
+      destinations.filter(
+        destination =>
+          regionInfo.countries.includes(
+            destination.country
+          )
+      );
+
+
+    if (regionDestinations.length === 0) {
+      return;
+    }
+
+
+    const latAverage =
+      regionDestinations.reduce(
+        (sum, destination) =>
+          sum + destination.lat,
+        0
+      ) / regionDestinations.length;
+
+
+    const lonAverage =
+      regionDestinations.reduce(
+        (sum, destination) =>
+          sum + destination.lon,
+        0
+      ) / regionDestinations.length;
+
+
+    const marker =
+      L.marker(
+        [latAverage, lonAverage],
+        {
+          icon:
+            createGroupIcon(
+              regionInfo.short,
+              true
+            )
+        }
+      );
+
+
+    marker.on("click", () => {
+
+      const bounds =
+        L.latLngBounds(
+          regionDestinations.map(
+            destination => [
+              destination.lat,
+              destination.lon
+            ]
+          )
+        );
+
+
+      map.fitBounds(
+        bounds,
+        {
+          padding: [90, 90],
+          maxZoom: 6
+        }
+      );
+
+    });
+
+
+    marker.addTo(regionLayer);
+
+  });
+
+
+/* =========================
+   EUROPE MARKER
+========================= */
+
+/*
+Tady používám pevnou pozici markeru Evropy,
+aby byl opravdu nad Evropou i při velkém
+oddálení, ne jen ve středu tvých současných bodů.
+*/
+
+const europeMarker =
+  L.marker(
+    [50.3, 12.5],
+    {
+      icon:
+        createGroupIcon(
+          "EVROPA",
+          true
+        )
+    }
+  );
+
+
+europeMarker.on("click", () => {
+
+  /*
+  Přiblížíme se na současnou hlavní
+  cestovatelskou oblast.
+  */
+
+  const allBounds =
+    L.latLngBounds(
+      destinations.map(
+        destination => [
+          destination.lat,
+          destination.lon
+        ]
+      )
+    );
+
+
+  map.fitBounds(
+    allBounds,
+    {
+      padding: [100, 100],
+      maxZoom: 5
+    }
+  );
+
+});
+
+
+europeMarker.addTo(continentLayer);
+
+
+/* =========================
    ZOOM LOGIC
 ========================= */
 
-const COUNTRY_MAX_ZOOM = 6;
+function hideAllMarkerLayers() {
+
+  if (map.hasLayer(destinationLayer)) {
+    map.removeLayer(destinationLayer);
+  }
+
+  if (map.hasLayer(countryLayer)) {
+    map.removeLayer(countryLayer);
+  }
+
+  if (map.hasLayer(regionLayer)) {
+    map.removeLayer(regionLayer);
+  }
+
+  if (map.hasLayer(continentLayer)) {
+    map.removeLayer(continentLayer);
+  }
+
+}
 
 
 function updateMarkerVisibility() {
@@ -902,27 +1144,61 @@ function updateMarkerVisibility() {
     map.getZoom();
 
 
-  if (zoom <= COUNTRY_MAX_ZOOM) {
+  hideAllMarkerLayers();
 
-    if (map.hasLayer(destinationLayer)) {
-      map.removeLayer(destinationLayer);
-    }
 
-    if (!map.hasLayer(countryLayer)) {
-      map.addLayer(countryLayer);
-    }
+  /*
+  CELÝ SVĚT / KONTINENT
+  */
 
-  } else {
+  if (zoom <= 3) {
 
-    if (map.hasLayer(countryLayer)) {
-      map.removeLayer(countryLayer);
-    }
+    map.addLayer(
+      continentLayer
+    );
 
-    if (!map.hasLayer(destinationLayer)) {
-      map.addLayer(destinationLayer);
-    }
+    return;
 
   }
+
+
+  /*
+  VELKÁ ČÁST EVROPY
+  */
+
+  if (zoom <= 5) {
+
+    map.addLayer(
+      regionLayer
+    );
+
+    return;
+
+  }
+
+
+  /*
+  JEDNOTLIVÉ ZEMĚ
+  */
+
+  if (zoom === 6) {
+
+    map.addLayer(
+      countryLayer
+    );
+
+    return;
+
+  }
+
+
+  /*
+  KONKRÉTNÍ DESTINACE
+  */
+
+  map.addLayer(
+    destinationLayer
+  );
 
 }
 
@@ -934,8 +1210,6 @@ map.on(
 
 
 updateMarkerVisibility();
-
-
 /* =========================
    SIDEBAR
 ========================= */
