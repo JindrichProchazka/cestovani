@@ -266,6 +266,46 @@
     }
 
     /* =========================
+       CUSTOM MARKERS
+    ========================= */
+
+    .destination-marker {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: #111;
+      color: white;
+      border: 3px solid white;
+      box-shadow: 0 4px 14px rgba(0,0,0,0.25);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 19px;
+    }
+
+    .country-marker {
+      min-width: 62px;
+      height: 44px;
+      padding: 0 14px;
+      border-radius: 999px;
+      background: #111;
+      color: white;
+      border: 3px solid white;
+      box-shadow: 0 4px 14px rgba(0,0,0,0.25);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 7px;
+      font-size: 13px;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .country-marker .flag {
+      font-size: 18px;
+    }
+
+    /* =========================
        FOOTER NOTE
     ========================= */
 
@@ -460,7 +500,7 @@
 
 const map = L.map("map", {
   zoomControl: true
-}).setView([46.15, 13.65], 7);
+}).setView([46.15, 13.65], 6);
 
 
 /* TURISTICKÁ MAPA */
@@ -591,7 +631,50 @@ const destinations = [
 
 
 /* =========================
-   MARKERY DESTINACÍ
+   ZEMĚ
+========================= */
+
+const countriesData = {
+
+  "Rakousko": {
+    flag: "🇦🇹",
+    short: "AT"
+  },
+
+  "Slovinsko": {
+    flag: "🇸🇮",
+    short: "SI"
+  },
+
+  "Itálie": {
+    flag: "🇮🇹",
+    short: "IT"
+  },
+
+  "Chorvatsko": {
+    flag: "🇭🇷",
+    short: "HR"
+  }
+
+};
+
+
+/* =========================
+   MARKER LAYERS
+========================= */
+
+const destinationLayer =
+  L.layerGroup();
+
+const countryLayer =
+  L.layerGroup();
+
+destinationLayer.addTo(map);
+countryLayer.addTo(map);
+
+
+/* =========================
+   DESTINATION ICON
 ========================= */
 
 function createDestinationIcon(destination) {
@@ -601,19 +684,7 @@ function createDestinationIcon(destination) {
     className: "",
 
     html: `
-      <div style="
-        width: 44px;
-        height: 44px;
-        border-radius: 50%;
-        background: #111;
-        color: white;
-        border: 3px solid white;
-        box-shadow: 0 4px 14px rgba(0,0,0,0.25);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 19px;
-      ">
+      <div class="destination-marker">
         ${destination.icon}
       </div>
     `,
@@ -627,18 +698,22 @@ function createDestinationIcon(destination) {
 }
 
 
+/* =========================
+   DESTINATION MARKERS
+========================= */
+
 destinations.forEach(destination => {
 
   const tags = destination.tags
     .map(tag => `
       <span style="
-        display: inline-block;
-        margin: 3px 3px 0 0;
-        padding: 4px 7px;
-        border-radius: 999px;
-        background: #f1f1ee;
-        color: #666;
-        font-size: 10px;
+        display:inline-block;
+        margin:3px 3px 0 0;
+        padding:4px 7px;
+        border-radius:999px;
+        background:#f1f1ee;
+        color:#666;
+        font-size:10px;
       ">
         ${tag}
       </span>
@@ -649,37 +724,41 @@ destinations.forEach(destination => {
   const marker = L.marker(
     [destination.lat, destination.lon],
     {
-      icon: createDestinationIcon(destination)
+      icon:
+        createDestinationIcon(destination)
     }
-  ).addTo(map);
+  );
 
 
   marker.bindPopup(`
+
     <div style="
-      min-width: 220px;
-      max-width: 260px;
+      min-width:220px;
+      max-width:260px;
     ">
 
-      <strong style="font-size: 16px;">
+      <strong style="font-size:16px;">
         ${destination.name}
       </strong>
 
       <div style="
-        margin-top: 4px;
-        font-size: 12px;
-        color: #777;
+        margin-top:4px;
+        font-size:12px;
+        color:#777;
       ">
-        ${destination.country} · ${destination.region}
+        ${destination.country}
+        ·
+        ${destination.region}
       </div>
 
-      <div style="margin-top: 7px;">
+      <div style="margin-top:7px;">
         ${tags}
       </div>
 
       <p style="
-        margin: 10px 0;
-        font-size: 13px;
-        line-height: 1.45;
+        margin:10px 0;
+        font-size:13px;
+        line-height:1.45;
       ">
         ${destination.description}
       </p>
@@ -687,21 +766,174 @@ destinations.forEach(destination => {
       <a
         href="${destination.page}"
         style="
-          display: inline-block;
-          margin-top: 3px;
-          color: #111;
-          text-decoration: none;
-          font-weight: 600;
-          font-size: 13px;
+          display:inline-block;
+          margin-top:3px;
+          color:#111;
+          text-decoration:none;
+          font-weight:600;
+          font-size:13px;
         "
       >
         Otevřít detail →
       </a>
 
     </div>
+
   `);
 
+
+  marker.addTo(destinationLayer);
+
 });
+
+
+/* =========================
+   COUNTRY MARKERS
+========================= */
+
+Object.keys(countriesData)
+  .forEach(country => {
+
+    const countryDestinations =
+      destinations.filter(
+        destination =>
+          destination.country === country
+      );
+
+
+    if (countryDestinations.length === 0) {
+      return;
+    }
+
+
+    const latAverage =
+      countryDestinations.reduce(
+        (sum, destination) =>
+          sum + destination.lat,
+        0
+      ) / countryDestinations.length;
+
+
+    const lonAverage =
+      countryDestinations.reduce(
+        (sum, destination) =>
+          sum + destination.lon,
+        0
+      ) / countryDestinations.length;
+
+
+    const countryInfo =
+      countriesData[country];
+
+
+    const countryIcon =
+      L.divIcon({
+
+        className: "",
+
+        html: `
+          <div class="country-marker">
+
+            <span class="flag">
+              ${countryInfo.flag}
+            </span>
+
+            <span>
+              ${countryInfo.short}
+            </span>
+
+          </div>
+        `,
+
+        iconSize: [70, 44],
+        iconAnchor: [35, 22]
+
+      });
+
+
+    const marker =
+      L.marker(
+        [latAverage, lonAverage],
+        {
+          icon: countryIcon
+        }
+      );
+
+
+    marker.on("click", () => {
+
+      const bounds =
+        L.latLngBounds(
+          countryDestinations.map(
+            destination => [
+              destination.lat,
+              destination.lon
+            ]
+          )
+        );
+
+
+      map.fitBounds(
+        bounds,
+        {
+          padding: [80, 80],
+          maxZoom: 9
+        }
+      );
+
+    });
+
+
+    marker.addTo(countryLayer);
+
+  });
+
+
+/* =========================
+   ZOOM LOGIC
+========================= */
+
+const COUNTRY_MAX_ZOOM = 6;
+
+
+function updateMarkerVisibility() {
+
+  const zoom =
+    map.getZoom();
+
+
+  if (zoom <= COUNTRY_MAX_ZOOM) {
+
+    if (map.hasLayer(destinationLayer)) {
+      map.removeLayer(destinationLayer);
+    }
+
+    if (!map.hasLayer(countryLayer)) {
+      map.addLayer(countryLayer);
+    }
+
+  } else {
+
+    if (map.hasLayer(countryLayer)) {
+      map.removeLayer(countryLayer);
+    }
+
+    if (!map.hasLayer(destinationLayer)) {
+      map.addLayer(destinationLayer);
+    }
+
+  }
+
+}
+
+
+map.on(
+  "zoomend",
+  updateMarkerVisibility
+);
+
+
+updateMarkerVisibility();
 
 
 /* =========================
@@ -709,10 +941,12 @@ destinations.forEach(destination => {
 ========================= */
 
 const destinationList =
-  document.getElementById("destinationList");
+  document.getElementById(
+    "destinationList"
+  );
 
 
-const countries = [
+const countryOrder = [
   "Rakousko",
   "Slovinsko",
   "Itálie",
@@ -720,7 +954,7 @@ const countries = [
 ];
 
 
-countries.forEach(country => {
+countryOrder.forEach(country => {
 
   const countryDestinations =
     destinations.filter(
@@ -749,37 +983,43 @@ countries.forEach(country => {
   `;
 
 
-  countryDestinations.forEach(destination => {
+  countryDestinations.forEach(
+    destination => {
 
-    const link =
-      document.createElement("a");
-
-
-    link.href =
-      destination.page;
+      const link =
+        document.createElement("a");
 
 
-    link.className =
-      "destination-link";
+      link.href =
+        destination.page;
 
 
-    link.innerHTML = `
-      <span class="destination-icon">
-        ${destination.icon}
-      </span>
-
-      <span>
-        ${destination.name}
-      </span>
-    `;
+      link.className =
+        "destination-link";
 
 
-    group.appendChild(link);
+      link.innerHTML = `
 
-  });
+        <span class="destination-icon">
+          ${destination.icon}
+        </span>
+
+        <span>
+          ${destination.name}
+        </span>
+
+      `;
 
 
-  destinationList.appendChild(group);
+      group.appendChild(link);
+
+    }
+  );
+
+
+  destinationList.appendChild(
+    group
+  );
 
 });
 
@@ -795,34 +1035,44 @@ const classicButton =
   document.getElementById("classicButton");
 
 
-topoButton.addEventListener("click", function() {
+topoButton.addEventListener(
+  "click",
+  function() {
 
-  if (!map.hasLayer(topoLayer)) {
+    if (!map.hasLayer(topoLayer)) {
 
-    map.removeLayer(classicLayer);
-    topoLayer.addTo(map);
+      map.removeLayer(classicLayer);
 
-  }
+      topoLayer.addTo(map);
 
-  topoButton.classList.add("active");
-  classicButton.classList.remove("active");
+    }
 
-});
+    topoButton.classList.add("active");
 
-
-classicButton.addEventListener("click", function() {
-
-  if (!map.hasLayer(classicLayer)) {
-
-    map.removeLayer(topoLayer);
-    classicLayer.addTo(map);
+    classicButton.classList.remove("active");
 
   }
+);
 
-  classicButton.classList.add("active");
-  topoButton.classList.remove("active");
 
-});
+classicButton.addEventListener(
+  "click",
+  function() {
+
+    if (!map.hasLayer(classicLayer)) {
+
+      map.removeLayer(topoLayer);
+
+      classicLayer.addTo(map);
+
+    }
+
+    classicButton.classList.add("active");
+
+    topoButton.classList.remove("active");
+
+  }
+);
 
 </script>
 
