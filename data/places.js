@@ -888,7 +888,7 @@ routes: [
     id: "snezka-karpacz-route",
     name: "Okruh Sněžka z Karpacz",
     type: "hike",
-    file: "routes/OkruhSnezkaKarpacz.gpx"
+    file: "routes/OkruhSnezkaKarpacz.gpx",
     description:
         "Taková jednodušší cesta. Je to celistvý okruh. Trošku bacha na to, že je to na Plápolácké straně, jestli bude hodně lidí, tak se tím davem Poláků neprorveš. Bude fronta až na vrchol (fronta Polsky - Pan za pana by neviděl pana)"
   }
