@@ -1201,5 +1201,235 @@ routes: [
     }
   ]
 },
+
+{
+  id: "triglav",
+  name: "Triglav",
+  country: "Slovinsko",
+  region: "Julské Alpy",
+
+  lat: 46.37794,
+  lon: 13.83677,
+
+  wishlist: false,
+
+  description:
+    "Nejvyšší hora Slovinska, 2 864 m n. m. Mám uložené tři varianty výstupu s různou délkou, převýšením a obtížností.",
+
+  tags: [
+    "hike",
+    "mountain",
+    "highest-point",
+    "parking"
+  ],
+
+  routes: [
+
+    {
+      id: "triglav-route-a",
+      name: "Triglav – varianta A",
+      type: "hike",
+      file: "routes/Triglav_varianta_A.gpx",
+      distanceKm: 27,
+      elevationGainM: 2000,
+      description:
+        "Námi absolvovaná varianta. Přibližně 27 km a 2 000 m převýšení. Výstup trval asi 6 hodin včetně krátkých zastávek na převlečení a lehké jídlo, sestup přibližně 5 h 20 min. Doporučuju vyrážet kolem 4:00, kdy je na cestě výrazně méně lidí. Za dobrého a suchého počasí jsme ferratový set nepotřebovali, ale závěrečné exponované úseky je potřeba posoudit podle podmínek a zkušeností."
+    },
+
+    {
+      id: "triglav-route-b",
+      name: "Triglav – varianta B",
+      type: "hike",
+      file: "routes/Triglav_varianta_B.gpx",
+      distanceKm: 18,
+      elevationGainM: 2130,
+      description:
+        "Kratší, ale velmi prudká varianta. Přibližně 18 km a 2 130 m převýšení. Trasa obsahuje úseky přibližně obtížnosti B- ferraty."
+    },
+
+    {
+      id: "triglav-route-c",
+      name: "Triglav – varianta C",
+      type: "hike",
+      file: "routes/Triglav_varianta_C.gpx",
+      distanceKm: 23,
+      elevationGainM: 1745,
+      description:
+        "Varianta dlouhá přibližně 23 km s převýšením asi 1 745 m. Obsahuje lehčí zajištěné úseky přibližně obtížnosti A."
+    }
+
+  ],
+
+  points: [
+
+    {
+      id: "triglav-summit",
+      name: "Triglav – 2 864 m",
+      lat: 46.37794,
+      lon: 13.83677,
+
+      type: "hike",
+
+      tags: [
+        "hike",
+        "mountain",
+        "highest-point"
+      ],
+
+      description:
+        "Vrchol Triglavu ve výšce 2 864 m n. m. Nejvyšší bod Slovinska."
+    },
+
+    {
+      id: "triglav-parking-a",
+      name: "Parkoviště – varianta A",
+      lat: 46.3462317,
+      lon: 13.9239925,
+
+      type: "parking",
+
+      tags: [
+        "parking",
+        "hike"
+      ],
+
+      description:
+        "Bezplatné parkování pro variantu A. My jsme zde také přespali, ale nocování není jednoznačně povolené, takže je vhodné ověřit aktuální pravidla."
+    },
+
+    {
+      id: "triglav-parking-b",
+      name: "Parkoviště – varianta B",
+      lat: 46.3839058,
+      lon: 13.7735028,
+
+      type: "parking",
+
+      tags: [
+        "parking",
+        "hike",
+        "unverified"
+      ],
+
+      description:
+        "Možný bezplatný nástup pro variantu B. Parkování není oficiálně ověřené, takže je potřeba před cestou zkontrolovat značení a aktuální režim."
+    },
+
+    {
+      id: "triglav-parking-c",
+      name: "Parkoviště – varianta C",
+      lat: 46.3386975,
+      lon: 13.9046003,
+
+      type: "parking",
+
+      tags: [
+        "parking",
+        "hike",
+        "unverified"
+      ],
+
+      description:
+        "Parkování pro variantu C. Podle dostupných informací působí použitelně a legitimně, ale před cestou je vhodné ověřit aktuální podmínky."
+    }
+
+  ]
+},
+
+{
+  id: "dinara",
+  name: "Dinara",
+  country: "Chorvatsko",
+  region: "Šibensko-kninska",
+
+  lat: 44.062472,
+  lon: 16.382861,
+
+  wishlist: true,
+
+  description:
+    "Nejvyšší vrchol Chorvatska, 1 831 m n. m. Poměrně přímočarý celodenní výstup a po cestě autem možnost zastavit se u vodopádu poblíž Kninu.",
+
+  tags: [
+    "hike",
+    "mountain",
+    "highest-point",
+    "parking",
+    "waterfall",
+    "swimming"
+  ],
+
+  routes: [
+
+    {
+      id: "dinara-route-a",
+      name: "Dinara – varianta A",
+      type: "hike",
+      file: "routes/Dinara_varianta_A.gpx",
+      distanceKm: 15.7,
+      elevationGainM: 1248,
+      description:
+        "Relativně přímočará varianta výstupu na nejvyšší bod Chorvatska. Celkem přibližně 15,7 km a 1 248 m převýšení."
+    }
+
+  ],
+
+  points: [
+
+    {
+      id: "dinara-summit",
+      name: "Dinara / Sinjal – 1 831 m",
+      lat: 44.062472,
+      lon: 16.382861,
+
+      type: "hike",
+
+      tags: [
+        "hike",
+        "mountain",
+        "highest-point"
+      ],
+
+      description:
+        "Vrchol Dinara, označovaný také jako Sinjal. Ve výšce 1 831 m n. m. jde o nejvyšší bod Chorvatska."
+    },
+
+    {
+      id: "dinara-parking-a",
+      name: "Parkoviště – nástup na Dinaru",
+      lat: 44.0101353,
+      lon: 16.4203472,
+
+      type: "parking",
+
+      tags: [
+        "parking",
+        "hike"
+      ],
+
+      description:
+        "Menší bezplatné parkoviště, ale polohou ideální jako nástup na uloženou trasu."
+    },
+
+    {
+      id: "dinara-knin-waterfall",
+      name: "Vodopád u Kninu",
+      lat: 44.0422781,
+      lon: 16.2356569,
+
+      type: "waterfall",
+
+      tags: [
+        "waterfall",
+        "swimming",
+        "water"
+      ],
+
+      description:
+        "Vodopád poblíž Kninu, který je autem relativně po cestě k Dinarě nebo zpět. Dobrá možnost zastávky a osvěžení ve sladké vodě po výstupu."
+    }
+
+  ]
+},
   
 ];
