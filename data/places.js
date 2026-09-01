@@ -1431,5 +1431,106 @@ routes: [
 
   ]
 },
+
+{
+  id: "rysy",
+  name: "Rysy",
+  country: "Polsko",
+  region: "Tatry",
+
+  lat: 49.1793186,
+  lon: 20.0884636,
+
+  wishlist: true,
+
+  description:
+    "Nejvyšší bod Polska. Výstup zatím nemám detailně naplánovaný, trasa i nástupní místo jsou ještě v přípravě.",
+
+  tags: [
+    "hike",
+    "mountain",
+    "highest-point"
+  ],
+
+  points: [
+
+    {
+      id: "rysy-summit",
+      name: "Rysy – nejvyšší bod Polska",
+      lat: 49.1793186,
+      lon: 20.0884636,
+
+      type: "hike",
+
+      tags: [
+        "hike",
+        "mountain",
+        "highest-point"
+      ],
+
+      description:
+        "Hlavní cíl. Trasa, parkování a konkrétní plán výstupu jsou zatím v plánování."
+    }
+
+  ]
+},
+
+{
+  id: "gerlach",
+  name: "Gerlachovský štít",
+  country: "Slovensko",
+  region: "Vysoké Tatry",
+
+  lat: 49.1640319,
+  lon: 20.1340594,
+
+  wishlist: true,
+
+  description:
+    "Nejvyšší bod Slovenska. Tohle není klasický turistický výstup po značené trase, takže před akcí je potřeba vyřešit způsob výstupu, oprávnění a pojištění.",
+
+  tags: [
+    "hike",
+    "mountain",
+    "highest-point"
+  ],
+
+  points: [
+
+    {
+      id: "gerlach-summit",
+      name: "Gerlachovský štít",
+      lat: 49.1640319,
+      lon: 20.1340594,
+
+      type: "hike",
+
+      tags: [
+        "hike",
+        "mountain",
+        "highest-point"
+      ],
+
+      description:
+        "Nejvyšší bod Slovenska. Výstup je potřeba předem pořádně naplánovat podle aktuálních pravidel TANAPu a zvolené trasy."
+    }
+
+  ],
+
+  notes: [
+    {
+      title: "Co vyřešit před výstupem",
+      description:
+        "Začít řešit ideálně na začátku roku. Prověřit aktuální pravidla TANAPu, členství v ČHS nebo jiném uznávaném horolezeckém svazu, vhodné pojištění pro zásah horské služby a konkrétní variantu výstupu. Členství ČHS se platí na kalendářní rok, takže dává smysl řešit ho kolem nového roku."
+    },
+
+    {
+      title: "Důležité k výstupu",
+      description:
+        "Běžný výstup na Gerlach turistickou cestou není volně přístupná túra. Například výstup přes Velickou próbu je podle pravidel určen s horským vůdcem. Samostatný výstup člena horolezeckého svazu připadá v úvahu při skutečné horolezecké túře odpovídající požadované obtížnosti a pravidlům TANAPu."
+    }
+  ]
+},
+
   
 ];
