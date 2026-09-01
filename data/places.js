@@ -874,7 +874,7 @@ const destinations = [
   wishlist: false,
 
   description:
-    "Nejvyšší hora Česka a klasický krkonošský cíl. V okolí je víc možností nástupu a několik parkovišť, z nichž některá jsou placená.",
+    "Nejvyšší hora Česka a taková klasička. V okolí je víc možností nástupu a několik parkovišť, z nichž některá jsou placená, tak bacha.",
 
   tags: [
     "hike",
@@ -886,9 +886,11 @@ const destinations = [
 routes: [
   {
     id: "snezka-karpacz-route",
-    name: "Okruh Sněžka – Karpacz",
+    name: "Okruh Sněžka z Karpacz",
     type: "hike",
     file: "routes/OkruhSnezkaKarpacz.gpx"
+    description:
+        "Taková jednodušší cesta. Je to celistvý okruh. Trošku bacha na to, že je to na Plápolácké straně, jestli bude hodně lidí, tak se tím davem Poláků neprorveš. Bude fronta až na vrchol (fronta Polsky - Pan za pana by neviděl pana)"
   }
 ],
   
