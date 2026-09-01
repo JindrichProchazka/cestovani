@@ -665,5 +665,145 @@ const destinations = [
     }
   ]
 },
+
+{
+  id: "bovec-okoli",
+  name: "Bovec a okolí",
+  country: "Slovinsko",
+  region: "Soča",
+
+  lat: 46.365,
+  lon: 13.592,
+
+  wishlist: false,
+
+  description:
+    "Okolí Bovce a Koritnice s koupáním, vodopády, skákáním, praktickou sprchou a několika méně frekventovanými místy u vody.",
+
+  tags: [
+    "swimming",
+    "jumping",
+    "waterfall",
+    "hike",
+    "parking",
+    "shower",
+    "toilet"
+  ],
+
+  points: [
+
+    {
+      id: "bovec-camp-shower",
+      name: "Sprcha u Bovce",
+      lat: 46.3316383,
+      lon: 13.5742697,
+
+      type: "shower",
+
+      tags: [
+        "shower",
+        "toilet",
+        "camp",
+        "hygiene"
+      ],
+
+      description:
+        "Sprcha v kempu kousek od Bovce. U sprch jsou také toalety a oboje bylo při návštěvě ve velmi dobrém stavu. Parkovat se dá před kempem nebo podle aktuálních podmínek přímo v areálu. Podmínky využití sprch a WC je vhodné ověřit na místě."
+    },
+
+    {
+      id: "koritnica-bridge-swimming",
+      name: "Lávka nad Koritnicí",
+      lat: 46.3599192,
+      lon: 13.5908631,
+
+      type: "swimming",
+
+      tags: [
+        "swimming",
+        "jumping",
+        "bridge",
+        "koritnica"
+      ],
+
+      description:
+        "Krásné a poměrně schované místo pod tvrzí u Koritnice. U tvrze bývá hodně lidí, ale dolů k vodě už chodí málokdo a místo může být úplně prázdné. Z lávky se dá skákat do vody, ale podmínky je nutné vždy předem zkontrolovat."
+    },
+
+    {
+      id: "koritnica-parking",
+      name: "Parkoviště k lávce nad Koritnicí",
+      lat: 46.3611811,
+      lon: 13.5893364,
+
+      type: "parking",
+
+      tags: [
+        "parking",
+        "swimming",
+        "koritnica"
+      ],
+
+      description:
+        "Štěrkové parkování zdarma u silnice. K vodě je to přibližně 500 m, ale sestup je poměrně prudký."
+    },
+
+    {
+      id: "bovec-waterfalls-main",
+      name: "Vodopády – horní část",
+      lat: 46.4015786,
+      lon: 13.6079567,
+
+      type: "waterfall",
+
+      tags: [
+        "waterfall",
+        "hike",
+        "canyoning",
+        "nature"
+      ],
+
+      description:
+        "Největší z vodopádů v této části údolí. Už samotná cesta podél vody stojí za návštěvu – je strmá, ale vede kolem více menších vodopádů a kaskád. Oblast se využívá i pro canyoning."
+    },
+
+    {
+      id: "bovec-waterfalls-parking-1",
+      name: "Parkování k vodopádům 1",
+      lat: 46.4049517,
+      lon: 13.6043814,
+
+      type: "parking",
+
+      tags: [
+        "parking",
+        "waterfall",
+        "hike"
+      ],
+
+      description:
+        "Štěrkové místo, kde jsme pravděpodobně parkovali při cestě k vodopádům. Kapacita byla dostatečná."
+    },
+
+    {
+      id: "bovec-waterfalls-parking-2",
+      name: "Parkování k vodopádům 2",
+      lat: 46.4067831,
+      lon: 13.6045192,
+
+      type: "parking",
+
+      tags: [
+        "parking",
+        "waterfall",
+        "hike"
+      ],
+
+      description:
+        "Alternativní štěrkové parkování k vodopádům. Mělo by mít dostatečnou kapacitu."
+    }
+
+  ]
+},
   
 ];
