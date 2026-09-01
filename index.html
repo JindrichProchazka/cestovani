@@ -1075,9 +1075,10 @@ function buildDestinations() {
   getVisibleDestinations()
     .forEach(destination => {
 
-      const icon =
-        getDestinationIcon(destination);
-
+     const icon =
+  selectedCategory === "highest-point"
+    ? "🏔️"
+    : getDestinationIcon(destination);
 
       const marker =
         L.marker(
@@ -1395,6 +1396,10 @@ function buildCategoryFilters() {
     new Set();
 
 
+  /*
+    Typy a tagy jednotlivých bodů
+    a uložených tras.
+  */
   allPoints.forEach(point => {
 
     if (
@@ -1407,6 +1412,29 @@ function buildCategoryFilters() {
 
 
     (point.tags || [])
+      .forEach(tag => {
+
+        if (typeInfo[tag]) {
+          usedTypes.add(tag);
+        }
+
+      });
+
+  });
+
+
+  /*
+    Tagy přímo na destinacích.
+
+    Díky tomu může existovat třeba:
+    highest-point
+
+    aniž by musel mít některý
+    konkrétní bod type highest-point.
+  */
+  destinations.forEach(destination => {
+
+    (destination.tags || [])
       .forEach(tag => {
 
         if (typeInfo[tag]) {
@@ -1432,7 +1460,8 @@ function buildCategoryFilters() {
     "paddleboard",
     "sleep",
     "sight",
-     ];
+    "highest-point"
+  ];
 
 
   order
@@ -1575,10 +1604,28 @@ function updateMapMode() {
 
 
   /*
-  Pokud je aktivní konkrétní kategorie,
-  ukazujeme rovnou jednotlivé body.
-  */
+    Nejvyšší body jsou speciální filtr.
 
+    Nezobrazujeme jednotlivé body,
+    ale celé destinace:
+    Sněžka, Zugspitze, Triglav...
+  */
+  if (
+    selectedCategory === "highest-point"
+  ) {
+
+    map.addLayer(
+      destinationLayer
+    );
+
+    return;
+  }
+
+
+  /*
+    Ostatní konkrétní kategorie
+    zobrazují jednotlivé body.
+  */
   if (
     selectedCategory !== "all"
   ) {
@@ -1591,6 +1638,10 @@ function updateMapMode() {
   }
 
 
+  /*
+    Bez filtru funguje normální
+    hierarchie mapy podle zoomu.
+  */
   const zoom =
     map.getZoom();
 
@@ -1653,23 +1704,34 @@ function refreshEverything() {
     );
 
 
-  if (
-    selectedCategory === "all"
-  ) {
+if (
+  selectedCategory === "all"
+) {
 
-    description.textContent =
-      "Vyber zemi nebo oblast a zobraz místa na mapě.";
+  description.textContent =
+    "Vyber zemi nebo oblast a zobraz místa na mapě.";
 
-  } else {
+}
 
-    const info =
-      typeInfo[selectedCategory];
+else if (
+  selectedCategory === "highest-point"
+) {
+
+  description.textContent =
+    "Nejvyšší body evropských států a připravené plány, jak se na ně dostat.";
+
+}
+
+else {
+
+  const info =
+    typeInfo[selectedCategory];
 
 
-    description.textContent =
-      `Zobrazeny jsou konkrétní body: ${info.label.toLowerCase()}.`;
+  description.textContent =
+    `Zobrazeny jsou konkrétní body: ${info.label.toLowerCase()}.`;
 
-  }
+}
 
 }
 
