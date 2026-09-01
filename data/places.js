@@ -521,7 +521,7 @@ const destinations = [
         lastChecked: "2026-08-31",
         description:
           "Rodinný autoservis, se kterým mám výbornou zkušenost. Odstranění chyby AdBlue u Peugeotu Rifter 2019 stálo 30 €."
-      }
+      },
 
       {
   id: "tarvisio-waterfall-parking",
