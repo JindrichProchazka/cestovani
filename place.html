@@ -508,11 +508,20 @@ const typeInfo = {
   hike:         { label: "Hike", icon: "🥾" }
 };
 
-function getTypeInfo(type) {
-  return typeInfo[type] || {
-    label: type,
-    icon: "📍"
-  };
+function getPointInfo(point) {
+
+  if (
+    point.type === "parking" &&
+    point.tags &&
+    point.tags.includes("paid")
+  ) {
+    return {
+      label: "Placené parkoviště",
+      icon: "💰"
+    };
+  }
+
+  return getTypeInfo(point.type);
 }
 
 function formatDate(value) {
@@ -781,8 +790,8 @@ const markers = {};
 
 function createMarkerIcon(point) {
 
-  const info =
-    getTypeInfo(point.type);
+ const info =
+  getPointInfo(point);
 
   return L.divIcon({
     className: "",
@@ -804,9 +813,8 @@ function createMarkerIcon(point) {
 (destination.points || [])
   .forEach(point => {
 
-    const info =
-      getTypeInfo(point.type);
-
+  const info =
+  getPointInfo(point);
 
     const marker =
       L.marker(
@@ -893,9 +901,8 @@ if (
 (destination.points || [])
   .forEach(point => {
 
-    const info =
-      getTypeInfo(point.type);
-
+   const info =
+  getPointInfo(point);
 
     const card =
       document.createElement("div");
@@ -1019,7 +1026,21 @@ const usedTypes = [
 ];
 
 
-if (usedTypes.length > 1) {
+const hasPaidParking =
+  (destination.points || [])
+    .some(point =>
+      point.type === "parking" &&
+      point.tags &&
+      point.tags.includes("paid")
+    );
+
+
+const totalFilters =
+  usedTypes.length +
+  (hasPaidParking ? 1 : 0);
+
+
+if (totalFilters > 1) {
 
   const allButton =
     document.createElement("button");
@@ -1064,6 +1085,32 @@ if (usedTypes.length > 1) {
   });
 
 
+  /*
+    Pokud destinace obsahuje
+    alespoň jedno placené parkoviště,
+    vytvoří se zvláštní filtr.
+  */
+  if (hasPaidParking) {
+
+    const paidButton =
+      document.createElement("button");
+
+    paidButton.className =
+      "filter-button";
+
+    paidButton.dataset.filter =
+      "paid-parking";
+
+    paidButton.textContent =
+      "💰 Placené parkoviště";
+
+    filters.appendChild(
+      paidButton
+    );
+
+  }
+
+
   filters
     .querySelectorAll(".filter-button")
     .forEach(button => {
@@ -1106,33 +1153,78 @@ if (usedTypes.length > 1) {
                 markers[point.id];
 
 
-              const visible =
-                filter === "all" ||
-                point.type === filter;
+              let visible = false;
+
+
+              /*
+                Všechny body
+              */
+              if (filter === "all") {
+
+                visible = true;
+
+              }
+
+
+              /*
+                Normální filtr podle typu:
+                parking, swimming,
+                toilet, waterfall...
+              */
+              else if (
+                filter !== "paid-parking" &&
+                point.type === filter
+              ) {
+
+                visible = true;
+
+              }
+
+
+              /*
+                Speciální filtr:
+                pouze placená parkoviště
+              */
+              else if (
+                filter === "paid-parking" &&
+                point.type === "parking" &&
+                point.tags &&
+                point.tags.includes("paid")
+              ) {
+
+                visible = true;
+
+              }
 
 
               if (card) {
+
                 card.classList.toggle(
                   "hidden",
                   !visible
                 );
+
               }
 
 
-              if (visible) {
+              if (marker) {
 
-                if (
-                  !map.hasLayer(marker)
-                ) {
-                  marker.addTo(map);
-                }
+                if (visible) {
 
-              } else {
+                  if (
+                    !map.hasLayer(marker)
+                  ) {
+                    marker.addTo(map);
+                  }
 
-                if (
-                  map.hasLayer(marker)
-                ) {
-                  map.removeLayer(marker);
+                } else {
+
+                  if (
+                    map.hasLayer(marker)
+                  ) {
+                    map.removeLayer(marker);
+                  }
+
                 }
 
               }
@@ -1150,8 +1242,6 @@ if (usedTypes.length > 1) {
     "none";
 
 }
-
-
 /* =========================
    MAP SWITCHER
 ========================= */
