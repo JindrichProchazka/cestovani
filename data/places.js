@@ -540,7 +540,7 @@ const destinations = [
       "Nejvyšší hora Německa. Zatím uložené jako místo, které chci navštívit.",
     tags: ["hike", "mountain", "viewpoint"],
     points: []
-  }
+  },
 
   {
   id: "napoleon-bridge",
