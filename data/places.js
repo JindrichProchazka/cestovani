@@ -397,14 +397,17 @@ const destinations = [
     ]
   },
 
-  {
-    id: "millstatter-see",
-    name: "Millstätter See",
-    country: "Rakousko",
-    region: "Korutany",
-    lat: 46.8110856,
-    lon: 13.5481222,
-    status: "wishlist",
+{
+  id: "millstatter-see",
+  name: "Millstätter See",
+  country: "Rakousko",
+  region: "Korutany",
+  lat: 46.8110856,
+  lon: 13.5481222,
+
+  wishlist: true,
+
+  status: "wishlist",
     description:
       "Jezero, koupání, paddleboard a přibližně 40km cyklistický okruh.",
     tags: ["cycling", "paddleboard", "swimming", "parking", "toilet"],
@@ -523,13 +526,16 @@ const destinations = [
   },
 
   {
-    id: "zugspitze",
-    name: "Zugspitze",
-    country: "Německo",
-    region: "Bavorsko",
-    lat: 47.421215,
-    lon: 10.9862969,
-    status: "wishlist",
+  id: "zugspitze",
+  name: "Zugspitze",
+  country: "Německo",
+  region: "Bavorsko",
+  lat: 47.421215,
+  lon: 10.9862969,
+
+  wishlist: true,
+
+  status: "wishlist",
     description:
       "Nejvyšší hora Německa. Zatím uložené jako místo, které chci navštívit.",
     tags: ["hike", "mountain", "viewpoint"],
