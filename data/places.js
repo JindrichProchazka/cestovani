@@ -883,6 +883,15 @@ const destinations = [
     "toilet"
   ],
 
+routes: [
+  {
+    id: "snezka-karpacz-route",
+    name: "Okruh Sněžka – Karpacz",
+    type: "hike",
+    file: "routes/OkruhSnezkaKarpacz.gpx"
+  }
+],
+  
   points: [
 
     {
