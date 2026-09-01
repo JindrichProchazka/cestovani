@@ -25,12 +25,8 @@
     body {
       font-family: Arial, Helvetica, sans-serif;
       background: #f4f3ef;
-      color: #111111;
+      color: #111;
     }
-
-    /* =========================
-       HEADER
-    ========================= */
 
     header {
       padding: 30px 42px 24px;
@@ -49,49 +45,66 @@
       font-size: clamp(38px, 5vw, 76px);
       line-height: 0.95;
       letter-spacing: -3px;
-      font-weight: 700;
     }
 
     .brand p {
       margin: 16px 0 0;
-      max-width: 520px;
+      max-width: 560px;
       font-size: 16px;
       line-height: 1.5;
       color: #666;
     }
 
-    nav {
+    .top-actions {
       display: flex;
       gap: 10px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
     }
 
-    .nav-button {
+    .nav-button,
+    .filter-button {
       appearance: none;
       border: 1px solid #cfcfc9;
       background: transparent;
       color: #111;
-      padding: 11px 18px;
+      padding: 10px 16px;
       border-radius: 999px;
-      font-size: 14px;
+      font-size: 13px;
       cursor: pointer;
       transition: 0.2s ease;
     }
 
-    .nav-button:hover {
+    .nav-button:hover,
+    .filter-button:hover {
+      background: #e7e6e1;
+    }
+
+    .nav-button.active,
+    .filter-button.active {
       background: #111;
       color: white;
       border-color: #111;
     }
 
-    .nav-button.active {
-      background: #111;
-      color: white;
-      border-color: #111;
+    .filters-wrap {
+      padding: 0 42px 20px;
     }
 
-    /* =========================
-       MAIN
-    ========================= */
+    .filters-label {
+      margin-bottom: 8px;
+      font-size: 11px;
+      font-weight: bold;
+      text-transform: uppercase;
+      letter-spacing: 1.3px;
+      color: #888;
+    }
+
+    .filters {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
 
     .main {
       padding: 0 26px 26px;
@@ -103,10 +116,6 @@
       gap: 18px;
       min-height: 680px;
     }
-
-    /* =========================
-       SIDEBAR
-    ========================= */
 
     .sidebar {
       padding: 20px 10px 20px 4px;
@@ -174,34 +183,21 @@
       text-align: center;
     }
 
-    .wishlist {
-      margin-top: 46px;
+    .empty {
+      margin-top: 24px;
+      padding: 16px;
+      border-radius: 16px;
+      background: white;
+      color: #777;
+      font-size: 13px;
+      line-height: 1.5;
     }
-
-    .wishlist-title {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding-bottom: 12px;
-      border-bottom: 1px solid #d7d6d0;
-      font-size: 14px;
-      font-weight: 600;
-    }
-
-    .wishlist-title span:last-child {
-      font-size: 18px;
-      font-weight: normal;
-    }
-
-    /* =========================
-       MAP
-    ========================= */
 
     .map-shell {
       position: relative;
       min-width: 0;
       padding: 7px;
-      background: #ffffff;
+      background: white;
       border-radius: 30px;
     }
 
@@ -265,11 +261,8 @@
       color: white;
     }
 
-    /* =========================
-       CUSTOM MARKERS
-    ========================= */
-
-    .destination-marker {
+    .destination-marker,
+    .point-marker {
       width: 44px;
       height: 44px;
       border-radius: 50%;
@@ -283,10 +276,10 @@
       font-size: 19px;
     }
 
-    .country-marker {
-      min-width: 62px;
+    .group-marker {
+      min-width: 72px;
       height: 44px;
-      padding: 0 14px;
+      padding: 0 15px;
       border-radius: 999px;
       background: #111;
       color: white;
@@ -295,19 +288,10 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 7px;
-      font-size: 13px;
-      font-weight: 700;
       white-space: nowrap;
+      font-size: 12px;
+      font-weight: 700;
     }
-
-    .country-marker .flag {
-      font-size: 18px;
-    }
-
-    /* =========================
-       FOOTER NOTE
-    ========================= */
 
     .bottom-line {
       display: flex;
@@ -320,12 +304,7 @@
       letter-spacing: 0.8px;
     }
 
-    /* =========================
-       MOBILE
-    ========================= */
-
     @media (max-width: 850px) {
-
       header {
         padding: 24px 20px 20px;
         flex-direction: column;
@@ -335,12 +314,13 @@
         letter-spacing: -2px;
       }
 
-      nav {
+      .top-actions {
         width: 100%;
+        justify-content: flex-start;
       }
 
-      .nav-button {
-        flex: 1;
+      .filters-wrap {
+        padding: 0 20px 18px;
       }
 
       .main {
@@ -380,86 +360,74 @@
         display: none;
       }
     }
-
   </style>
 </head>
 
 <body>
 
 <header>
-
   <div class="brand">
-
     <h1>KAM VYRAZIT?</h1>
 
     <p>
       Místa, která stojí za cestu. Výlety, hory, koupání,
       cyklistika a poznámky, které nechci příště hledat znovu.
     </p>
-
   </div>
 
-  <nav>
-
-    <button class="nav-button active">
-      Mapa
+  <div class="top-actions">
+    <button class="nav-button active" data-status="all">
+      Vše
     </button>
 
-    <button class="nav-button">
-      Chci navštívit
+    <button class="nav-button" data-status="wishlist">
+      ★ Chci navštívit
     </button>
 
-  </nav>
-
+    <button class="nav-button" data-status="visited">
+      ✓ Navštíveno
+    </button>
+  </div>
 </header>
+
+
+<div class="filters-wrap">
+  <div class="filters-label">
+    Filtry
+  </div>
+
+  <div class="filters" id="categoryFilters"></div>
+</div>
 
 
 <main class="main">
 
   <div class="travel-container">
 
-    <!-- SIDEBAR -->
-
     <aside class="sidebar">
 
       <div class="sidebar-top">
-
         <div class="eyebrow">
           Explore
         </div>
 
         <h2>Místa</h2>
 
-        <p class="sidebar-description">
+        <p class="sidebar-description" id="sidebarDescription">
           Vyber zemi nebo oblast a zobraz místa na mapě.
         </p>
-
       </div>
-
 
       <div id="destinationList"></div>
 
-
-      <div class="wishlist">
-
-        <div class="wishlist-title">
-          <span>Chci navštívit</span>
-          <span>→</span>
-        </div>
-
-      </div>
-
     </aside>
 
-
-    <!-- MAP -->
 
     <section class="map-shell">
 
       <div id="map"></div>
 
       <div class="map-switcher">
-
         <button id="topoButton" class="active">
           Turistická
         </button>
@@ -467,7 +435,6 @@
         <button id="classicButton">
           Klasická
         </button>
-
       </div>
 
     </section>
@@ -476,34 +443,26 @@
 
 
   <div class="bottom-line">
-
-    <span>
-      Cestování / Evropa
-    </span>
-
-    <span>
-      Mapa & poznámky
-    </span>
-
+    <span>Cestování / Evropa</span>
+    <span>Mapa & poznámky</span>
   </div>
 
 </main>
 
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="data/places.js"></script>
 
 <script>
 
 /* =========================
-   MAP
+   ZÁKLAD
 ========================= */
 
 const map = L.map("map", {
   zoomControl: true
 }).setView([46.15, 13.65], 6);
 
-
-/* TURISTICKÁ MAPA */
 
 const topoLayer = L.tileLayer(
   "https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png",
@@ -514,8 +473,6 @@ const topoLayer = L.tileLayer(
   }
 );
 
-
-/* KLASICKÁ MAPA */
 
 const classicLayer = L.tileLayer(
   "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
@@ -531,339 +488,191 @@ topoLayer.addTo(map);
 
 
 /* =========================
-   DESTINACE
+   KONFIGURACE TYPŮ
 ========================= */
 
-const destinations = [
+const typeInfo = {
+  coffee:       { label: "Kavárny", icon: "☕" },
+  food:         { label: "Jídlo", icon: "🥐" },
+  parking:      { label: "Parkování", icon: "🅿️" },
+  waterfall:    { label: "Vodopády", icon: "💧" },
+  swimming:     { label: "Koupání", icon: "🌊" },
+  shower:       { label: "Sprchy", icon: "🚿" },
+  toilet:       { label: "WC", icon: "🚻" },
+  jumping:      { label: "Skákání", icon: "🧗" },
+  hike:         { label: "Hike", icon: "🥾" },
+  cycling:      { label: "Kolo", icon: "🚴" },
+  paddleboard:  { label: "Paddleboard", icon: "🛶" },
+  sleep:        { label: "Spaní", icon: "🛏️" },
+  viewpoint:    { label: "Výhledy", icon: "⛰️" },
+  sight:        { label: "Památky", icon: "🏛️" },
+  service:      { label: "Servis", icon: "🔧" }
+};
 
-  {
-    name: "Dobratsch",
-    country: "Rakousko",
-    region: "Korutany",
-    icon: "🥾",
-    lat: 46.6032406,
-    lon: 13.6728044,
-    page: "places/dobratsch.html",
-    description:
-      "Prudší hike z Bad Bleibergu do vrcholové oblasti s výhledem směrem na Julské Alpy.",
-    tags: ["Hike", "Výhled"]
-  },
 
-  {
-    name: "Millstätter See",
-    country: "Rakousko",
-    region: "Korutany",
-    icon: "🚴",
-    lat: 46.8110856,
-    lon: 13.5481222,
-    page: "places/millstatter-see.html",
-    description:
-      "Jezero, koupání, paddleboard a přibližně 40km cyklistický okruh.",
-    tags: ["Cyklistika", "Paddleboard", "Koupání"]
-  },
-
-  {
-    name: "Sušec",
-    country: "Slovinsko",
-    region: "Soča",
-    icon: "💧",
-    lat: 46.2925364,
-    lon: 13.4876325,
-    page: "places/susec.html",
-    description:
-      "Kaskáda vodopádů a canyoningová lokalita poblíž Srpenice.",
-    tags: ["Vodopády", "Příroda"]
-  },
-
-  {
-    name: "Tolmin",
-    country: "Slovinsko",
-    region: "Soča",
-    icon: "🌊",
-    lat: 46.1818,
-    lon: 13.7425,
-    page: "places/tolmin.html",
-    description:
-      "Vodopád Beri, koupání v Soče, parkování, kafe a praktická místa.",
-    tags: ["Vodopád", "Koupání", "Kafe"]
-  },
-
-  {
-    name: "Most na Soči",
-    country: "Slovinsko",
-    region: "Soča",
-    icon: "🛶",
-    lat: 46.1532875,
-    lon: 13.7401850,
-    page: "places/most-na-soci.html",
-    description:
-      "Klidnější místo na Soče vhodné na paddleboard, koupání a skákání.",
-    tags: ["Paddleboard", "Koupání"]
-  },
-
-  {
-    name: "Tarvisio",
-    country: "Itálie",
-    region: "Friuli-Venezia Giulia",
-    icon: "☕",
-    lat: 46.5038,
-    lon: 13.5808,
-    page: "places/tarvisio.html",
-    description:
-      "Malé horské město, kafe, výborná zmrzlina, parkování a praktické tipy.",
-    tags: ["Kafe", "Jídlo", "Praktické"]
-  },
-
-  {
-    name: "Pula",
-    country: "Chorvatsko",
-    region: "Istrie",
-    icon: "🏖️",
-    lat: 44.8666,
-    lon: 13.8496,
-    page: "places/pula.html",
-    description:
-      "Historické centrum, útesy, koupání, parkování zdarma a praktická místa.",
-    tags: ["Koupání", "Město", "Praktické"]
-  }
-
-];
+const destinationIcons = {
+  hike: "🥾",
+  cycling: "🚴",
+  paddleboard: "🛶",
+  swimming: "🌊",
+  waterfall: "💧",
+  coffee: "☕",
+  mountain: "⛰️",
+  sight: "🏛️"
+};
 
 
 /* =========================
-   HIERARCHIE MAPY
+   OBLASTI PRO ODDÁLENÍ
 ========================= */
 
-/*
-Zoom:
-0–3  = Evropa
-4–5  = větší cestovatelské oblasti
-6    = země
-7+   = konkrétní destinace
-*/
-
-
-/* =========================
-   OBLASTI
-========================= */
-
-const regionsData = {
-
-  "Alpy & severní Jadran": {
-    short: "ALPY & JADRAN",
+const macroRegions = [
+  {
+    name: "Alpy & Jadran",
     countries: [
       "Rakousko",
+      "Německo",
       "Slovinsko",
       "Itálie",
       "Chorvatsko"
     ]
   }
-
-};
-
-
-/* =========================
-   ZEMĚ
-========================= */
-
-const countriesData = {
-
-  "Rakousko": {
-    short: "AT"
-  },
-
-  "Slovinsko": {
-    short: "SI"
-  },
-
-  "Itálie": {
-    short: "IT"
-  },
-
-  "Chorvatsko": {
-    short: "HR"
-  }
-
-};
+];
 
 
 /* =========================
-   MARKER LAYERS
+   VŠECHNY BODY
 ========================= */
 
-const destinationLayer =
-  L.layerGroup();
-
-const countryLayer =
-  L.layerGroup();
-
-const regionLayer =
-  L.layerGroup();
-
-const continentLayer =
-  L.layerGroup();
+const allPoints = [];
 
 
-destinationLayer.addTo(map);
-countryLayer.addTo(map);
-regionLayer.addTo(map);
-continentLayer.addTo(map);
+destinations.forEach(destination => {
+
+  (destination.points || [])
+    .forEach(point => {
+
+      allPoints.push({
+        ...point,
+
+        destinationId: destination.id,
+        destinationName: destination.name,
+        destinationCountry: destination.country,
+        destinationRegion: destination.region
+      });
+
+    });
+
+
+  (destination.routes || [])
+    .forEach(route => {
+
+      allPoints.push({
+        id: route.id,
+
+        name: route.name,
+
+        lat: destination.lat,
+        lon: destination.lon,
+
+        type: route.type,
+
+        tags: [route.type],
+
+        status: destination.status,
+
+        destinationId: destination.id,
+        destinationName: destination.name,
+        destinationCountry: destination.country,
+        destinationRegion: destination.region,
+
+        description:
+          route.type === "cycling"
+            ? "Uložená cyklotrasa."
+            : "Uložená turistická trasa."
+      });
+
+    });
+
+});
 
 
 /* =========================
-   DESTINATION ICON
+   STAV FILTRŮ
 ========================= */
 
-function createDestinationIcon(destination) {
+let selectedStatus = "all";
+let selectedCategory = "all";
+
+
+/* =========================
+   LAYERS
+========================= */
+
+const continentLayer = L.layerGroup();
+const macroLayer = L.layerGroup();
+const countryLayer = L.layerGroup();
+const destinationLayer = L.layerGroup();
+const filteredPointLayer = L.layerGroup();
+
+
+/* =========================
+   IKONY
+========================= */
+
+function createRoundIcon(icon) {
 
   return L.divIcon({
-
     className: "",
 
     html: `
       <div class="destination-marker">
-        ${destination.icon}
+        ${icon}
       </div>
     `,
 
     iconSize: [44, 44],
     iconAnchor: [22, 22],
     popupAnchor: [0, -24]
-
   });
 
 }
 
 
-/* =========================
-   DESTINATION MARKERS
-========================= */
+function createPointIcon(type) {
 
-destinations.forEach(destination => {
-
-  const tags = destination.tags
-    .map(tag => `
-      <span style="
-        display:inline-block;
-        margin:3px 3px 0 0;
-        padding:4px 7px;
-        border-radius:999px;
-        background:#f1f1ee;
-        color:#666;
-        font-size:10px;
-      ">
-        ${tag}
-      </span>
-    `)
-    .join("");
-
-
-  const marker = L.marker(
-    [destination.lat, destination.lon],
-    {
-      icon:
-        createDestinationIcon(destination)
-    }
-  );
-
-
-  marker.bindPopup(`
-
-    <div style="
-      min-width:220px;
-      max-width:260px;
-    ">
-
-      <strong style="font-size:16px;">
-        ${destination.name}
-      </strong>
-
-      <div style="
-        margin-top:4px;
-        font-size:12px;
-        color:#777;
-      ">
-        ${destination.country}
-        ·
-        ${destination.region}
-      </div>
-
-      <div style="margin-top:7px;">
-        ${tags}
-      </div>
-
-      <p style="
-        margin:10px 0;
-        font-size:13px;
-        line-height:1.45;
-      ">
-        ${destination.description}
-      </p>
-
-      <a
-        href="${destination.page}"
-        style="
-          display:inline-block;
-          margin-top:3px;
-          color:#111;
-          text-decoration:none;
-          font-weight:600;
-          font-size:13px;
-        "
-      >
-        Otevřít detail →
-      </a>
-
-    </div>
-
-  `);
-
-
-  marker.addTo(destinationLayer);
-
-});
-
-
-/* =========================
-   OBECNÝ MARKER
-========================= */
-
-function createGroupIcon(text, big = false) {
-
-  const width =
-    big ? 110 : 72;
+  const info =
+    typeInfo[type] || {
+      icon: "📍"
+    };
 
 
   return L.divIcon({
+    className: "",
 
+    html: `
+      <div class="point-marker">
+        ${info.icon}
+      </div>
+    `,
+
+    iconSize: [44, 44],
+    iconAnchor: [22, 22],
+    popupAnchor: [0, -24]
+  });
+
+}
+
+
+function createGroupIcon(text, width = 90) {
+
+  return L.divIcon({
     className: "",
 
     html: `
       <div
-        style="
-          min-width:${width}px;
-          height:44px;
-          padding:0 15px;
-
-          border-radius:999px;
-
-          background:#111;
-          color:white;
-
-          border:3px solid white;
-
-          box-shadow:
-            0 4px 14px rgba(0,0,0,0.25);
-
-          display:flex;
-          align-items:center;
-          justify-content:center;
-
-          font-size:${big ? 12 : 13}px;
-          font-weight:700;
-
-          white-space:nowrap;
-        "
+        class="group-marker"
+        style="min-width:${width}px;"
       >
         ${text}
       </div>
@@ -871,6 +680,124 @@ function createGroupIcon(text, big = false) {
 
     iconSize: [width, 44],
     iconAnchor: [width / 2, 22]
+  });
+
+}
+
+
+/* =========================
+   POMOCNÉ FUNKCE
+========================= */
+
+function destinationMatchesStatus(destination) {
+
+  if (selectedStatus === "all") {
+    return true;
+  }
+
+  return destination.status === selectedStatus;
+}
+
+
+function pointMatchesStatus(point) {
+
+  if (selectedStatus === "all") {
+    return true;
+  }
+
+  return point.status === selectedStatus;
+}
+
+
+function pointMatchesCategory(point) {
+
+  if (selectedCategory === "all") {
+    return true;
+  }
+
+  if (point.type === selectedCategory) {
+    return true;
+  }
+
+  return (
+    point.tags &&
+    point.tags.includes(selectedCategory)
+  );
+}
+
+
+function destinationContainsCategory(destination) {
+
+  if (selectedCategory === "all") {
+    return true;
+  }
+
+
+  if (
+    destination.tags &&
+    destination.tags.includes(selectedCategory)
+  ) {
+    return true;
+  }
+
+
+  return (destination.points || [])
+    .some(point =>
+      point.type === selectedCategory ||
+      (
+        point.tags &&
+        point.tags.includes(selectedCategory)
+      )
+    ) ||
+    (destination.routes || [])
+      .some(route =>
+        route.type === selectedCategory
+      );
+
+}
+
+
+function getDestinationIcon(destination) {
+
+  const tags =
+    destination.tags || [];
+
+
+  for (const tag of tags) {
+
+    if (destinationIcons[tag]) {
+      return destinationIcons[tag];
+    }
+
+  }
+
+
+  return "📍";
+}
+
+
+function getVisibleDestinations() {
+
+  return destinations.filter(destination => {
+
+    return (
+      destinationMatchesStatus(destination) &&
+      destinationContainsCategory(destination)
+    );
+
+  });
+
+}
+
+
+function getVisiblePoints() {
+
+  return allPoints.filter(point => {
+
+    return (
+      pointMatchesStatus(point) &&
+      pointMatchesCategory(point)
+    );
 
   });
 
@@ -878,152 +805,91 @@ function createGroupIcon(text, big = false) {
 
 
 /* =========================
-   COUNTRY MARKERS
+   KONTINENT
 ========================= */
 
-Object.keys(countriesData)
-  .forEach(country => {
-
-    const countryDestinations =
-      destinations.filter(
-        destination =>
-          destination.country === country
-      );
-
-
-    if (countryDestinations.length === 0) {
-      return;
+const europeMarker =
+  L.marker(
+    [50.3, 12.5],
+    {
+      icon:
+        createGroupIcon(
+          "EVROPA",
+          100
+        )
     }
+  );
 
 
-    const latAverage =
-      countryDestinations.reduce(
-        (sum, destination) =>
-          sum + destination.lat,
-        0
-      ) / countryDestinations.length;
+europeMarker.on("click", () => {
+
+  map.flyTo(
+    [47, 13],
+    4,
+    {
+      duration: 1
+    }
+  );
+
+});
 
 
-    const lonAverage =
-      countryDestinations.reduce(
-        (sum, destination) =>
-          sum + destination.lon,
-        0
-      ) / countryDestinations.length;
-
-
-    const marker =
-      L.marker(
-        [latAverage, lonAverage],
-        {
-          icon:
-            createGroupIcon(
-              countriesData[country].short
-            )
-        }
-      );
-
-
-    marker.on("click", () => {
-
-      const bounds =
-        L.latLngBounds(
-          countryDestinations.map(
-            destination => [
-              destination.lat,
-              destination.lon
-            ]
-          )
-        );
-
-
-      /*
-      U země s jedinou destinací by fitBounds
-      mohl přiblížit až příliš.
-      */
-
-      if (countryDestinations.length === 1) {
-
-        map.flyTo(
-          [
-            countryDestinations[0].lat,
-            countryDestinations[0].lon
-          ],
-          8,
-          {
-            duration: 1
-          }
-        );
-
-      } else {
-
-        map.fitBounds(
-          bounds,
-          {
-            padding: [80, 80],
-            maxZoom: 8
-          }
-        );
-
-      }
-
-    });
-
-
-    marker.addTo(countryLayer);
-
-  });
+europeMarker.addTo(
+  continentLayer
+);
 
 
 /* =========================
-   REGION MARKERS
+   MAKROREGIONY
 ========================= */
 
-Object.keys(regionsData)
-  .forEach(regionName => {
+function buildMacroRegions() {
 
-    const regionInfo =
-      regionsData[regionName];
+  macroLayer.clearLayers();
 
+
+  macroRegions.forEach(region => {
 
     const regionDestinations =
-      destinations.filter(
-        destination =>
-          regionInfo.countries.includes(
+      getVisibleDestinations()
+        .filter(destination =>
+          region.countries.includes(
             destination.country
           )
-      );
+        );
 
 
-    if (regionDestinations.length === 0) {
+    if (
+      regionDestinations.length === 0
+    ) {
       return;
     }
 
 
-    const latAverage =
+    const lat =
       regionDestinations.reduce(
-        (sum, destination) =>
-          sum + destination.lat,
+        (sum, item) =>
+          sum + item.lat,
         0
       ) / regionDestinations.length;
 
 
-    const lonAverage =
+    const lon =
       regionDestinations.reduce(
-        (sum, destination) =>
-          sum + destination.lon,
+        (sum, item) =>
+          sum + item.lon,
         0
       ) / regionDestinations.length;
 
 
     const marker =
       L.marker(
-        [latAverage, lonAverage],
+        [lat, lon],
         {
           icon:
             createGroupIcon(
-              regionInfo.short,
-              true
+              region.name.toUpperCase(),
+              135
             )
         }
       );
@@ -1053,103 +919,666 @@ Object.keys(regionsData)
     });
 
 
-    marker.addTo(regionLayer);
+    marker.addTo(
+      macroLayer
+    );
+
+  });
+
+}
+
+
+/* =========================
+   ZEMĚ
+========================= */
+
+function buildCountries() {
+
+  countryLayer.clearLayers();
+
+
+  const visible =
+    getVisibleDestinations();
+
+
+  const countryNames =
+    [...new Set(
+      visible.map(
+        destination =>
+          destination.country
+      )
+    )];
+
+
+  countryNames.forEach(country => {
+
+    const countryDestinations =
+      visible.filter(
+        destination =>
+          destination.country === country
+      );
+
+
+    const lat =
+      countryDestinations.reduce(
+        (sum, item) =>
+          sum + item.lat,
+        0
+      ) / countryDestinations.length;
+
+
+    const lon =
+      countryDestinations.reduce(
+        (sum, item) =>
+          sum + item.lon,
+        0
+      ) / countryDestinations.length;
+
+
+    const codeMap = {
+      "Rakousko": "AT",
+      "Německo": "DE",
+      "Slovinsko": "SI",
+      "Itálie": "IT",
+      "Chorvatsko": "HR"
+    };
+
+
+    const marker =
+      L.marker(
+        [lat, lon],
+        {
+          icon:
+            createGroupIcon(
+              codeMap[country] || country,
+              72
+            )
+        }
+      );
+
+
+    marker.on("click", () => {
+
+      if (
+        countryDestinations.length === 1
+      ) {
+
+        map.flyTo(
+          [
+            countryDestinations[0].lat,
+            countryDestinations[0].lon
+          ],
+          8,
+          {
+            duration: 1
+          }
+        );
+
+      } else {
+
+        const bounds =
+          L.latLngBounds(
+            countryDestinations.map(
+              destination => [
+                destination.lat,
+                destination.lon
+              ]
+            )
+          );
+
+
+        map.fitBounds(
+          bounds,
+          {
+            padding: [80, 80],
+            maxZoom: 8
+          }
+        );
+
+      }
+
+    });
+
+
+    marker.addTo(
+      countryLayer
+    );
+
+  });
+
+}
+
+
+/* =========================
+   DESTINACE
+========================= */
+
+function buildDestinations() {
+
+  destinationLayer.clearLayers();
+
+
+  getVisibleDestinations()
+    .forEach(destination => {
+
+      const icon =
+        getDestinationIcon(destination);
+
+
+      const marker =
+        L.marker(
+          [destination.lat, destination.lon],
+          {
+            icon:
+              createRoundIcon(icon)
+          }
+        );
+
+
+      marker.bindPopup(`
+        <div style="
+          min-width:220px;
+          max-width:260px;
+        ">
+
+          <strong style="
+            font-size:16px;
+          ">
+            ${destination.name}
+          </strong>
+
+          <div style="
+            margin-top:4px;
+            font-size:12px;
+            color:#777;
+          ">
+            ${destination.country}
+            ·
+            ${destination.region}
+          </div>
+
+          <div style="
+            margin-top:7px;
+            font-size:11px;
+            color:#777;
+          ">
+            ${
+              destination.status ===
+              "wishlist"
+                ? "★ Chci navštívit"
+                : "✓ Navštíveno"
+            }
+          </div>
+
+          <p style="
+            margin:10px 0;
+            font-size:13px;
+            line-height:1.45;
+          ">
+            ${destination.description}
+          </p>
+
+          <a
+            href="place.html?id=${destination.id}"
+            style="
+              color:#111;
+              text-decoration:none;
+              font-weight:600;
+              font-size:13px;
+            "
+          >
+            Otevřít detail →
+          </a>
+
+        </div>
+      `);
+
+
+      marker.addTo(
+        destinationLayer
+      );
+
+    });
+
+}
+
+
+/* =========================
+   KONKRÉTNÍ BODY PO FILTRU
+========================= */
+
+function buildFilteredPoints() {
+
+  filteredPointLayer.clearLayers();
+
+
+  getVisiblePoints()
+    .forEach(point => {
+
+      const info =
+        typeInfo[point.type] || {
+          label: point.type,
+          icon: "📍"
+        };
+
+
+      const marker =
+        L.marker(
+          [point.lat, point.lon],
+          {
+            icon:
+              createPointIcon(
+                point.type
+              )
+          }
+        );
+
+
+      marker.bindPopup(`
+        <div style="
+          min-width:220px;
+          max-width:260px;
+        ">
+
+          <strong style="
+            font-size:15px;
+          ">
+            ${point.name}
+          </strong>
+
+          <div style="
+            margin-top:4px;
+            font-size:12px;
+            color:#777;
+          ">
+            ${info.label}
+            ·
+            ${point.destinationName}
+          </div>
+
+          <p style="
+            margin:10px 0;
+            font-size:13px;
+            line-height:1.45;
+          ">
+            ${point.description || ""}
+          </p>
+
+          <a
+            href="place.html?id=${point.destinationId}"
+            style="
+              color:#111;
+              text-decoration:none;
+              font-weight:600;
+              font-size:13px;
+            "
+          >
+            Otevřít oblast →
+          </a>
+
+        </div>
+      `);
+
+
+      marker.addTo(
+        filteredPointLayer
+      );
+
+    });
+
+}
+
+
+/* =========================
+   SIDEBAR
+========================= */
+
+function buildSidebar() {
+
+  const destinationList =
+    document.getElementById(
+      "destinationList"
+    );
+
+
+  destinationList.innerHTML = "";
+
+
+  const visible =
+    getVisibleDestinations();
+
+
+  if (visible.length === 0) {
+
+    destinationList.innerHTML = `
+      <div class="empty">
+        Pro tento filtr zatím nemáš žádná místa.
+      </div>
+    `;
+
+    return;
+  }
+
+
+  const countries =
+    [...new Set(
+      visible.map(
+        destination =>
+          destination.country
+      )
+    )];
+
+
+  countries
+    .sort()
+    .forEach(country => {
+
+      const group =
+        document.createElement("div");
+
+      group.className =
+        "country-group";
+
+
+      group.innerHTML = `
+        <div class="country-name">
+          ${country}
+        </div>
+      `;
+
+
+      visible
+        .filter(
+          destination =>
+            destination.country ===
+            country
+        )
+        .forEach(destination => {
+
+          const link =
+            document.createElement(
+              "a"
+            );
+
+
+          link.href =
+            `place.html?id=${destination.id}`;
+
+
+          link.className =
+            "destination-link";
+
+
+          link.innerHTML = `
+            <span class="destination-icon">
+              ${getDestinationIcon(destination)}
+            </span>
+
+            <span>
+              ${destination.name}
+            </span>
+          `;
+
+
+          group.appendChild(
+            link
+          );
+
+        });
+
+
+      destinationList.appendChild(
+        group
+      );
+
+    });
+
+}
+
+
+/* =========================
+   FILTRY
+========================= */
+
+function buildCategoryFilters() {
+
+  const container =
+    document.getElementById(
+      "categoryFilters"
+    );
+
+
+  container.innerHTML = "";
+
+
+  const allButton =
+    document.createElement("button");
+
+
+  allButton.className =
+    "filter-button active";
+
+  allButton.dataset.category =
+    "all";
+
+  allButton.textContent =
+    "Vše";
+
+
+  container.appendChild(
+    allButton
+  );
+
+
+  const usedTypes =
+    new Set();
+
+
+  allPoints.forEach(point => {
+
+    if (
+      typeInfo[point.type]
+    ) {
+      usedTypes.add(
+        point.type
+      );
+    }
+
+
+    (point.tags || [])
+      .forEach(tag => {
+
+        if (typeInfo[tag]) {
+          usedTypes.add(tag);
+        }
+
+      });
+
+  });
+
+
+  const order = [
+    "coffee",
+    "food",
+    "parking",
+    "toilet",
+    "shower",
+    "waterfall",
+    "swimming",
+    "jumping",
+    "hike",
+    "cycling",
+    "paddleboard",
+    "sleep",
+    "viewpoint",
+    "sight",
+    "service"
+  ];
+
+
+  order
+    .filter(type =>
+      usedTypes.has(type)
+    )
+    .forEach(type => {
+
+      const info =
+        typeInfo[type];
+
+
+      const button =
+        document.createElement(
+          "button"
+        );
+
+
+      button.className =
+        "filter-button";
+
+      button.dataset.category =
+        type;
+
+      button.textContent =
+        `${info.icon} ${info.label}`;
+
+
+      container.appendChild(
+        button
+      );
+
+    });
+
+
+  container
+    .querySelectorAll(
+      ".filter-button"
+    )
+    .forEach(button => {
+
+      button.addEventListener(
+        "click",
+        () => {
+
+          container
+            .querySelectorAll(
+              ".filter-button"
+            )
+            .forEach(btn =>
+              btn.classList.remove(
+                "active"
+              )
+            );
+
+
+          button.classList.add(
+            "active"
+          );
+
+
+          selectedCategory =
+            button.dataset.category;
+
+
+          refreshEverything();
+
+        }
+      );
+
+    });
+
+}
+
+
+/* =========================
+   STATUS FILTRY
+========================= */
+
+document
+  .querySelectorAll(
+    ".nav-button[data-status]"
+  )
+  .forEach(button => {
+
+    button.addEventListener(
+      "click",
+      () => {
+
+        document
+          .querySelectorAll(
+            ".nav-button[data-status]"
+          )
+          .forEach(btn =>
+            btn.classList.remove(
+              "active"
+            )
+          );
+
+
+        button.classList.add(
+          "active"
+        );
+
+
+        selectedStatus =
+          button.dataset.status;
+
+
+        refreshEverything();
+
+      }
+    );
 
   });
 
 
 /* =========================
-   EUROPE MARKER
+   ZOBRAZENÍ VRSTEV
 ========================= */
 
-/*
-Tady používám pevnou pozici markeru Evropy,
-aby byl opravdu nad Evropou i při velkém
-oddálení, ne jen ve středu tvých současných bodů.
-*/
+function hideLayers() {
 
-const europeMarker =
-  L.marker(
-    [50.3, 12.5],
-    {
-      icon:
-        createGroupIcon(
-          "EVROPA",
-          true
-        )
+  [
+    continentLayer,
+    macroLayer,
+    countryLayer,
+    destinationLayer,
+    filteredPointLayer
+  ].forEach(layer => {
+
+    if (map.hasLayer(layer)) {
+      map.removeLayer(layer);
     }
-  );
 
-
-europeMarker.on("click", () => {
-
-  /*
-  Přiblížíme se na současnou hlavní
-  cestovatelskou oblast.
-  */
-
-  const allBounds =
-    L.latLngBounds(
-      destinations.map(
-        destination => [
-          destination.lat,
-          destination.lon
-        ]
-      )
-    );
-
-
-  map.fitBounds(
-    allBounds,
-    {
-      padding: [100, 100],
-      maxZoom: 5
-    }
-  );
-
-});
-
-
-europeMarker.addTo(continentLayer);
-
-
-/* =========================
-   ZOOM LOGIC
-========================= */
-
-function hideAllMarkerLayers() {
-
-  if (map.hasLayer(destinationLayer)) {
-    map.removeLayer(destinationLayer);
-  }
-
-  if (map.hasLayer(countryLayer)) {
-    map.removeLayer(countryLayer);
-  }
-
-  if (map.hasLayer(regionLayer)) {
-    map.removeLayer(regionLayer);
-  }
-
-  if (map.hasLayer(continentLayer)) {
-    map.removeLayer(continentLayer);
-  }
+  });
 
 }
 
 
-function updateMarkerVisibility() {
+function updateMapMode() {
+
+  hideLayers();
+
+
+  /*
+  Pokud je aktivní konkrétní kategorie,
+  ukazujeme rovnou jednotlivé body.
+  */
+
+  if (
+    selectedCategory !== "all"
+  ) {
+
+    map.addLayer(
+      filteredPointLayer
+    );
+
+    return;
+  }
+
 
   const zoom =
     map.getZoom();
 
-
-  hideAllMarkerLayers();
-
-
-  /*
-  CELÝ SVĚT / KONTINENT
-  */
 
   if (zoom <= 3) {
 
@@ -1158,28 +1587,18 @@ function updateMarkerVisibility() {
     );
 
     return;
-
   }
 
-
-  /*
-  VELKÁ ČÁST EVROPY
-  */
 
   if (zoom <= 5) {
 
     map.addLayer(
-      regionLayer
+      macroLayer
     );
 
     return;
-
   }
 
-
-  /*
-  JEDNOTLIVÉ ZEMĚ
-  */
 
   if (zoom === 6) {
 
@@ -1188,13 +1607,8 @@ function updateMarkerVisibility() {
     );
 
     return;
-
   }
 
-
-  /*
-  KONKRÉTNÍ DESTINACE
-  */
 
   map.addLayer(
     destinationLayer
@@ -1203,99 +1617,56 @@ function updateMarkerVisibility() {
 }
 
 
-map.on(
-  "zoomend",
-  updateMarkerVisibility
-);
-
-
-updateMarkerVisibility();
 /* =========================
-   SIDEBAR
+   REFRESH
 ========================= */
 
-const destinationList =
-  document.getElementById(
-    "destinationList"
-  );
+function refreshEverything() {
+
+  buildMacroRegions();
+  buildCountries();
+  buildDestinations();
+  buildFilteredPoints();
+  buildSidebar();
+
+  updateMapMode();
 
 
-const countryOrder = [
-  "Rakousko",
-  "Slovinsko",
-  "Itálie",
-  "Chorvatsko"
-];
-
-
-countryOrder.forEach(country => {
-
-  const countryDestinations =
-    destinations.filter(
-      destination =>
-        destination.country === country
+  const description =
+    document.getElementById(
+      "sidebarDescription"
     );
 
 
-  if (countryDestinations.length === 0) {
-    return;
+  if (
+    selectedCategory === "all"
+  ) {
+
+    description.textContent =
+      "Vyber zemi nebo oblast a zobraz místa na mapě.";
+
+  } else {
+
+    const info =
+      typeInfo[selectedCategory];
+
+
+    description.textContent =
+      `Zobrazeny jsou konkrétní body: ${info.label.toLowerCase()}.`;
+
   }
 
-
-  const group =
-    document.createElement("div");
+}
 
 
-  group.className =
-    "country-group";
+/* =========================
+   ZOOM
+========================= */
 
-
-  group.innerHTML = `
-    <div class="country-name">
-      ${country}
-    </div>
-  `;
-
-
-  countryDestinations.forEach(
-    destination => {
-
-      const link =
-        document.createElement("a");
-
-
-      link.href =
-        destination.page;
-
-
-      link.className =
-        "destination-link";
-
-
-      link.innerHTML = `
-
-        <span class="destination-icon">
-          ${destination.icon}
-        </span>
-
-        <span>
-          ${destination.name}
-        </span>
-
-      `;
-
-
-      group.appendChild(link);
-
-    }
-  );
-
-
-  destinationList.appendChild(
-    group
-  );
-
-});
+map.on(
+  "zoomend",
+  updateMapMode
+);
 
 
 /* =========================
@@ -1303,27 +1674,40 @@ countryOrder.forEach(country => {
 ========================= */
 
 const topoButton =
-  document.getElementById("topoButton");
+  document.getElementById(
+    "topoButton"
+  );
 
 const classicButton =
-  document.getElementById("classicButton");
+  document.getElementById(
+    "classicButton"
+  );
 
 
 topoButton.addEventListener(
   "click",
-  function() {
+  () => {
 
-    if (!map.hasLayer(topoLayer)) {
+    if (
+      !map.hasLayer(topoLayer)
+    ) {
 
-      map.removeLayer(classicLayer);
+      map.removeLayer(
+        classicLayer
+      );
 
       topoLayer.addTo(map);
 
     }
 
-    topoButton.classList.add("active");
 
-    classicButton.classList.remove("active");
+    topoButton.classList.add(
+      "active"
+    );
+
+    classicButton.classList.remove(
+      "active"
+    );
 
   }
 );
@@ -1331,22 +1715,39 @@ topoButton.addEventListener(
 
 classicButton.addEventListener(
   "click",
-  function() {
+  () => {
 
-    if (!map.hasLayer(classicLayer)) {
+    if (
+      !map.hasLayer(classicLayer)
+    ) {
 
-      map.removeLayer(topoLayer);
+      map.removeLayer(
+        topoLayer
+      );
 
       classicLayer.addTo(map);
 
     }
 
-    classicButton.classList.add("active");
 
-    topoButton.classList.remove("active");
+    classicButton.classList.add(
+      "active"
+    );
+
+    topoButton.classList.remove(
+      "active"
+    );
 
   }
 );
+
+
+/* =========================
+   START
+========================= */
+
+buildCategoryFilters();
+refreshEverything();
 
 </script>
 
