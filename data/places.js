@@ -387,7 +387,7 @@ const destinations = [
         name: "Dobratsch – vrcholová oblast",
         lat: 46.6032406,
         lon: 13.6728044,
-        type: "viewpoint",
+        type: "hike",
         tags: ["viewpoint", "mountain", "hike"],
         status: "wishlist",
         lastChecked: "2026-08-31",
