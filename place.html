@@ -3,21 +3,1220 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Detail místa</title>
+
+  <title>Místo | Kam vyrazit?</title>
+
+  <link
+    rel="stylesheet"
+    href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+  />
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      background: #f4f3ef;
+      color: #111;
+    }
+
+    header {
+      padding: 26px 34px 18px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 20px;
+    }
+
+    .back-link {
+      display: inline-block;
+      margin-bottom: 18px;
+      font-size: 13px;
+      text-decoration: none;
+      color: #666;
+    }
+
+    .title-block h1 {
+      margin: 0;
+      font-size: clamp(42px, 6vw, 82px);
+      line-height: 0.95;
+      letter-spacing: -3px;
+    }
+
+    .title-block p {
+      margin: 16px 0 0;
+      max-width: 760px;
+      color: #666;
+      line-height: 1.55;
+      font-size: 15px;
+    }
+
+    .meta {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .tag {
+      border: 1px solid #ccc;
+      border-radius: 999px;
+      padding: 10px 16px;
+      white-space: nowrap;
+      font-size: 13px;
+    }
+
+    .tag.status {
+      background: #111;
+      color: white;
+      border-color: #111;
+    }
+
+    .stats {
+      padding: 0 34px 18px;
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .stat {
+      background: white;
+      border-radius: 999px;
+      padding: 9px 14px;
+      font-size: 12px;
+    }
+
+    .controls {
+      padding: 0 34px 18px;
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .filter-button {
+      border: 1px solid #ccc;
+      background: transparent;
+      color: #111;
+      padding: 9px 14px;
+      border-radius: 999px;
+      cursor: pointer;
+      font-size: 13px;
+    }
+
+    .filter-button.active {
+      background: #111;
+      color: white;
+      border-color: #111;
+    }
+
+    .main {
+      padding: 0 24px 24px;
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: 360px minmax(0, 1fr);
+      gap: 16px;
+      min-height: 690px;
+    }
+
+    .sidebar {
+      overflow-y: auto;
+      padding: 4px 4px 4px 0;
+    }
+
+    .section-label {
+      margin: 4px 0 12px;
+      font-size: 11px;
+      font-weight: bold;
+      text-transform: uppercase;
+      letter-spacing: 1.4px;
+      color: #888;
+    }
+
+    .route-card {
+      background: #111;
+      color: white;
+      border-radius: 18px;
+      padding: 17px;
+      margin-bottom: 16px;
+    }
+
+    .route-card strong {
+      display: block;
+      font-size: 16px;
+      margin-bottom: 7px;
+    }
+
+    .route-card p {
+      margin: 0;
+      color: #ccc;
+      font-size: 12px;
+      line-height: 1.5;
+    }
+
+    .route-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 14px;
+    }
+
+    .route-button {
+      border: 0;
+      background: white;
+      color: #111;
+      padding: 8px 12px;
+      border-radius: 999px;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 12px;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+    }
+
+    .place-card {
+      background: white;
+      border-radius: 18px;
+      padding: 16px;
+      margin-bottom: 10px;
+      cursor: pointer;
+      border: 1px solid transparent;
+      transition: 0.2s ease;
+    }
+
+    .place-card:hover {
+      border-color: #bbb;
+      transform: translateY(-1px);
+    }
+
+    .place-card.active {
+      border-color: #111;
+    }
+
+    .place-card.hidden {
+      display: none;
+    }
+
+    .place-header {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+    }
+
+    .icon {
+      width: 38px;
+      height: 38px;
+      flex: 0 0 38px;
+      border-radius: 50%;
+      background: #f1f1ee;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+    }
+
+    .place-info h3 {
+      margin: 0;
+      font-size: 16px;
+      line-height: 1.25;
+    }
+
+    .type {
+      margin-top: 4px;
+      color: #888;
+      font-size: 12px;
+    }
+
+    .tags {
+      margin-top: 8px;
+      display: flex;
+      gap: 5px;
+      flex-wrap: wrap;
+    }
+
+    .small-tag {
+      font-size: 10px;
+      padding: 4px 7px;
+      border-radius: 999px;
+      background: #f1f1ee;
+      color: #666;
+    }
+
+    .description {
+      margin: 12px 0 0;
+      color: #555;
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    .checked {
+      margin-top: 10px;
+      font-size: 10px;
+      color: #999;
+    }
+
+    .map-shell {
+      position: relative;
+      background: white;
+      border-radius: 30px;
+      padding: 7px;
+      min-width: 0;
+    }
+
+    #map {
+      height: 100%;
+      min-height: 690px;
+      border-radius: 24px;
+      overflow: hidden;
+    }
+
+    .leaflet-bar {
+      border: none !important;
+      box-shadow: none !important;
+    }
+
+    .leaflet-bar a {
+      border: none !important;
+      margin-bottom: 4px;
+      border-radius: 50% !important;
+      width: 42px !important;
+      height: 42px !important;
+      line-height: 42px !important;
+      background: rgba(255,255,255,0.95) !important;
+      color: #111 !important;
+      box-shadow: 0 3px 12px rgba(0,0,0,0.12);
+    }
+
+    .leaflet-control-zoom {
+      margin-top: 20px !important;
+      margin-left: 20px !important;
+    }
+
+    .map-switcher {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      z-index: 1000;
+      display: flex;
+      gap: 4px;
+      padding: 4px;
+      background: rgba(255,255,255,0.92);
+      border-radius: 999px;
+      box-shadow: 0 4px 18px rgba(0,0,0,0.12);
+    }
+
+    .map-switcher button {
+      border: 0;
+      background: transparent;
+      padding: 9px 13px;
+      border-radius: 999px;
+      font-size: 12px;
+      cursor: pointer;
+      font-weight: 600;
+    }
+
+    .map-switcher button.active {
+      background: #111;
+      color: white;
+    }
+
+    .custom-marker {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      background: #111;
+      color: white;
+      border: 3px solid white;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.25);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 17px;
+    }
+
+    .empty-state {
+      background: white;
+      border-radius: 18px;
+      padding: 18px;
+      color: #666;
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    @media (max-width: 900px) {
+      header {
+        padding: 22px 18px 16px;
+        flex-direction: column;
+      }
+
+      .title-block h1 {
+        letter-spacing: -2px;
+      }
+
+      .meta {
+        justify-content: flex-start;
+      }
+
+      .stats,
+      .controls {
+        padding: 0 18px 16px;
+      }
+
+      .main {
+        padding: 0 10px 18px;
+      }
+
+      .layout {
+        display: flex;
+        flex-direction: column;
+      }
+
+      .map-shell {
+        order: 1;
+        height: 58vh;
+        min-height: 420px;
+      }
+
+      #map {
+        min-height: 0;
+        height: 100%;
+      }
+
+      .sidebar {
+        order: 2;
+      }
+    }
+  </style>
 </head>
+
 <body>
 
-  <h1 id="title">Načítám...</h1>
+<header>
 
-  <script src="data/places.js"></script>
+  <div class="title-block">
 
-  <script>
-    const params = new URLSearchParams(window.location.search);
-    const id = params.get("id");
+    <a href="index.html" class="back-link">
+      ← Zpět na hlavní mapu
+    </a>
 
-    document.getElementById("title").textContent =
-      id ? "Detail: " + id : "Místo nenalezeno";
-  </script>
+    <h1 id="pageTitle">Načítám...</h1>
+
+    <p id="pageDescription"></p>
+
+  </div>
+
+  <div class="meta" id="pageMeta"></div>
+
+</header>
+
+
+<div class="stats" id="stats"></div>
+
+<div class="controls" id="filters"></div>
+
+
+<main class="main">
+
+  <div class="layout">
+
+    <aside class="sidebar">
+
+      <div id="routesContainer"></div>
+
+      <div class="section-label">
+        Místa
+      </div>
+
+      <div id="placeList"></div>
+
+    </aside>
+
+
+    <section class="map-shell">
+
+      <div id="map"></div>
+
+      <div class="map-switcher">
+        <button id="topoButton" class="active">Turistická</button>
+        <button id="classicButton">Klasická</button>
+      </div>
+
+    </section>
+
+  </div>
+
+</main>
+
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet-gpx/1.7.0/gpx.min.js"></script>
+
+<script src="data/places.js"></script>
+
+<script>
+
+/* =========================
+   PARAMETR DESTINACE
+========================= */
+
+const params = new URLSearchParams(window.location.search);
+const destinationId = params.get("id");
+
+const destination = destinations.find(
+  item => item.id === destinationId
+);
+
+if (!destination) {
+  document.getElementById("pageTitle").textContent =
+    "Místo nenalezeno";
+
+  document.getElementById("pageDescription").textContent =
+    "Zadané místo není v databázi.";
+
+  throw new Error("Destination not found.");
+}
+
+
+/* =========================
+   HELPERY
+========================= */
+
+const typeInfo = {
+  parking:      { label: "Parkování", icon: "🅿️" },
+  swimming:     { label: "Koupání", icon: "🌊" },
+  waterfall:    { label: "Vodopád", icon: "💧" },
+  coffee:       { label: "Kavárna", icon: "☕" },
+  food:         { label: "Jídlo", icon: "🥐" },
+  shower:       { label: "Sprcha", icon: "🚿" },
+  toilet:       { label: "WC", icon: "🚻" },
+  paddleboard:  { label: "Paddleboard", icon: "🛶" },
+  viewpoint:    { label: "Výhled", icon: "⛰️" },
+  service:      { label: "Servis", icon: "🔧" },
+  sight:        { label: "Památka", icon: "🏛️" },
+  cycling:      { label: "Cyklistika", icon: "🚴" },
+  hike:         { label: "Hike", icon: "🥾" }
+};
+
+function getTypeInfo(type) {
+  return typeInfo[type] || {
+    label: type,
+    icon: "📍"
+  };
+}
+
+function formatDate(value) {
+  if (!value) return "";
+
+  const [year, month, day] =
+    value.split("-");
+
+  return `${day}. ${month}. ${year}`;
+}
+
+
+/* =========================
+   HEADER
+========================= */
+
+document.title =
+  `${destination.name} | Kam vyrazit?`;
+
+document.getElementById("pageTitle").textContent =
+  destination.name.toUpperCase();
+
+document.getElementById("pageDescription").textContent =
+  destination.description;
+
+
+const pageMeta =
+  document.getElementById("pageMeta");
+
+pageMeta.innerHTML = `
+  <div class="tag">
+    ${destination.country} · ${destination.region}
+  </div>
+
+  <div class="tag status">
+    ${
+      destination.status === "wishlist"
+        ? "★ Chci navštívit"
+        : "✓ Navštíveno"
+    }
+  </div>
+`;
+
+
+/* =========================
+   STATISTIKY TRAS
+========================= */
+
+const stats =
+  document.getElementById("stats");
+
+if (
+  destination.routes &&
+  destination.routes.length > 0
+) {
+
+  const firstRoute =
+    destination.routes[0];
+
+  if (firstRoute.distanceKm) {
+    stats.innerHTML += `
+      <div class="stat">
+        ↔️ ${firstRoute.distanceKm} km
+      </div>
+    `;
+  }
+
+  if (firstRoute.elevationGainM) {
+    stats.innerHTML += `
+      <div class="stat">
+        ↗️ +${firstRoute.elevationGainM} m
+      </div>
+    `;
+  }
+
+  if (firstRoute.plannedTime) {
+    stats.innerHTML += `
+      <div class="stat">
+        ⏱️ ${firstRoute.plannedTime}
+      </div>
+    `;
+  }
+
+} else {
+
+  stats.style.display = "none";
+
+}
+
+
+/* =========================
+   MAPA
+========================= */
+
+const map = L.map("map").setView(
+  [destination.lat, destination.lon],
+  14
+);
+
+
+const topoLayer = L.tileLayer(
+  "https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png",
+  {
+    maxZoom: 17,
+    attribution:
+      "Map data © OpenStreetMap contributors, SRTM | Map style © OpenTopoMap"
+  }
+);
+
+
+const classicLayer = L.tileLayer(
+  "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+  {
+    maxZoom: 19,
+    attribution:
+      "© OpenStreetMap contributors"
+  }
+);
+
+
+topoLayer.addTo(map);
+
+
+/* =========================
+   GPX TRASY
+========================= */
+
+const routesContainer =
+  document.getElementById("routesContainer");
+
+const gpxLayers = [];
+
+
+if (
+  destination.routes &&
+  destination.routes.length > 0
+) {
+
+  routesContainer.innerHTML = `
+    <div class="section-label">
+      Trasy
+    </div>
+  `;
+
+
+  destination.routes.forEach(route => {
+
+    const routeCard =
+      document.createElement("div");
+
+    routeCard.className =
+      "route-card";
+
+
+    routeCard.innerHTML = `
+      <strong>
+        ${route.name}
+      </strong>
+
+      <p>
+        ${
+          route.type === "cycling"
+            ? "Uložená cyklotrasa."
+            : "Uložená turistická trasa."
+        }
+      </p>
+
+      <div class="route-actions">
+
+        <button class="route-button">
+          Zobrazit celou trasu
+        </button>
+
+        <a
+          href="${route.file}"
+          download
+          class="route-button"
+        >
+          Stáhnout GPX
+        </a>
+
+      </div>
+    `;
+
+
+    routesContainer.appendChild(
+      routeCard
+    );
+
+
+    const gpx =
+      new L.GPX(
+        route.file,
+        {
+          async: true,
+
+          polyline_options: {
+            color: "#111111",
+            opacity: 0.85,
+            weight: 5,
+            lineCap: "round"
+          },
+
+          marker_options: {
+            startIconUrl: null,
+            endIconUrl: null,
+            shadowUrl: null
+          }
+        }
+      )
+      .on("loaded", function(e) {
+
+        gpxLayers.push(gpx);
+
+        if (
+          destination.routes.length === 1
+        ) {
+          map.fitBounds(
+            e.target.getBounds(),
+            {
+              padding: [35, 35]
+            }
+          );
+        }
+
+      })
+      .addTo(map);
+
+
+    routeCard
+      .querySelector("button")
+      .addEventListener(
+        "click",
+        () => {
+
+          if (
+            gpx.getBounds().isValid()
+          ) {
+            map.fitBounds(
+              gpx.getBounds(),
+              {
+                padding: [35, 35]
+              }
+            );
+          }
+
+        }
+      );
+
+  });
+
+} else {
+
+  routesContainer.style.display =
+    "none";
+
+}
+
+
+/* =========================
+   MARKERY
+========================= */
+
+const markers = {};
+
+
+function createMarkerIcon(point) {
+
+  const info =
+    getTypeInfo(point.type);
+
+  return L.divIcon({
+    className: "",
+
+    html: `
+      <div class="custom-marker">
+        ${info.icon}
+      </div>
+    `,
+
+    iconSize: [38, 38],
+    iconAnchor: [19, 19],
+    popupAnchor: [0, -21]
+  });
+
+}
+
+
+(destination.points || [])
+  .forEach(point => {
+
+    const info =
+      getTypeInfo(point.type);
+
+
+    const marker =
+      L.marker(
+        [point.lat, point.lon],
+        {
+          icon:
+            createMarkerIcon(point)
+        }
+      );
+
+
+    marker.bindPopup(`
+      <div style="width:230px;">
+
+        <strong style="font-size:15px;">
+          ${point.name}
+        </strong>
+
+        <div style="
+          margin-top:3px;
+          font-size:12px;
+          color:#777;
+        ">
+          ${info.label}
+        </div>
+
+        <p style="
+          margin:10px 0 0;
+          line-height:1.45;
+          font-size:13px;
+        ">
+          ${point.description}
+        </p>
+
+        ${
+          point.lastChecked
+            ? `
+              <div style="
+                margin-top:10px;
+                font-size:10px;
+                color:#999;
+              ">
+                Ověřeno:
+                ${formatDate(point.lastChecked)}
+              </div>
+            `
+            : ""
+        }
+
+      </div>
+    `);
+
+
+    marker.addTo(map);
+
+    markers[point.id] =
+      marker;
+
+  });
+
+
+/* =========================
+   SEZNAM BODŮ
+========================= */
+
+const placeList =
+  document.getElementById("placeList");
+
+
+if (
+  !destination.points ||
+  destination.points.length === 0
+) {
+
+  placeList.innerHTML = `
+    <div class="empty-state">
+      K tomuto místu zatím nejsou přidané žádné podrobnější body.
+    </div>
+  `;
+
+}
+
+
+(destination.points || [])
+  .forEach(point => {
+
+    const info =
+      getTypeInfo(point.type);
+
+
+    const card =
+      document.createElement("div");
+
+
+    card.className =
+      "place-card";
+
+    card.dataset.id =
+      point.id;
+
+    card.dataset.type =
+      point.type;
+
+
+    const tagsHtml =
+      (point.tags || [])
+        .map(tag =>
+          `<span class="small-tag">${tag}</span>`
+        )
+        .join("");
+
+
+    card.innerHTML = `
+
+      <div class="place-header">
+
+        <div class="icon">
+          ${info.icon}
+        </div>
+
+        <div class="place-info">
+
+          <h3>
+            ${point.name}
+          </h3>
+
+          <div class="type">
+            ${info.label}
+          </div>
+
+          <div class="tags">
+            ${tagsHtml}
+          </div>
+
+        </div>
+
+      </div>
+
+      <p class="description">
+        ${point.description}
+      </p>
+
+      ${
+        point.lastChecked
+          ? `
+            <div class="checked">
+              Ověřeno:
+              ${formatDate(point.lastChecked)}
+            </div>
+          `
+          : ""
+      }
+
+    `;
+
+
+    card.addEventListener(
+      "click",
+      () => {
+
+        document
+          .querySelectorAll(".place-card")
+          .forEach(
+            c =>
+              c.classList.remove("active")
+          );
+
+
+        card.classList.add("active");
+
+
+        map.flyTo(
+          [point.lat, point.lon],
+          17,
+          {
+            duration: 1.1
+          }
+        );
+
+
+        setTimeout(
+          () => {
+            markers[point.id].openPopup();
+          },
+          1000
+        );
+
+      }
+    );
+
+
+    placeList.appendChild(card);
+
+  });
+
+
+/* =========================
+   FILTRY
+========================= */
+
+const filters =
+  document.getElementById("filters");
+
+
+const usedTypes = [
+  ...new Set(
+    (destination.points || [])
+      .map(point => point.type)
+  )
+];
+
+
+if (usedTypes.length > 1) {
+
+  const allButton =
+    document.createElement("button");
+
+  allButton.className =
+    "filter-button active";
+
+  allButton.textContent =
+    "Vše";
+
+  allButton.dataset.filter =
+    "all";
+
+  filters.appendChild(
+    allButton
+  );
+
+
+  usedTypes.forEach(type => {
+
+    const info =
+      getTypeInfo(type);
+
+
+    const button =
+      document.createElement("button");
+
+    button.className =
+      "filter-button";
+
+    button.dataset.filter =
+      type;
+
+    button.textContent =
+      `${info.icon} ${info.label}`;
+
+
+    filters.appendChild(
+      button
+    );
+
+  });
+
+
+  filters
+    .querySelectorAll(".filter-button")
+    .forEach(button => {
+
+      button.addEventListener(
+        "click",
+        () => {
+
+          filters
+            .querySelectorAll(
+              ".filter-button"
+            )
+            .forEach(
+              btn =>
+                btn.classList.remove(
+                  "active"
+                )
+            );
+
+
+          button.classList.add(
+            "active"
+          );
+
+
+          const filter =
+            button.dataset.filter;
+
+
+          (destination.points || [])
+            .forEach(point => {
+
+              const card =
+                document.querySelector(
+                  `.place-card[data-id="${point.id}"]`
+                );
+
+
+              const marker =
+                markers[point.id];
+
+
+              const visible =
+                filter === "all" ||
+                point.type === filter;
+
+
+              if (card) {
+                card.classList.toggle(
+                  "hidden",
+                  !visible
+                );
+              }
+
+
+              if (visible) {
+
+                if (
+                  !map.hasLayer(marker)
+                ) {
+                  marker.addTo(map);
+                }
+
+              } else {
+
+                if (
+                  map.hasLayer(marker)
+                ) {
+                  map.removeLayer(marker);
+                }
+
+              }
+
+            });
+
+        }
+      );
+
+    });
+
+} else {
+
+  filters.style.display =
+    "none";
+
+}
+
+
+/* =========================
+   MAP SWITCHER
+========================= */
+
+const topoButton =
+  document.getElementById("topoButton");
+
+const classicButton =
+  document.getElementById("classicButton");
+
+
+topoButton.addEventListener(
+  "click",
+  () => {
+
+    if (!map.hasLayer(topoLayer)) {
+
+      map.removeLayer(
+        classicLayer
+      );
+
+      topoLayer.addTo(map);
+
+    }
+
+    topoButton.classList.add(
+      "active"
+    );
+
+    classicButton.classList.remove(
+      "active"
+    );
+
+  }
+);
+
+
+classicButton.addEventListener(
+  "click",
+  () => {
+
+    if (
+      !map.hasLayer(classicLayer)
+    ) {
+
+      map.removeLayer(
+        topoLayer
+      );
+
+      classicLayer.addTo(map);
+
+    }
+
+    classicButton.classList.add(
+      "active"
+    );
+
+    topoButton.classList.remove(
+      "active"
+    );
+
+  }
+);
+
+</script>
 
 </body>
 </html>
