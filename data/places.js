@@ -890,7 +890,7 @@ routes: [
     type: "hike",
     file: "routes/OkruhSnezkaKarpacz.gpx",
     description:
-        "Taková jednodušší cesta. Je to celistvý okruh. Trošku bacha na to, že je to na Plápolácké straně, jestli bude hodně lidí, tak se tím davem Poláků neprorveš. Bude fronta až na vrchol (fronta Polsky - Pan za pana by neviděl pana)"
+        "Taková jednodušší cesta. Je to celistvý okruh. 946m převýšení, 13.4km celkem. Když by se člověk otočil na Sněžce a šel stejnou zpátky je to 12.4km"
   }
 ],
   
