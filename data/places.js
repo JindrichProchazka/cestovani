@@ -522,6 +522,62 @@ const destinations = [
         description:
           "Rodinný autoservis, se kterým mám výbornou zkušenost. Odstranění chyby AdBlue u Peugeotu Rifter 2019 stálo 30 €."
       }
+
+      {
+  id: "tarvisio-waterfall-parking",
+  name: "Parkoviště k vodopádu",
+  lat: 46.5063531,
+  lon: 13.6040703,
+
+  type: "parking",
+
+  tags: [
+    "parking",
+    "waterfall",
+    "swimming"
+  ],
+
+  description:
+    "Asfaltové parkoviště, které by mělo mít dostatečnou kapacitu. Odtud se dá po červené dojít směrem k vodopádu."
+},
+
+{
+  id: "tarvisio-waterfall",
+  name: "Vodopád u Tarvisia",
+  lat: 46.5061153,
+  lon: 13.6012111,
+
+  type: "waterfall",
+
+  tags: [
+    "waterfall",
+    "swimming",
+    "nature"
+  ],
+
+  description:
+    "Pěkný vodopád kousek od Tarvisia. Od parkoviště se k němu dá dojít po červené trase a celé okolí je vhodné i na koupání."
+},
+
+{
+  id: "tarvisio-wooden-path",
+  name: "Dřevěná stezka nad vodou",
+  lat: 46.5084297,
+  lon: 13.6034375,
+
+  type: "swimming",
+
+  tags: [
+    "swimming",
+    "nature",
+    "walk",
+    "waterfall"
+  ],
+
+  description:
+    "Pěkná dřevěná cesta vedená nad vodou v okolí vodopádu. Celá oblast působí jako příjemné místo na krátkou procházku i koupání."
+}
+      
     ]
   },
 
