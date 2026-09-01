@@ -225,6 +225,11 @@
       font-size: 18px;
     }
 
+    .place-info {
+      min-width: 0;
+      flex: 1;
+    }
+
     .place-info h3 {
       margin: 0;
       font-size: 16px;
@@ -257,6 +262,40 @@
       color: #555;
       font-size: 13px;
       line-height: 1.5;
+    }
+
+    .coordinates-box {
+      margin-top: 12px;
+      padding: 9px 10px;
+      background: #f4f3ef;
+      border-radius: 11px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    .coordinates {
+      font-family: monospace;
+      font-size: 11px;
+      color: #555;
+      overflow-wrap: anywhere;
+    }
+
+    .copy-coordinates {
+      border: 0;
+      background: white;
+      padding: 6px 9px;
+      border-radius: 999px;
+      cursor: pointer;
+      font-size: 10px;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+
+    .copy-coordinates:hover {
+      background: #111;
+      color: white;
     }
 
     .checked {
@@ -459,9 +498,7 @@
 
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet-gpx/1.7.0/gpx.min.js"></script>
-
 <script src="data/places.js"></script>
 
 <script>
@@ -478,6 +515,7 @@ const destination = destinations.find(
 );
 
 if (!destination) {
+
   document.getElementById("pageTitle").textContent =
     "Místo nenalezeno";
 
@@ -546,6 +584,77 @@ function formatDate(value) {
   return `${day}. ${month}. ${year}`;
 
 }
+
+
+function getCoordinates(point) {
+
+  return `${Number(point.lat).toFixed(7)}, ${Number(point.lon).toFixed(7)}`;
+
+}
+
+
+async function copyCoordinates(point, button) {
+
+  const coordinates =
+    getCoordinates(point);
+
+  try {
+
+    await navigator.clipboard.writeText(
+      coordinates
+    );
+
+    const originalText =
+      button.textContent;
+
+    button.textContent =
+      "Zkopírováno ✓";
+
+    setTimeout(() => {
+
+      button.textContent =
+        originalText;
+
+    }, 1400);
+
+  } catch (error) {
+
+    const textarea =
+      document.createElement("textarea");
+
+    textarea.value =
+      coordinates;
+
+    document.body.appendChild(
+      textarea
+    );
+
+    textarea.select();
+
+    document.execCommand(
+      "copy"
+    );
+
+    textarea.remove();
+
+    const originalText =
+      button.textContent;
+
+    button.textContent =
+      "Zkopírováno ✓";
+
+    setTimeout(() => {
+
+      button.textContent =
+        originalText;
+
+    }, 1400);
+
+  }
+
+}
+
+
 /* =========================
    HEADER
 ========================= */
@@ -563,18 +672,21 @@ document.getElementById("pageDescription").textContent =
 const pageMeta =
   document.getElementById("pageMeta");
 
+
 pageMeta.innerHTML = `
   <div class="tag">
     ${destination.country} · ${destination.region}
   </div>
 
-  <div class="tag status">
-    ${
-      destination.status === "wishlist"
-        ? "★ Chci navštívit"
-        : "✓ Navštíveno"
-    }
-  </div>
+  ${
+    destination.wishlist === true
+      ? `
+        <div class="tag status">
+          ★ Chci navštívit
+        </div>
+      `
+      : ""
+  }
 `;
 
 
@@ -594,32 +706,43 @@ if (
     destination.routes[0];
 
   if (firstRoute.distanceKm) {
+
     stats.innerHTML += `
       <div class="stat">
         ↔️ ${firstRoute.distanceKm} km
       </div>
     `;
+
   }
 
   if (firstRoute.elevationGainM) {
+
     stats.innerHTML += `
       <div class="stat">
         ↗️ +${firstRoute.elevationGainM} m
       </div>
     `;
+
   }
 
   if (firstRoute.plannedTime) {
+
     stats.innerHTML += `
       <div class="stat">
         ⏱️ ${firstRoute.plannedTime}
       </div>
     `;
+
+  }
+
+  if (stats.innerHTML.trim() === "") {
+    stats.style.display = "none";
   }
 
 } else {
 
-  stats.style.display = "none";
+  stats.style.display =
+    "none";
 
 }
 
@@ -744,22 +867,27 @@ if (
           }
         }
       )
-      .on("loaded", function(e) {
+      .on(
+        "loaded",
+        function(e) {
 
-        gpxLayers.push(gpx);
+          gpxLayers.push(gpx);
 
-        if (
-          destination.routes.length === 1
-        ) {
-          map.fitBounds(
-            e.target.getBounds(),
-            {
-              padding: [35, 35]
-            }
-          );
+          if (
+            destination.routes.length === 1
+          ) {
+
+            map.fitBounds(
+              e.target.getBounds(),
+              {
+                padding: [35, 35]
+              }
+            );
+
+          }
+
         }
-
-      })
+      )
       .addTo(map);
 
 
@@ -772,12 +900,14 @@ if (
           if (
             gpx.getBounds().isValid()
           ) {
+
             map.fitBounds(
               gpx.getBounds(),
               {
                 padding: [35, 35]
               }
             );
+
           }
 
         }
@@ -802,10 +932,11 @@ const markers = {};
 
 function createMarkerIcon(point) {
 
- const info =
-  getPointInfo(point);
+  const info =
+    getPointInfo(point);
 
   return L.divIcon({
+
     className: "",
 
     html: `
@@ -817,6 +948,7 @@ function createMarkerIcon(point) {
     iconSize: [38, 38],
     iconAnchor: [19, 19],
     popupAnchor: [0, -21]
+
   });
 
 }
@@ -825,8 +957,8 @@ function createMarkerIcon(point) {
 (destination.points || [])
   .forEach(point => {
 
-  const info =
-  getPointInfo(point);
+    const info =
+      getPointInfo(point);
 
     const marker =
       L.marker(
@@ -860,6 +992,17 @@ function createMarkerIcon(point) {
         ">
           ${point.description}
         </p>
+
+        <div style="
+          margin-top:10px;
+          padding:7px 9px;
+          background:#f4f3ef;
+          border-radius:8px;
+          font-family:monospace;
+          font-size:11px;
+        ">
+          📍 ${getCoordinates(point)}
+        </div>
 
         ${
           point.lastChecked
@@ -913,8 +1056,8 @@ if (
 (destination.points || [])
   .forEach(point => {
 
-   const info =
-  getPointInfo(point);
+    const info =
+      getPointInfo(point);
 
     const card =
       document.createElement("div");
@@ -968,6 +1111,21 @@ if (
         ${point.description}
       </p>
 
+      <div class="coordinates-box">
+
+        <span class="coordinates">
+          📍 ${getCoordinates(point)}
+        </span>
+
+        <button
+          class="copy-coordinates"
+          type="button"
+        >
+          Kopírovat
+        </button>
+
+      </div>
+
       ${
         point.lastChecked
           ? `
@@ -982,6 +1140,27 @@ if (
     `;
 
 
+    const copyButton =
+      card.querySelector(
+        ".copy-coordinates"
+      );
+
+
+    copyButton.addEventListener(
+      "click",
+      event => {
+
+        event.stopPropagation();
+
+        copyCoordinates(
+          point,
+          copyButton
+        );
+
+      }
+    );
+
+
     card.addEventListener(
       "click",
       () => {
@@ -990,11 +1169,15 @@ if (
           .querySelectorAll(".place-card")
           .forEach(
             c =>
-              c.classList.remove("active")
+              c.classList.remove(
+                "active"
+              )
           );
 
 
-        card.classList.add("active");
+        card.classList.add(
+          "active"
+        );
 
 
         map.flyTo(
@@ -1008,7 +1191,11 @@ if (
 
         setTimeout(
           () => {
-            markers[point.id].openPopup();
+
+            markers[
+              point.id
+            ].openPopup();
+
           },
           1000
         );
@@ -1017,7 +1204,9 @@ if (
     );
 
 
-    placeList.appendChild(card);
+    placeList.appendChild(
+      card
+    );
 
   });
 
@@ -1097,11 +1286,6 @@ if (totalFilters > 1) {
   });
 
 
-  /*
-    Pokud destinace obsahuje
-    alespoň jedno placené parkoviště,
-    vytvoří se zvláštní filtr.
-  */
   if (hasPaidParking) {
 
     const paidButton =
@@ -1124,7 +1308,9 @@ if (totalFilters > 1) {
 
 
   filters
-    .querySelectorAll(".filter-button")
+    .querySelectorAll(
+      ".filter-button"
+    )
     .forEach(button => {
 
       button.addEventListener(
@@ -1165,38 +1351,29 @@ if (totalFilters > 1) {
                 markers[point.id];
 
 
-              let visible = false;
+              let visible =
+                false;
 
 
-              /*
-                Všechny body
-              */
-              if (filter === "all") {
+              if (
+                filter === "all"
+              ) {
 
-                visible = true;
+                visible =
+                  true;
 
               }
 
-
-              /*
-                Normální filtr podle typu:
-                parking, swimming,
-                toilet, waterfall...
-              */
               else if (
                 filter !== "paid-parking" &&
                 point.type === filter
               ) {
 
-                visible = true;
+                visible =
+                  true;
 
               }
 
-
-              /*
-                Speciální filtr:
-                pouze placená parkoviště
-              */
               else if (
                 filter === "paid-parking" &&
                 point.type === "parking" &&
@@ -1204,7 +1381,8 @@ if (totalFilters > 1) {
                 point.tags.includes("paid")
               ) {
 
-                visible = true;
+                visible =
+                  true;
 
               }
 
@@ -1226,7 +1404,9 @@ if (totalFilters > 1) {
                   if (
                     !map.hasLayer(marker)
                   ) {
+
                     marker.addTo(map);
+
                   }
 
                 } else {
@@ -1234,7 +1414,11 @@ if (totalFilters > 1) {
                   if (
                     map.hasLayer(marker)
                   ) {
-                    map.removeLayer(marker);
+
+                    map.removeLayer(
+                      marker
+                    );
+
                   }
 
                 }
@@ -1254,22 +1438,30 @@ if (totalFilters > 1) {
     "none";
 
 }
+
+
 /* =========================
    MAP SWITCHER
 ========================= */
 
 const topoButton =
-  document.getElementById("topoButton");
+  document.getElementById(
+    "topoButton"
+  );
 
 const classicButton =
-  document.getElementById("classicButton");
+  document.getElementById(
+    "classicButton"
+  );
 
 
 topoButton.addEventListener(
   "click",
   () => {
 
-    if (!map.hasLayer(topoLayer)) {
+    if (
+      !map.hasLayer(topoLayer)
+    ) {
 
       map.removeLayer(
         classicLayer
@@ -1278,6 +1470,7 @@ topoButton.addEventListener(
       topoLayer.addTo(map);
 
     }
+
 
     topoButton.classList.add(
       "active"
@@ -1296,16 +1489,21 @@ classicButton.addEventListener(
   () => {
 
     if (
-      !map.hasLayer(classicLayer)
+      !map.hasLayer(
+        classicLayer
+      )
     ) {
 
       map.removeLayer(
         topoLayer
       );
 
-      classicLayer.addTo(map);
+      classicLayer.addTo(
+        map
+      );
 
     }
+
 
     classicButton.classList.add(
       "active"
