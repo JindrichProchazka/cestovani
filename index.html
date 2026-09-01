@@ -375,19 +375,17 @@
     </p>
   </div>
 
-  <div class="top-actions">
-    <button class="nav-button active" data-status="all">
-      Vše
-    </button>
+<div class="top-actions">
 
-    <button class="nav-button" data-status="wishlist">
-      ★ Chci navštívit
-    </button>
+  <button class="nav-button active" data-mode="all">
+    Vše
+  </button>
 
-    <button class="nav-button" data-status="visited">
-      ✓ Navštíveno
-    </button>
-  </div>
+  <button class="nav-button" data-mode="wishlist">
+    ★ Wishlist
+  </button>
+
+</div>
 </header>
 
 
@@ -504,9 +502,7 @@ const typeInfo = {
   cycling:      { label: "Kolo", icon: "🚴" },
   paddleboard:  { label: "Paddleboard", icon: "🛶" },
   sleep:        { label: "Spaní", icon: "🛏️" },
-  viewpoint:    { label: "Výhledy", icon: "⛰️" },
-  sight:        { label: "Památky", icon: "🏛️" },
-  service:      { label: "Servis", icon: "🔧" }
+ sight:        { label: "Památky", icon: "🏛️" }
 };
 
 
@@ -601,7 +597,7 @@ destinations.forEach(destination => {
    STAV FILTRŮ
 ========================= */
 
-let selectedStatus = "all";
+let selectedMode = "all";
 let selectedCategory = "all";
 
 
@@ -689,25 +685,42 @@ function createGroupIcon(text, width = 90) {
    POMOCNÉ FUNKCE
 ========================= */
 
-function destinationMatchesStatus(destination) {
+function destinationMatchesMode(destination) {
 
-  if (selectedStatus === "all") {
+  if (selectedMode === "all") {
     return true;
   }
 
-  return destination.status === selectedStatus;
+  if (selectedMode === "wishlist") {
+    return destination.wishlist === true;
+  }
+
+  return true;
 }
 
 
-function pointMatchesStatus(point) {
+function pointMatchesMode(point) {
 
-  if (selectedStatus === "all") {
+  if (selectedMode === "all") {
     return true;
   }
 
-  return point.status === selectedStatus;
-}
+  if (selectedMode === "wishlist") {
 
+    const destination =
+      destinations.find(
+        item =>
+          item.id === point.destinationId
+      );
+
+    return (
+      destination &&
+      destination.wishlist === true
+    );
+  }
+
+  return true;
+}
 
 function pointMatchesCategory(point) {
 
@@ -781,9 +794,9 @@ function getVisibleDestinations() {
   return destinations.filter(destination => {
 
     return (
-      destinationMatchesStatus(destination) &&
-      destinationContainsCategory(destination)
-    );
+  destinationMatchesMode(destination) &&
+  destinationContainsCategory(destination)
+);
 
   });
 
@@ -794,10 +807,10 @@ function getVisiblePoints() {
 
   return allPoints.filter(point => {
 
-    return (
-      pointMatchesStatus(point) &&
-      pointMatchesCategory(point)
-    );
+return (
+  pointMatchesMode(point) &&
+  pointMatchesCategory(point)
+);
 
   });
 
@@ -1102,12 +1115,19 @@ function buildDestinations() {
             font-size:11px;
             color:#777;
           ">
-            ${
-              destination.status ===
-              "wishlist"
-                ? "★ Chci navštívit"
-                : "✓ Navštíveno"
-            }
+           ${
+  destination.wishlist === true
+    ? `
+      <div style="
+        margin-top:7px;
+        font-size:11px;
+        color:#777;
+      ">
+        ★ Chci navštívit
+      </div>
+    `
+    : ""
+}
           </div>
 
           <p style="
@@ -1410,10 +1430,8 @@ function buildCategoryFilters() {
     "cycling",
     "paddleboard",
     "sleep",
-    "viewpoint",
     "sight",
-    "service"
-  ];
+     ];
 
 
   order
@@ -1490,12 +1508,12 @@ function buildCategoryFilters() {
 
 
 /* =========================
-   STATUS FILTRY
+   HLAVNÍ REŽIM
 ========================= */
 
 document
   .querySelectorAll(
-    ".nav-button[data-status]"
+    ".nav-button[data-mode]"
   )
   .forEach(button => {
 
@@ -1505,7 +1523,7 @@ document
 
         document
           .querySelectorAll(
-            ".nav-button[data-status]"
+            ".nav-button[data-mode]"
           )
           .forEach(btn =>
             btn.classList.remove(
@@ -1513,15 +1531,12 @@ document
             )
           );
 
-
         button.classList.add(
           "active"
         );
 
-
-        selectedStatus =
-          button.dataset.status;
-
+        selectedMode =
+          button.dataset.mode;
 
         refreshEverything();
 
@@ -1529,7 +1544,6 @@ document
     );
 
   });
-
 
 /* =========================
    ZOBRAZENÍ VRSTEV
