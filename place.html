@@ -501,12 +501,22 @@ const typeInfo = {
   shower:       { label: "Sprcha", icon: "🚿" },
   toilet:       { label: "WC", icon: "🚻" },
   paddleboard:  { label: "Paddleboard", icon: "🛶" },
-  viewpoint:    { label: "Výhled", icon: "⛰️" },
-  service:      { label: "Servis", icon: "🔧" },
   sight:        { label: "Památka", icon: "🏛️" },
   cycling:      { label: "Cyklistika", icon: "🚴" },
-  hike:         { label: "Hike", icon: "🥾" }
+  hike:         { label: "Hike", icon: "🥾" },
+  service:      { label: "Servis", icon: "🔧" }
 };
+
+
+function getTypeInfo(type) {
+
+  return typeInfo[type] || {
+    label: type,
+    icon: "📍"
+  };
+
+}
+
 
 function getPointInfo(point) {
 
@@ -522,18 +532,20 @@ function getPointInfo(point) {
   }
 
   return getTypeInfo(point.type);
+
 }
 
+
 function formatDate(value) {
+
   if (!value) return "";
 
   const [year, month, day] =
     value.split("-");
 
   return `${day}. ${month}. ${year}`;
+
 }
-
-
 /* =========================
    HEADER
 ========================= */
