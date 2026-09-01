@@ -1063,5 +1063,142 @@ routes: [
 
   ]
 },
+
+{
+  id: "solden-high-road",
+  name: "Sölden – nejvyšší asfalt",
+  country: "Rakousko",
+  region: "Tyrolsko",
+
+  lat: 46.9230858,
+  lon: 10.9452278,
+
+  wishlist: true,
+
+  description:
+    "Vysokohorský cyklistický výjezd ze Söldenu směrem k ledovcové silnici. Cílem je dostat se přibližně do 2 820 m n. m.",
+
+  tags: [
+    "cycling",
+    "mountain"
+  ],
+
+  routes: [
+    {
+      id: "solden-cycle-route",
+      name: "Sölden – výjezd k 2 820 m",
+      type: "cycling",
+      file: "routes/Solden.gpx",
+      distanceKm: 28.6,
+      elevationGainM: 1369,
+      description:
+        "Výjezd nahoru a zpět. Celkem 28,6 km a přibližně 1 369 m převýšení. Vrchol trasy je přibližně ve 2 820 m n. m."
+    }
+  ],
+
+  points: [
+    {
+      id: "solden-parking",
+      name: "Parkoviště – start trasy",
+      lat: 46.9573319,
+      lon: 11.0076806,
+
+      type: "parking",
+
+      tags: [
+        "parking",
+        "cycling"
+      ],
+
+      description:
+        "Asfaltové parkoviště zdarma. Výchozí místo pro cyklistický výjezd."
+    },
+
+    {
+      id: "solden-highest-road",
+      name: "Cíl výjezdu – cca 2 820 m",
+      lat: 46.9230858,
+      lon: 10.9452278,
+
+      type: "cycling",
+
+      tags: [
+        "cycling",
+        "mountain"
+      ],
+
+      description:
+        "Hlavní cíl výjezdu. Přibližná nadmořská výška 2 820 m n. m."
+    }
+  ]
+},
+
+{
+  id: "stelvio",
+  name: "Passo dello Stelvio",
+  country: "Itálie",
+  region: "Jižní Tyrolsko",
+
+  lat: 46.5286,
+  lon: 10.4532,
+
+  wishlist: true,
+
+  description:
+    "Vysokohorský cyklistický přejezd přes Passo dello Stelvio. Dlouhá trasa s téměř 1 900 m převýšení a vrcholem přibližně ve 2 760 m n. m.",
+
+  tags: [
+    "cycling",
+    "mountain"
+  ],
+
+  routes: [
+    {
+      id: "stelvio-cycle-route",
+      name: "Přejezd přes Stelvio",
+      type: "cycling",
+      file: "routes/Stelvio.gpx",
+      distanceKm: 64.8,
+      elevationGainM: 1892,
+      description:
+        "Cyklistická trasa přes Stelvio. Celkem 64,8 km a přibližně 1 892 m převýšení. Nejvyšší bod je kolem 2 760 m n. m."
+    }
+  ],
+
+  points: [
+    {
+      id: "stelvio-start",
+      name: "Start trasy",
+      lat: 46.6178631,
+      lon: 10.5954408,
+
+      type: "cycling",
+
+      tags: [
+        "cycling"
+      ],
+
+      description:
+        "Výchozí bod uložené trasy přes Stelvio."
+    },
+
+    {
+      id: "stelvio-pass",
+      name: "Passo dello Stelvio",
+      lat: 46.5286,
+      lon: 10.4532,
+
+      type: "cycling",
+
+      tags: [
+        "cycling",
+        "mountain"
+      ],
+
+      description:
+        "Hlavní vrchol trasy. Sedlo leží přibližně ve 2 760 m n. m."
+    }
+  ]
+},
   
 ];
