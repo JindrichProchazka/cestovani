@@ -541,4 +541,129 @@ const destinations = [
     tags: ["hike", "mountain", "viewpoint"],
     points: []
   }
+
+  {
+  id: "napoleon-bridge",
+  name: "Napoleon Bridge",
+  country: "Slovinsko",
+  region: "Soča",
+  lat: 46.2483369,
+  lon: 13.5861278,
+
+  wishlist: false,
+
+  description:
+    "Hezké místo na Soče na koupání, smočení a případně skákání. Hlavním bodem je Napoleonův most, ale v okolí jsou i další přístupy k vodě, parkování a kemp se sprchami a WC.",
+
+  tags: [
+    "swimming",
+    "jumping",
+    "parking",
+    "shower",
+    "toilet",
+    "sight"
+  ],
+
+  points: [
+    {
+      id: "napoleon-main-parking",
+      name: "Velké štěrkové parkoviště",
+      lat: 46.24367,
+      lon: 13.5864119,
+      type: "parking",
+      tags: ["parking"],
+      description:
+        "Velké štěrkové parkoviště zdarma s dobrou kapacitou. K Napoleonovu mostu je to odtud kousek pěšky."
+    },
+
+    {
+      id: "napoleon-bridge-main",
+      name: "Napoleonův most",
+      lat: 46.2483369,
+      lon: 13.5861278,
+      type: "sight",
+      tags: ["sight", "swimming", "jumping", "history"],
+      description:
+        "Historický most přes Soču. Jméno získal podle francouzských jednotek, které jej překračovaly v době Napoleonových tažení. Zároveň je to velmi pěkné místo na koupání a je tu potenciál ke skákání do vody."
+    },
+
+    {
+      id: "napoleon-camp-shower-1",
+      name: "Sprcha v kempu 1",
+      lat: 46.2500853,
+      lon: 13.5871467,
+      type: "shower",
+      tags: ["shower", "camp"],
+      description:
+        "Sprcha v nedalekém kempu. Osobně neověřeno, ale podle map by měla být dostupná. Podmínky použití je vhodné ověřit na místě."
+    },
+
+    {
+      id: "napoleon-camp-shower-2",
+      name: "Sprcha v kempu 2",
+      lat: 46.2510533,
+      lon: 13.5868375,
+      type: "shower",
+      tags: ["shower", "camp"],
+      description:
+        "Další sprcha v areálu kempu. Osobně neověřeno, ale podle map by měla být dostupná."
+    },
+
+    {
+      id: "napoleon-camp-shower-3",
+      name: "Sprcha v kempu 3",
+      lat: 46.2514856,
+      lon: 13.58666,
+      type: "shower",
+      tags: ["shower", "camp"],
+      description:
+        "Další možná sprcha v kempu. Osobně neověřeno."
+    },
+
+    {
+      id: "napoleon-camp-toilet-1",
+      name: "WC v kempu 1",
+      lat: 46.2501075,
+      lon: 13.5871364,
+      type: "toilet",
+      tags: ["toilet", "camp"],
+      description:
+        "Toalety v areálu kempu. Osobně neověřeno, podle map by měly být dostupné."
+    },
+
+    {
+      id: "napoleon-camp-toilet-2",
+      name: "WC v kempu 2",
+      lat: 46.2501686,
+      lon: 13.5882828,
+      type: "toilet",
+      tags: ["toilet", "camp"],
+      description:
+        "Další toalety v areálu kempu. Osobně neověřeno."
+    },
+
+    {
+      id: "napoleon-north-parking",
+      name: "Alternativní parkoviště",
+      lat: 46.2535206,
+      lon: 13.5848622,
+      type: "parking",
+      tags: ["parking"],
+      description:
+        "Další možnost parkování severně od Napoleonova mostu. Odtud se dá dojít jak k Napoleonovu mostu, tak k mostu Brv čez Sočo."
+    },
+
+    {
+      id: "brv-cez-soco",
+      name: "Brv čez Sočo",
+      lat: 46.2562575,
+      lon: 13.5870703,
+      type: "swimming",
+      tags: ["swimming", "jumping", "bridge"],
+      description:
+        "Další pěkné místo na Soče s přístupem k vodě. Minimálně vhodné na koupání, případně může mít i potenciál ke skákání."
+    }
+  ]
+},
+  
 ];
