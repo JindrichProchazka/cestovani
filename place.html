@@ -816,13 +816,17 @@ if (
         ${route.name}
       </strong>
 
-      <p>
-        ${
+     <p>
+  ${
+    route.description
+      ? route.description
+      : (
           route.type === "cycling"
             ? "Uložená cyklotrasa."
             : "Uložená turistická trasa."
-        }
-      </p>
+        )
+  }
+</p>
 
       <div class="route-actions">
 
