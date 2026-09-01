@@ -594,7 +594,7 @@ const destinations = [
   status: "wishlist",
     description:
       "Nejvyšší hora Německa. Zatím uložené jako místo, které chci navštívit.",
-    tags: ["hike", "mountain", "viewpoint"],
+    tags: ["hike", "mountain", "highest-point", "viewpoint"],
     points: []
   },
 
@@ -879,7 +879,8 @@ const destinations = [
   tags: [
     "hike",
     "mountain",
-    "parking",
+    "parking", 
+    "highest-point",
     "toilet"
   ],
 
