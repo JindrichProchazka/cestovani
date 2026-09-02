@@ -26,36 +26,63 @@
       font-family: Arial, Helvetica, sans-serif;
       background: #f4f3ef;
       color: #111;
+      overflow-x: hidden;
     }
 
+    /* =========================
+       HEADER
+    ========================= */
+
     header {
-      padding: 26px 34px 18px;
+      padding: 24px 32px 18px;
+
       display: flex;
       justify-content: space-between;
       align-items: flex-start;
-      gap: 20px;
+
+      gap: 24px;
+    }
+
+    .title-block {
+      min-width: 0;
+      max-width: 850px;
     }
 
     .back-link {
       display: inline-block;
+
       margin-bottom: 18px;
+
       font-size: 13px;
+
       text-decoration: none;
+
       color: #666;
+    }
+
+    .back-link:hover {
+      color: #111;
     }
 
     .title-block h1 {
       margin: 0;
+
       font-size: clamp(42px, 6vw, 82px);
+
       line-height: 0.95;
+
       letter-spacing: -3px;
     }
 
     .title-block p {
       margin: 16px 0 0;
+
       max-width: 760px;
+
       color: #666;
+
       line-height: 1.55;
+
       font-size: 15px;
     }
 
@@ -63,139 +90,330 @@
       display: flex;
       gap: 8px;
       flex-wrap: wrap;
+
       justify-content: flex-end;
     }
 
     .tag {
       border: 1px solid #ccc;
+
       border-radius: 999px;
+
       padding: 10px 16px;
+
       white-space: nowrap;
+
       font-size: 13px;
     }
 
     .tag.status {
       background: #111;
       color: white;
+
       border-color: #111;
     }
 
-    .stats {
-      padding: 0 34px 18px;
+    /* =========================
+       QUICK INFO
+    ========================= */
+
+    .quick-info-wrap {
+      padding: 0 32px 18px;
+    }
+
+    .quick-info {
       display: flex;
       gap: 8px;
+
       flex-wrap: wrap;
     }
 
-    .stat {
-      background: white;
+    .quick-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+
+      padding: 9px 13px;
+
       border-radius: 999px;
-      padding: 9px 14px;
+
+      background: white;
+
       font-size: 12px;
+
+      white-space: nowrap;
     }
 
+    .quick-item-icon {
+      font-size: 15px;
+    }
+
+    /* =========================
+       FILTERS
+    ========================= */
+
     .controls {
-      padding: 0 34px 18px;
+      padding: 0 32px 18px;
+
       display: flex;
+
       gap: 8px;
+
       flex-wrap: wrap;
     }
 
     .filter-button {
       border: 1px solid #ccc;
+
       background: transparent;
+
       color: #111;
+
       padding: 9px 14px;
+
       border-radius: 999px;
+
       cursor: pointer;
+
       font-size: 13px;
+
+      transition: 0.15s ease;
+    }
+
+    .filter-button:hover {
+      background: #e8e7e2;
     }
 
     .filter-button.active {
       background: #111;
       color: white;
+
       border-color: #111;
     }
 
+    /* =========================
+       MAIN
+    ========================= */
+
     .main {
-      padding: 0 24px 24px;
+      padding: 0 20px 20px;
     }
 
     .layout {
       display: grid;
-      grid-template-columns: 360px minmax(0, 1fr);
+
+      grid-template-columns:
+        minmax(320px, 390px)
+        minmax(0, 1fr);
+
       gap: 16px;
-      min-height: 690px;
+
+      height: calc(100vh - 205px);
+
+      min-height: 600px;
+
+      max-height: 850px;
     }
 
+    /* =========================
+       SIDEBAR
+    ========================= */
+
     .sidebar {
+      min-height: 0;
+
       overflow-y: auto;
-      padding: 4px 4px 4px 0;
+
+      padding: 4px 7px 16px 0;
+
+      scrollbar-width: thin;
     }
 
     .section-label {
-      margin: 4px 0 12px;
+      margin: 8px 0 12px;
+
       font-size: 11px;
+
       font-weight: bold;
+
       text-transform: uppercase;
+
       letter-spacing: 1.4px;
+
       color: #888;
     }
 
+    /* =========================
+       ROUTES
+    ========================= */
+
     .route-card {
       background: #111;
+
       color: white;
+
       border-radius: 18px;
+
       padding: 17px;
-      margin-bottom: 16px;
+
+      margin-bottom: 10px;
     }
 
-    .route-card strong {
+    .route-top {
+      display: flex;
+
+      justify-content: space-between;
+
+      align-items: flex-start;
+
+      gap: 12px;
+    }
+
+    .route-title {
+      min-width: 0;
+    }
+
+    .route-title strong {
       display: block;
+
       font-size: 16px;
-      margin-bottom: 7px;
+
+      line-height: 1.3;
     }
 
-    .route-card p {
-      margin: 0;
+    .route-stats {
+      display: flex;
+
+      gap: 6px;
+
+      flex-wrap: wrap;
+
+      margin-top: 9px;
+    }
+
+    .route-stat {
+      padding: 5px 8px;
+
+      border-radius: 999px;
+
+      background: rgba(255,255,255,0.12);
+
+      font-size: 10px;
+
+      white-space: nowrap;
+    }
+
+    .route-description {
+      margin: 12px 0 0;
+
       color: #ccc;
+
       font-size: 12px;
+
       line-height: 1.5;
     }
 
     .route-actions {
       display: flex;
+
       flex-wrap: wrap;
-      gap: 8px;
+
+      gap: 7px;
+
       margin-top: 14px;
     }
 
     .route-button {
       border: 0;
+
       background: white;
+
       color: #111;
-      padding: 8px 12px;
+
+      padding: 8px 11px;
+
       border-radius: 999px;
+
       cursor: pointer;
+
       font-weight: 600;
-      font-size: 12px;
+
+      font-size: 11px;
+
       text-decoration: none;
+
       display: inline-flex;
+
       align-items: center;
+
+      transition: 0.15s ease;
     }
+
+    .route-button:hover {
+      background: #ddd;
+    }
+
+    .route-button.route-visible {
+      background: #dedede;
+    }
+
+    /* =========================
+       NOTES
+    ========================= */
+
+    .notes-container {
+      margin: 20px 0;
+    }
+
+    .note-card {
+      background: #fff;
+
+      border-radius: 16px;
+
+      padding: 15px;
+
+      margin-bottom: 8px;
+    }
+
+    .note-card h3 {
+      margin: 0 0 7px;
+
+      font-size: 14px;
+    }
+
+    .note-card p {
+      margin: 0;
+
+      color: #666;
+
+      line-height: 1.5;
+
+      font-size: 12px;
+    }
+
+    /* =========================
+       PLACE CARDS
+    ========================= */
 
     .place-card {
       background: white;
+
       border-radius: 18px;
+
       padding: 16px;
+
       margin-bottom: 10px;
+
       cursor: pointer;
+
       border: 1px solid transparent;
-      transition: 0.2s ease;
+
+      transition: 0.18s ease;
     }
 
     .place-card:hover {
       border-color: #bbb;
+
       transform: translateY(-1px);
     }
 
@@ -209,87 +427,128 @@
 
     .place-header {
       display: flex;
+
       align-items: flex-start;
+
       gap: 12px;
     }
 
     .icon {
       width: 38px;
       height: 38px;
+
       flex: 0 0 38px;
+
       border-radius: 50%;
+
       background: #f1f1ee;
+
       display: flex;
+
       align-items: center;
+
       justify-content: center;
+
       font-size: 18px;
     }
 
     .place-info {
       min-width: 0;
+
       flex: 1;
     }
 
     .place-info h3 {
       margin: 0;
+
       font-size: 16px;
+
       line-height: 1.25;
     }
 
     .type {
       margin-top: 4px;
+
       color: #888;
+
       font-size: 12px;
     }
 
     .tags {
       margin-top: 8px;
+
       display: flex;
+
       gap: 5px;
+
       flex-wrap: wrap;
     }
 
     .small-tag {
       font-size: 10px;
+
       padding: 4px 7px;
+
       border-radius: 999px;
+
       background: #f1f1ee;
+
       color: #666;
     }
 
     .description {
       margin: 12px 0 0;
+
       color: #555;
+
       font-size: 13px;
+
       line-height: 1.5;
     }
 
     .coordinates-box {
       margin-top: 12px;
+
       padding: 9px 10px;
+
       background: #f4f3ef;
+
       border-radius: 11px;
+
       display: flex;
+
       align-items: center;
+
       justify-content: space-between;
+
       gap: 8px;
     }
 
     .coordinates {
       font-family: monospace;
+
       font-size: 11px;
+
       color: #555;
+
       overflow-wrap: anywhere;
     }
 
     .copy-coordinates {
       border: 0;
+
       background: white;
+
       padding: 6px 9px;
+
       border-radius: 999px;
+
       cursor: pointer;
+
       font-size: 10px;
+
       font-weight: 600;
+
       white-space: nowrap;
     }
 
@@ -300,40 +559,64 @@
 
     .checked {
       margin-top: 10px;
+
       font-size: 10px;
+
       color: #999;
     }
 
+    /* =========================
+       MAP
+    ========================= */
+
     .map-shell {
       position: relative;
-      background: white;
-      border-radius: 30px;
-      padding: 7px;
+
       min-width: 0;
+      min-height: 0;
+
+      background: white;
+
+      border-radius: 30px;
+
+      padding: 7px;
     }
 
     #map {
+      width: 100%;
       height: 100%;
-      min-height: 690px;
+
       border-radius: 24px;
+
       overflow: hidden;
+
+      background: #ddd;
     }
 
     .leaflet-bar {
       border: none !important;
+
       box-shadow: none !important;
     }
 
     .leaflet-bar a {
       border: none !important;
+
       margin-bottom: 4px;
+
       border-radius: 50% !important;
+
       width: 42px !important;
       height: 42px !important;
+
       line-height: 42px !important;
+
       background: rgba(255,255,255,0.95) !important;
+
       color: #111 !important;
-      box-shadow: 0 3px 12px rgba(0,0,0,0.12);
+
+      box-shadow:
+        0 3px 12px rgba(0,0,0,0.12);
     }
 
     .leaflet-control-zoom {
@@ -343,24 +626,41 @@
 
     .map-switcher {
       position: absolute;
+
       top: 20px;
       right: 20px;
+
       z-index: 1000;
+
       display: flex;
+
       gap: 4px;
+
       padding: 4px;
+
       background: rgba(255,255,255,0.92);
+
+      backdrop-filter: blur(10px);
+
       border-radius: 999px;
-      box-shadow: 0 4px 18px rgba(0,0,0,0.12);
+
+      box-shadow:
+        0 4px 18px rgba(0,0,0,0.12);
     }
 
     .map-switcher button {
       border: 0;
+
       background: transparent;
+
       padding: 9px 13px;
+
       border-radius: 999px;
+
       font-size: 12px;
+
       cursor: pointer;
+
       font-weight: 600;
     }
 
@@ -372,29 +672,50 @@
     .custom-marker {
       width: 38px;
       height: 38px;
+
       border-radius: 50%;
+
       background: #111;
+
       color: white;
+
       border: 3px solid white;
-      box-shadow: 0 3px 10px rgba(0,0,0,0.25);
+
+      box-shadow:
+        0 3px 10px rgba(0,0,0,0.25);
+
       display: flex;
+
       align-items: center;
+
       justify-content: center;
+
       font-size: 17px;
     }
 
     .empty-state {
       background: white;
+
       border-radius: 18px;
+
       padding: 18px;
+
       color: #666;
+
       font-size: 13px;
+
       line-height: 1.5;
     }
 
+    /* =========================
+       MOBILE
+    ========================= */
+
     @media (max-width: 900px) {
+
       header {
         padding: 22px 18px 16px;
+
         flex-direction: column;
       }
 
@@ -406,9 +727,10 @@
         justify-content: flex-start;
       }
 
-      .stats,
+      .quick-info-wrap,
       .controls {
-        padding: 0 18px 16px;
+        padding-left: 18px;
+        padding-right: 18px;
       }
 
       .main {
@@ -417,22 +739,34 @@
 
       .layout {
         display: flex;
+
         flex-direction: column;
+
+        height: auto;
+
+        max-height: none;
       }
 
       .map-shell {
         order: 1;
+
         height: 58vh;
+
         min-height: 420px;
       }
 
       #map {
-        min-height: 0;
         height: 100%;
       }
 
       .sidebar {
         order: 2;
+
+        max-height: none;
+
+        overflow: visible;
+
+        padding-top: 14px;
       }
     }
   </style>
@@ -444,24 +778,46 @@
 
   <div class="title-block">
 
-    <a href="index.html" class="back-link">
+    <a
+      href="index.html"
+      class="back-link"
+    >
       ← Zpět na hlavní mapu
     </a>
 
-    <h1 id="pageTitle">Načítám...</h1>
+    <h1 id="pageTitle">
+      Načítám...
+    </h1>
 
     <p id="pageDescription"></p>
 
   </div>
 
-  <div class="meta" id="pageMeta"></div>
+  <div
+    class="meta"
+    id="pageMeta"
+  ></div>
 
 </header>
 
 
-<div class="stats" id="stats"></div>
+<div
+  class="quick-info-wrap"
+  id="quickInfoWrap"
+>
 
-<div class="controls" id="filters"></div>
+  <div
+    class="quick-info"
+    id="quickInfo"
+  ></div>
+
+</div>
+
+
+<div
+  class="controls"
+  id="filters"
+></div>
 
 
 <main class="main">
@@ -471,6 +827,11 @@
     <aside class="sidebar">
 
       <div id="routesContainer"></div>
+
+      <div
+        class="notes-container"
+        id="notesContainer"
+      ></div>
 
       <div class="section-label">
         Místa
@@ -486,8 +847,18 @@
       <div id="map"></div>
 
       <div class="map-switcher">
-        <button id="topoButton" class="active">Turistická</button>
-        <button id="classicButton">Klasická</button>
+
+        <button
+          id="topoButton"
+          class="active"
+        >
+          Turistická
+        </button>
+
+        <button id="classicButton">
+          Klasická
+        </button>
+
       </div>
 
     </section>
@@ -498,8 +869,11 @@
 
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet-gpx/1.7.0/gpx.min.js"></script>
+
 <script src="data/places.js"></script>
+
 
 <script>
 
@@ -507,51 +881,133 @@
    PARAMETR DESTINACE
 ========================= */
 
-const params = new URLSearchParams(window.location.search);
-const destinationId = params.get("id");
+const params =
+  new URLSearchParams(
+    window.location.search
+  );
 
-const destination = destinations.find(
-  item => item.id === destinationId
-);
+
+const destinationId =
+  params.get("id");
+
+
+const destination =
+  destinations.find(
+    item =>
+      item.id === destinationId
+  );
+
 
 if (!destination) {
 
-  document.getElementById("pageTitle").textContent =
-    "Místo nenalezeno";
+  document
+    .getElementById("pageTitle")
+    .textContent =
+      "Místo nenalezeno";
 
-  document.getElementById("pageDescription").textContent =
-    "Zadané místo není v databázi.";
 
-  throw new Error("Destination not found.");
+  document
+    .getElementById(
+      "pageDescription"
+    )
+    .textContent =
+      "Zadané místo není v databázi.";
+
+
+  throw new Error(
+    "Destination not found."
+  );
+
 }
+
+
+/* =========================
+   TYPES
+========================= */
+
+const typeInfo = {
+
+  parking: {
+    label: "Parkování",
+    icon: "🅿️"
+  },
+
+  swimming: {
+    label: "Koupání",
+    icon: "🌊"
+  },
+
+  waterfall: {
+    label: "Vodopád",
+    icon: "💧"
+  },
+
+  coffee: {
+    label: "Kavárna",
+    icon: "☕"
+  },
+
+  food: {
+    label: "Jídlo",
+    icon: "🥐"
+  },
+
+  shower: {
+    label: "Sprcha",
+    icon: "🚿"
+  },
+
+  toilet: {
+    label: "WC",
+    icon: "🚻"
+  },
+
+  paddleboard: {
+    label: "Paddleboard",
+    icon: "🛶"
+  },
+
+  sight: {
+    label: "Památka",
+    icon: "🏛️"
+  },
+
+  cycling: {
+    label: "Cyklistika",
+    icon: "🚴"
+  },
+
+  hike: {
+    label: "Hike",
+    icon: "🥾"
+  },
+
+  sleep: {
+    label: "Spaní / bivak",
+    icon: "🛏️"
+  },
+
+  service: {
+    label: "Servis",
+    icon: "🔧"
+  }
+
+};
 
 
 /* =========================
    HELPERY
 ========================= */
 
-const typeInfo = {
-  parking:      { label: "Parkování", icon: "🅿️" },
-  swimming:     { label: "Koupání", icon: "🌊" },
-  waterfall:    { label: "Vodopád", icon: "💧" },
-  coffee:       { label: "Kavárna", icon: "☕" },
-  food:         { label: "Jídlo", icon: "🥐" },
-  shower:       { label: "Sprcha", icon: "🚿" },
-  toilet:       { label: "WC", icon: "🚻" },
-  paddleboard:  { label: "Paddleboard", icon: "🛶" },
-  sight:        { label: "Památka", icon: "🏛️" },
-  cycling:      { label: "Cyklistika", icon: "🚴" },
-  hike:         { label: "Hike", icon: "🥾" },
-  service:      { label: "Servis", icon: "🔧" }
-};
-
-
 function getTypeInfo(type) {
 
-  return typeInfo[type] || {
-    label: type,
-    icon: "📍"
-  };
+  return (
+    typeInfo[type] ||
+    {
+      label: type,
+      icon: "📍"
+    }
+  );
 
 }
 
@@ -563,94 +1019,122 @@ function getPointInfo(point) {
     point.tags &&
     point.tags.includes("paid")
   ) {
+
     return {
-      label: "Placené parkoviště",
-      icon: "💰"
+      label:
+        "Placené parkoviště",
+
+      icon:
+        "💰"
     };
+
   }
 
-  return getTypeInfo(point.type);
+
+  return getTypeInfo(
+    point.type
+  );
 
 }
 
 
 function formatDate(value) {
 
-  if (!value) return "";
+  if (!value) {
+    return "";
+  }
 
-  const [year, month, day] =
+
+  const [
+    year,
+    month,
+    day
+  ] =
     value.split("-");
 
-  return `${day}. ${month}. ${year}`;
+
+  return (
+    `${day}. ${month}. ${year}`
+  );
 
 }
 
 
 function getCoordinates(point) {
 
-  return `${Number(point.lat).toFixed(7)}, ${Number(point.lon).toFixed(7)}`;
+  return (
+    `${Number(point.lat).toFixed(7)}, ` +
+    `${Number(point.lon).toFixed(7)}`
+  );
 
 }
 
 
-async function copyCoordinates(point, button) {
+async function copyCoordinates(
+  point,
+  button
+) {
 
   const coordinates =
     getCoordinates(point);
 
+
+  const originalText =
+    button.textContent;
+
+
   try {
 
-    await navigator.clipboard.writeText(
-      coordinates
-    );
+    await navigator.clipboard
+      .writeText(
+        coordinates
+      );
 
-    const originalText =
-      button.textContent;
+  }
 
-    button.textContent =
-      "Zkopírováno ✓";
-
-    setTimeout(() => {
-
-      button.textContent =
-        originalText;
-
-    }, 1400);
-
-  } catch (error) {
+  catch (error) {
 
     const textarea =
-      document.createElement("textarea");
+      document.createElement(
+        "textarea"
+      );
+
 
     textarea.value =
       coordinates;
+
 
     document.body.appendChild(
       textarea
     );
 
+
     textarea.select();
+
 
     document.execCommand(
       "copy"
     );
 
+
     textarea.remove();
 
-    const originalText =
-      button.textContent;
+  }
 
-    button.textContent =
-      "Zkopírováno ✓";
 
-    setTimeout(() => {
+  button.textContent =
+    "Zkopírováno ✓";
+
+
+  setTimeout(
+    () => {
 
       button.textContent =
         originalText;
 
-    }, 1400);
-
-  }
+    },
+    1400
+  );
 
 }
 
@@ -662,86 +1146,111 @@ async function copyCoordinates(point, button) {
 document.title =
   `${destination.name} | Kam vyrazit?`;
 
-document.getElementById("pageTitle").textContent =
-  destination.name.toUpperCase();
 
-document.getElementById("pageDescription").textContent =
-  destination.description;
+document
+  .getElementById(
+    "pageTitle"
+  )
+  .textContent =
+    destination.name
+      .toUpperCase();
+
+
+document
+  .getElementById(
+    "pageDescription"
+  )
+  .textContent =
+    destination.description;
 
 
 const pageMeta =
-  document.getElementById("pageMeta");
+  document.getElementById(
+    "pageMeta"
+  );
 
 
 pageMeta.innerHTML = `
+
   <div class="tag">
-    ${destination.country} · ${destination.region}
+    ${destination.country}
+    ·
+    ${destination.region}
   </div>
 
   ${
     destination.wishlist === true
+
       ? `
         <div class="tag status">
           ★ Chci navštívit
         </div>
       `
+
       : ""
   }
+
 `;
 
 
 /* =========================
-   STATISTIKY TRAS
+   QUICK INFO
 ========================= */
 
-const stats =
-  document.getElementById("stats");
+const quickInfoWrap =
+  document.getElementById(
+    "quickInfoWrap"
+  );
+
+
+const quickInfo =
+  document.getElementById(
+    "quickInfo"
+  );
+
 
 if (
-  destination.routes &&
-  destination.routes.length > 0
+  destination.quickInfo &&
+  destination.quickInfo.length > 0
 ) {
 
-  const firstRoute =
-    destination.routes[0];
+  destination.quickInfo
+    .forEach(item => {
 
-  if (firstRoute.distanceKm) {
+      const element =
+        document.createElement(
+          "div"
+        );
 
-    stats.innerHTML += `
-      <div class="stat">
-        ↔️ ${firstRoute.distanceKm} km
-      </div>
-    `;
 
-  }
+      element.className =
+        "quick-item";
 
-  if (firstRoute.elevationGainM) {
 
-    stats.innerHTML += `
-      <div class="stat">
-        ↗️ +${firstRoute.elevationGainM} m
-      </div>
-    `;
+      element.innerHTML = `
 
-  }
+        <span class="quick-item-icon">
+          ${item.icon || "•"}
+        </span>
 
-  if (firstRoute.plannedTime) {
+        <span>
+          ${item.label}
+        </span>
 
-    stats.innerHTML += `
-      <div class="stat">
-        ⏱️ ${firstRoute.plannedTime}
-      </div>
-    `;
+      `;
 
-  }
 
-  if (stats.innerHTML.trim() === "") {
-    stats.style.display = "none";
-  }
+      quickInfo.appendChild(
+        element
+      );
 
-} else {
+    });
 
-  stats.style.display =
+}
+
+else {
+
+  quickInfoWrap.style.display =
     "none";
 
 }
@@ -751,30 +1260,44 @@ if (
    MAPA
 ========================= */
 
-const map = L.map("map").setView(
-  [destination.lat, destination.lon],
-  14
-);
+const map =
+  L.map(
+    "map",
+    {
+      zoomControl: true
+    }
+  )
+  .setView(
+    [
+      destination.lat,
+      destination.lon
+    ],
+    13
+  );
 
 
-const topoLayer = L.tileLayer(
-  "https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png",
-  {
-    maxZoom: 17,
-    attribution:
-      "Map data © OpenStreetMap contributors, SRTM | Map style © OpenTopoMap"
-  }
-);
+const topoLayer =
+  L.tileLayer(
+    "https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png",
+    {
+      maxZoom: 17,
+
+      attribution:
+        "Map data © OpenStreetMap contributors, SRTM | Map style © OpenTopoMap"
+    }
+  );
 
 
-const classicLayer = L.tileLayer(
-  "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
-  {
-    maxZoom: 19,
-    attribution:
-      "© OpenStreetMap contributors"
-  }
-);
+const classicLayer =
+  L.tileLayer(
+    "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+    {
+      maxZoom: 19,
+
+      attribution:
+        "© OpenStreetMap contributors"
+    }
+  );
 
 
 topoLayer.addTo(map);
@@ -785,9 +1308,12 @@ topoLayer.addTo(map);
 ========================= */
 
 const routesContainer =
-  document.getElementById("routesContainer");
+  document.getElementById(
+    "routesContainer"
+  );
 
-const gpxLayers = [];
+
+const routeLayers = {};
 
 
 if (
@@ -796,132 +1322,525 @@ if (
 ) {
 
   routesContainer.innerHTML = `
+
     <div class="section-label">
       Trasy
     </div>
+
   `;
 
 
-  destination.routes.forEach(route => {
+  destination.routes
+    .forEach(
+      (route, index) => {
 
-    const routeCard =
-      document.createElement("div");
-
-    routeCard.className =
-      "route-card";
-
-
-    routeCard.innerHTML = `
-      <strong>
-        ${route.name}
-      </strong>
-
-     <p>
-  ${
-    route.description
-      ? route.description
-      : (
-          route.type === "cycling"
-            ? "Uložená cyklotrasa."
-            : "Uložená turistická trasa."
-        )
-  }
-</p>
-
-      <div class="route-actions">
-
-        <button class="route-button">
-          Zobrazit celou trasu
-        </button>
-
-        <a
-          href="${route.file}"
-          download
-          class="route-button"
-        >
-          Stáhnout GPX
-        </a>
-
-      </div>
-    `;
+        const routeCard =
+          document.createElement(
+            "div"
+          );
 
 
-    routesContainer.appendChild(
-      routeCard
+        routeCard.className =
+          "route-card";
+
+
+        const stats = [];
+
+
+        if (route.distanceKm) {
+
+          stats.push(
+            `↔ ${route.distanceKm} km`
+          );
+
+        }
+
+
+        if (
+          route.elevationGainM
+        ) {
+
+          stats.push(
+            `↗ +${route.elevationGainM} m`
+          );
+
+        }
+
+
+        if (
+          route.plannedTime
+        ) {
+
+          stats.push(
+            `⏱ ${route.plannedTime}`
+          );
+
+        }
+
+
+        const statsHtml =
+          stats
+            .map(
+              stat =>
+                `
+                  <span class="route-stat">
+                    ${stat}
+                  </span>
+                `
+            )
+            .join("");
+
+
+        routeCard.innerHTML = `
+
+          <div class="route-top">
+
+            <div class="route-title">
+
+              <strong>
+                ${route.name}
+              </strong>
+
+              ${
+                statsHtml
+
+                  ? `
+                    <div class="route-stats">
+                      ${statsHtml}
+                    </div>
+                  `
+
+                  : ""
+              }
+
+            </div>
+
+          </div>
+
+
+          <p class="route-description">
+
+            ${
+              route.description
+                ||
+              (
+                route.type === "cycling"
+                  ? "Uložená cyklotrasa."
+                  : "Uložená turistická trasa."
+              )
+            }
+
+          </p>
+
+
+          <div class="route-actions">
+
+            <button
+              class="route-button route-toggle"
+              type="button"
+            >
+              Zobrazit trasu
+            </button>
+
+
+            <button
+              class="route-button route-focus"
+              type="button"
+            >
+              Přiblížit
+            </button>
+
+
+            <a
+              href="${route.file}"
+              download
+              class="route-button"
+            >
+              Stáhnout GPX
+            </a>
+
+          </div>
+
+        `;
+
+
+        routesContainer.appendChild(
+          routeCard
+        );
+
+
+        const toggleButton =
+          routeCard.querySelector(
+            ".route-toggle"
+          );
+
+
+        const focusButton =
+          routeCard.querySelector(
+            ".route-focus"
+          );
+
+
+        const routeState = {
+
+          layer: null,
+
+          loaded: false,
+
+          visible: false,
+
+          bounds: null,
+
+          toggleButton:
+            toggleButton
+
+        };
+
+
+        routeLayers[
+          route.id
+        ] =
+          routeState;
+
+
+        const gpx =
+          new L.GPX(
+            route.file,
+            {
+
+              async: true,
+
+              polyline_options: {
+
+                opacity: 0.9,
+
+                weight: 5,
+
+                lineCap:
+                  "round"
+
+              },
+
+              marker_options: {
+
+                startIconUrl:
+                  null,
+
+                endIconUrl:
+                  null,
+
+                shadowUrl:
+                  null
+
+              }
+
+            }
+          );
+
+
+        routeState.layer =
+          gpx;
+
+
+        gpx.on(
+          "loaded",
+          function(e) {
+
+            routeState.loaded =
+              true;
+
+
+            routeState.bounds =
+              e.target
+                .getBounds();
+
+
+            /*
+              Jedna jediná trasa:
+              zobraz automaticky.
+
+              Více tras:
+              necháme všechny vypnuté.
+            */
+
+            if (
+              destination.routes
+                .length === 1
+            ) {
+
+              gpx.addTo(map);
+
+
+              routeState.visible =
+                true;
+
+
+              toggleButton.textContent =
+                "Skrýt trasu";
+
+
+              toggleButton
+                .classList
+                .add(
+                  "route-visible"
+                );
+
+
+              map.fitBounds(
+                routeState.bounds,
+                {
+                  padding:
+                    [35, 35]
+                }
+              );
+
+            }
+
+          }
+        );
+
+
+        toggleButton
+          .addEventListener(
+            "click",
+            () => {
+
+              if (
+                !routeState.loaded
+              ) {
+
+                return;
+
+              }
+
+
+              if (
+                routeState.visible
+              ) {
+
+                map.removeLayer(
+                  routeState.layer
+                );
+
+
+                routeState.visible =
+                  false;
+
+
+                toggleButton
+                  .textContent =
+                    "Zobrazit trasu";
+
+
+                toggleButton
+                  .classList
+                  .remove(
+                    "route-visible"
+                  );
+
+              }
+
+              else {
+
+                routeState.layer
+                  .addTo(map);
+
+
+                routeState.visible =
+                  true;
+
+
+                toggleButton
+                  .textContent =
+                    "Skrýt trasu";
+
+
+                toggleButton
+                  .classList
+                  .add(
+                    "route-visible"
+                  );
+
+              }
+
+            }
+          );
+
+
+        focusButton
+          .addEventListener(
+            "click",
+            () => {
+
+              if (
+                !routeState.loaded ||
+                !routeState.bounds
+              ) {
+
+                return;
+
+              }
+
+
+              /*
+                Pokud je trasa skrytá,
+                při přiblížení ji rovnou
+                zobrazíme.
+              */
+
+              if (
+                !routeState.visible
+              ) {
+
+                routeState.layer
+                  .addTo(map);
+
+
+                routeState.visible =
+                  true;
+
+
+                toggleButton
+                  .textContent =
+                    "Skrýt trasu";
+
+
+                toggleButton
+                  .classList
+                  .add(
+                    "route-visible"
+                  );
+
+              }
+
+
+              map.fitBounds(
+                routeState.bounds,
+                {
+                  padding:
+                    [35, 35]
+                }
+              );
+
+            }
+          );
+
+
+        /*
+          GPX se musí načíst,
+          ale pokud máme více tras,
+          nechceme jej zatím zobrazit.
+
+          Leaflet-GPX potřebuje být
+          krátce přidaný kvůli načtení.
+        */
+
+        if (
+          destination.routes.length > 1
+        ) {
+
+          gpx.addTo(map);
+
+
+          gpx.once(
+            "loaded",
+            () => {
+
+              if (
+                map.hasLayer(gpx)
+              ) {
+
+                map.removeLayer(
+                  gpx
+                );
+
+              }
+
+            }
+          );
+
+        }
+
+        else {
+
+          gpx.addTo(map);
+
+        }
+
+      }
     );
 
+}
 
-    const gpx =
-      new L.GPX(
-        route.file,
-        {
-          async: true,
-
-          polyline_options: {
-            color: "#111111",
-            opacity: 0.85,
-            weight: 5,
-            lineCap: "round"
-          },
-
-          marker_options: {
-            startIconUrl: null,
-            endIconUrl: null,
-            shadowUrl: null
-          }
-        }
-      )
-      .on(
-        "loaded",
-        function(e) {
-
-          gpxLayers.push(gpx);
-
-          if (
-            destination.routes.length === 1
-          ) {
-
-            map.fitBounds(
-              e.target.getBounds(),
-              {
-                padding: [35, 35]
-              }
-            );
-
-          }
-
-        }
-      )
-      .addTo(map);
-
-
-    routeCard
-      .querySelector("button")
-      .addEventListener(
-        "click",
-        () => {
-
-          if (
-            gpx.getBounds().isValid()
-          ) {
-
-            map.fitBounds(
-              gpx.getBounds(),
-              {
-                padding: [35, 35]
-              }
-            );
-
-          }
-
-        }
-      );
-
-  });
-
-} else {
+else {
 
   routesContainer.style.display =
+    "none";
+
+}
+
+
+/* =========================
+   NOTES
+========================= */
+
+const notesContainer =
+  document.getElementById(
+    "notesContainer"
+  );
+
+
+if (
+  destination.notes &&
+  destination.notes.length > 0
+) {
+
+  notesContainer.innerHTML = `
+
+    <div class="section-label">
+      Před cestou
+    </div>
+
+  `;
+
+
+  destination.notes
+    .forEach(note => {
+
+      const noteCard =
+        document.createElement(
+          "div"
+        );
+
+
+      noteCard.className =
+        "note-card";
+
+
+      noteCard.innerHTML = `
+
+        <h3>
+          ${note.title}
+        </h3>
+
+        <p>
+          ${note.description}
+        </p>
+
+      `;
+
+
+      notesContainer.appendChild(
+        noteCard
+      );
+
+    });
+
+}
+
+else {
+
+  notesContainer.style.display =
     "none";
 
 }
@@ -934,26 +1853,40 @@ if (
 const markers = {};
 
 
-function createMarkerIcon(point) {
+function createMarkerIcon(
+  point
+) {
 
   const info =
-    getPointInfo(point);
+    getPointInfo(
+      point
+    );
 
-  return L.divIcon({
 
-    className: "",
+  return L.divIcon(
+    {
 
-    html: `
-      <div class="custom-marker">
-        ${info.icon}
-      </div>
-    `,
+      className: "",
 
-    iconSize: [38, 38],
-    iconAnchor: [19, 19],
-    popupAnchor: [0, -21]
+      html: `
 
-  });
+        <div class="custom-marker">
+          ${info.icon}
+        </div>
+
+      `,
+
+      iconSize:
+        [38, 38],
+
+      iconAnchor:
+        [19, 19],
+
+      popupAnchor:
+        [0, -21]
+
+    }
+  );
 
 }
 
@@ -962,24 +1895,38 @@ function createMarkerIcon(point) {
   .forEach(point => {
 
     const info =
-      getPointInfo(point);
+      getPointInfo(
+        point
+      );
+
 
     const marker =
       L.marker(
-        [point.lat, point.lon],
+        [
+          point.lat,
+          point.lon
+        ],
         {
           icon:
-            createMarkerIcon(point)
+            createMarkerIcon(
+              point
+            )
         }
       );
 
 
     marker.bindPopup(`
-      <div style="width:230px;">
 
-        <strong style="font-size:15px;">
+      <div style="
+        width:230px;
+      ">
+
+        <strong style="
+          font-size:15px;
+        ">
           ${point.name}
         </strong>
+
 
         <div style="
           margin-top:3px;
@@ -989,6 +1936,7 @@ function createMarkerIcon(point) {
           ${info.label}
         </div>
 
+
         <p style="
           margin:10px 0 0;
           line-height:1.45;
@@ -996,6 +1944,7 @@ function createMarkerIcon(point) {
         ">
           ${point.description}
         </p>
+
 
         <div style="
           margin-top:10px;
@@ -1008,28 +1957,39 @@ function createMarkerIcon(point) {
           📍 ${getCoordinates(point)}
         </div>
 
+
         ${
           point.lastChecked
+
             ? `
               <div style="
                 margin-top:10px;
                 font-size:10px;
                 color:#999;
               ">
+
                 Ověřeno:
-                ${formatDate(point.lastChecked)}
+                ${formatDate(
+                  point.lastChecked
+                )}
+
               </div>
             `
+
             : ""
         }
 
       </div>
+
     `);
 
 
     marker.addTo(map);
 
-    markers[point.id] =
+
+    markers[
+      point.id
+    ] =
       marker;
 
   });
@@ -1040,7 +2000,9 @@ function createMarkerIcon(point) {
 ========================= */
 
 const placeList =
-  document.getElementById("placeList");
+  document.getElementById(
+    "placeList"
+  );
 
 
 if (
@@ -1049,29 +2011,52 @@ if (
 ) {
 
   placeList.innerHTML = `
+
     <div class="empty-state">
-      K tomuto místu zatím nejsou přidané žádné podrobnější body.
+
+      K tomuto místu zatím nejsou
+      přidané žádné podrobnější body.
+
     </div>
+
   `;
 
 }
 
 
 (destination.points || [])
+
+  .slice()
+
+  .sort(
+    (a, b) =>
+      a.name.localeCompare(
+        b.name,
+        "cs"
+      )
+  )
+
   .forEach(point => {
 
     const info =
-      getPointInfo(point);
+      getPointInfo(
+        point
+      );
+
 
     const card =
-      document.createElement("div");
+      document.createElement(
+        "div"
+      );
 
 
     card.className =
       "place-card";
 
+
     card.dataset.id =
       point.id;
+
 
     card.dataset.type =
       point.type;
@@ -1079,9 +2064,16 @@ if (
 
     const tagsHtml =
       (point.tags || [])
-        .map(tag =>
-          `<span class="small-tag">${tag}</span>`
+
+        .map(
+          tag =>
+            `
+              <span class="small-tag">
+                ${tag}
+              </span>
+            `
         )
+
         .join("");
 
 
@@ -1093,15 +2085,18 @@ if (
           ${info.icon}
         </div>
 
+
         <div class="place-info">
 
           <h3>
             ${point.name}
           </h3>
 
+
           <div class="type">
             ${info.label}
           </div>
+
 
           <div class="tags">
             ${tagsHtml}
@@ -1111,15 +2106,18 @@ if (
 
       </div>
 
+
       <p class="description">
         ${point.description}
       </p>
+
 
       <div class="coordinates-box">
 
         <span class="coordinates">
           📍 ${getCoordinates(point)}
         </span>
+
 
         <button
           class="copy-coordinates"
@@ -1130,14 +2128,21 @@ if (
 
       </div>
 
+
       ${
         point.lastChecked
+
           ? `
             <div class="checked">
+
               Ověřeno:
-              ${formatDate(point.lastChecked)}
+              ${formatDate(
+                point.lastChecked
+              )}
+
             </div>
           `
+
           : ""
       }
 
@@ -1150,19 +2155,21 @@ if (
       );
 
 
-    copyButton.addEventListener(
-      "click",
-      event => {
+    copyButton
+      .addEventListener(
+        "click",
+        event => {
 
-        event.stopPropagation();
+          event.stopPropagation();
 
-        copyCoordinates(
-          point,
-          copyButton
-        );
 
-      }
-    );
+          copyCoordinates(
+            point,
+            copyButton
+          );
+
+        }
+      );
 
 
     card.addEventListener(
@@ -1170,25 +2177,34 @@ if (
       () => {
 
         document
-          .querySelectorAll(".place-card")
+          .querySelectorAll(
+            ".place-card"
+          )
           .forEach(
-            c =>
-              c.classList.remove(
-                "active"
-              )
+            element =>
+              element
+                .classList
+                .remove(
+                  "active"
+                )
           );
 
 
-        card.classList.add(
-          "active"
-        );
+        card
+          .classList
+          .add(
+            "active"
+          );
 
 
         map.flyTo(
-          [point.lat, point.lon],
+          [
+            point.lat,
+            point.lon
+          ],
           17,
           {
-            duration: 1.1
+            duration: 1.0
           }
         );
 
@@ -1196,12 +2212,21 @@ if (
         setTimeout(
           () => {
 
-            markers[
-              point.id
-            ].openPopup();
+            if (
+              markers[
+                point.id
+              ]
+            ) {
+
+              markers[
+                point.id
+              ]
+              .openPopup();
+
+            }
 
           },
-          1000
+          900
         );
 
       }
@@ -1220,95 +2245,142 @@ if (
 ========================= */
 
 const filters =
-  document.getElementById("filters");
+  document.getElementById(
+    "filters"
+  );
 
 
 const usedTypes = [
   ...new Set(
     (destination.points || [])
-      .map(point => point.type)
+      .map(
+        point =>
+          point.type
+      )
   )
 ];
 
 
 const hasPaidParking =
   (destination.points || [])
-    .some(point =>
-      point.type === "parking" &&
-      point.tags &&
-      point.tags.includes("paid")
+    .some(
+      point =>
+        point.type === "parking" &&
+        point.tags &&
+        point.tags.includes(
+          "paid"
+        )
     );
 
 
-const totalFilters =
-  usedTypes.length +
-  (hasPaidParking ? 1 : 0);
+const filterDefinitions = [];
 
 
-if (totalFilters > 1) {
+usedTypes.forEach(type => {
+
+  const info =
+    getTypeInfo(type);
+
+
+  filterDefinitions.push(
+    {
+      id: type,
+
+      label:
+        info.label,
+
+      icon:
+        info.icon
+    }
+  );
+
+});
+
+
+if (hasPaidParking) {
+
+  filterDefinitions.push(
+    {
+      id:
+        "paid-parking",
+
+      label:
+        "Placené parkoviště",
+
+      icon:
+        "💰"
+    }
+  );
+
+}
+
+
+/*
+  Abecední řazení filtrů.
+*/
+
+filterDefinitions.sort(
+  (a, b) =>
+    a.label.localeCompare(
+      b.label,
+      "cs"
+    )
+);
+
+
+if (
+  filterDefinitions.length > 1
+) {
 
   const allButton =
-    document.createElement("button");
+    document.createElement(
+      "button"
+    );
+
 
   allButton.className =
     "filter-button active";
 
+
   allButton.textContent =
     "Vše";
 
+
   allButton.dataset.filter =
     "all";
+
 
   filters.appendChild(
     allButton
   );
 
 
-  usedTypes.forEach(type => {
+  filterDefinitions
+    .forEach(definition => {
 
-    const info =
-      getTypeInfo(type);
-
-
-    const button =
-      document.createElement("button");
-
-    button.className =
-      "filter-button";
-
-    button.dataset.filter =
-      type;
-
-    button.textContent =
-      `${info.icon} ${info.label}`;
+      const button =
+        document.createElement(
+          "button"
+        );
 
 
-    filters.appendChild(
-      button
-    );
-
-  });
+      button.className =
+        "filter-button";
 
 
-  if (hasPaidParking) {
+      button.dataset.filter =
+        definition.id;
 
-    const paidButton =
-      document.createElement("button");
 
-    paidButton.className =
-      "filter-button";
+      button.textContent =
+        `${definition.icon} ${definition.label}`;
 
-    paidButton.dataset.filter =
-      "paid-parking";
 
-    paidButton.textContent =
-      "💰 Placené parkoviště";
+      filters.appendChild(
+        button
+      );
 
-    filters.appendChild(
-      paidButton
-    );
-
-  }
+    });
 
 
   filters
@@ -1326,20 +2398,26 @@ if (totalFilters > 1) {
               ".filter-button"
             )
             .forEach(
-              btn =>
-                btn.classList.remove(
-                  "active"
-                )
+              element =>
+                element
+                  .classList
+                  .remove(
+                    "active"
+                  )
             );
 
 
-          button.classList.add(
-            "active"
-          );
+          button
+            .classList
+            .add(
+              "active"
+            );
 
 
           const filter =
-            button.dataset.filter;
+            button
+              .dataset
+              .filter;
 
 
           (destination.points || [])
@@ -1352,7 +2430,9 @@ if (totalFilters > 1) {
 
 
               const marker =
-                markers[point.id];
+                markers[
+                  point.id
+                ];
 
 
               let visible =
@@ -1369,24 +2449,22 @@ if (totalFilters > 1) {
               }
 
               else if (
-                filter !== "paid-parking" &&
-                point.type === filter
+                filter === "paid-parking"
               ) {
 
                 visible =
-                  true;
+                  point.type === "parking" &&
+                  point.tags &&
+                  point.tags.includes(
+                    "paid"
+                  );
 
               }
 
-              else if (
-                filter === "paid-parking" &&
-                point.type === "parking" &&
-                point.tags &&
-                point.tags.includes("paid")
-              ) {
+              else {
 
                 visible =
-                  true;
+                  point.type === filter;
 
               }
 
@@ -1406,17 +2484,25 @@ if (totalFilters > 1) {
                 if (visible) {
 
                   if (
-                    !map.hasLayer(marker)
+                    !map.hasLayer(
+                      marker
+                    )
                   ) {
 
-                    marker.addTo(map);
+                    marker.addTo(
+                      map
+                    );
 
                   }
 
-                } else {
+                }
+
+                else {
 
                   if (
-                    map.hasLayer(marker)
+                    map.hasLayer(
+                      marker
+                    )
                   ) {
 
                     map.removeLayer(
@@ -1436,7 +2522,9 @@ if (totalFilters > 1) {
 
     });
 
-} else {
+}
+
+else {
 
   filters.style.display =
     "none";
@@ -1453,71 +2541,104 @@ const topoButton =
     "topoButton"
   );
 
+
 const classicButton =
   document.getElementById(
     "classicButton"
   );
 
 
-topoButton.addEventListener(
-  "click",
-  () => {
+topoButton
+  .addEventListener(
+    "click",
+    () => {
 
-    if (
-      !map.hasLayer(topoLayer)
-    ) {
+      if (
+        !map.hasLayer(
+          topoLayer
+        )
+      ) {
 
-      map.removeLayer(
-        classicLayer
-      );
-
-      topoLayer.addTo(map);
-
-    }
-
-
-    topoButton.classList.add(
-      "active"
-    );
-
-    classicButton.classList.remove(
-      "active"
-    );
-
-  }
-);
+        map.removeLayer(
+          classicLayer
+        );
 
 
-classicButton.addEventListener(
-  "click",
-  () => {
+        topoLayer.addTo(
+          map
+        );
 
-    if (
-      !map.hasLayer(
-        classicLayer
-      )
-    ) {
+      }
 
-      map.removeLayer(
-        topoLayer
-      );
 
-      classicLayer.addTo(
-        map
-      );
+      topoButton
+        .classList
+        .add(
+          "active"
+        );
+
+
+      classicButton
+        .classList
+        .remove(
+          "active"
+        );
 
     }
+  );
 
 
-    classicButton.classList.add(
-      "active"
-    );
+classicButton
+  .addEventListener(
+    "click",
+    () => {
 
-    topoButton.classList.remove(
-      "active"
-    );
+      if (
+        !map.hasLayer(
+          classicLayer
+        )
+      ) {
 
-  }
+        map.removeLayer(
+          topoLayer
+        );
+
+
+        classicLayer.addTo(
+          map
+        );
+
+      }
+
+
+      classicButton
+        .classList
+        .add(
+          "active"
+        );
+
+
+      topoButton
+        .classList
+        .remove(
+          "active"
+        );
+
+    }
+  );
+
+
+/* =========================
+   FINAL MAP FIX
+========================= */
+
+setTimeout(
+  () => {
+
+    map.invalidateSize();
+
+  },
+  200
 );
 
 </script>
