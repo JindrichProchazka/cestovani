@@ -26,186 +26,281 @@
       font-family: Arial, Helvetica, sans-serif;
       background: #f4f3ef;
       color: #111;
+      overflow-x: hidden;
     }
 
     header {
-      padding: 30px 42px 24px;
+      padding: 24px 30px 16px;
       display: flex;
       justify-content: space-between;
       align-items: flex-start;
-      gap: 30px;
+      gap: 24px;
     }
 
     .brand {
-      max-width: 700px;
+      max-width: 720px;
     }
 
     .brand h1 {
       margin: 0;
-      font-size: clamp(38px, 5vw, 76px);
+      font-size: clamp(38px, 5vw, 72px);
       line-height: 0.95;
       letter-spacing: -3px;
     }
 
     .brand p {
-      margin: 16px 0 0;
+      margin: 14px 0 0;
       max-width: 560px;
-      font-size: 16px;
+      font-size: 15px;
       line-height: 1.5;
       color: #666;
     }
 
     .top-actions {
+      position: relative;
       display: flex;
-      gap: 10px;
+      gap: 8px;
       flex-wrap: wrap;
       justify-content: flex-end;
+      align-items: center;
     }
 
     .nav-button,
-    .filter-button {
+    .filter-trigger,
+    .filter-option {
       appearance: none;
       border: 1px solid #cfcfc9;
       background: transparent;
       color: #111;
-      padding: 10px 16px;
+      padding: 9px 14px;
       border-radius: 999px;
-      font-size: 13px;
+      font-size: 12px;
       cursor: pointer;
-      transition: 0.2s ease;
+      transition: 0.15s ease;
     }
 
     .nav-button:hover,
-    .filter-button:hover {
+    .filter-trigger:hover,
+    .filter-option:hover {
       background: #e7e6e1;
     }
 
     .nav-button.active,
-    .filter-button.active {
+    .filter-trigger.active,
+    .filter-option.active {
       background: #111;
       color: white;
       border-color: #111;
     }
 
-    .filters-wrap {
-      padding: 0 42px 20px;
+    .filter-menu {
+      position: absolute;
+      z-index: 2200;
+      top: calc(100% + 8px);
+      right: 0;
+      width: 250px;
+      max-height: 390px;
+      overflow-y: auto;
+      background: rgba(255,255,255,0.98);
+      border: 1px solid #deddd7;
+      border-radius: 18px;
+      box-shadow: 0 16px 40px rgba(0,0,0,0.14);
+      padding: 8px;
+      display: none;
     }
 
-    .filters-label {
-      margin-bottom: 8px;
-      font-size: 11px;
-      font-weight: bold;
+    .filter-menu.open {
+      display: block;
+    }
+
+    .filter-menu-title {
+      padding: 8px 10px 6px;
+      font-size: 10px;
+      font-weight: 700;
       text-transform: uppercase;
-      letter-spacing: 1.3px;
+      letter-spacing: 1.2px;
       color: #888;
     }
 
-    .filters {
+    .filter-option {
+      width: 100%;
       display: flex;
+      align-items: center;
       gap: 8px;
-      flex-wrap: wrap;
+      border: 0;
+      border-radius: 12px;
+      padding: 9px 10px;
+      text-align: left;
+      margin-bottom: 2px;
     }
 
     .main {
-      padding: 0 26px 26px;
+      padding: 0 20px 18px;
     }
 
     .travel-container {
       display: grid;
-      grid-template-columns: 270px minmax(0, 1fr);
-      gap: 18px;
-      min-height: 680px;
+      grid-template-columns: 280px minmax(0, 1fr);
+      gap: 14px;
+      height: clamp(560px, calc(100vh - 175px), 760px);
     }
 
     .sidebar {
-      padding: 20px 10px 20px 4px;
+      height: 100%;
+      min-height: 0;
+      display: flex;
+      flex-direction: column;
+      padding: 0;
     }
 
-    .sidebar-top {
-      margin-bottom: 20px;
+    .places-toggle {
+      width: 100%;
+      border: 0;
+      background: white;
+      border-radius: 18px;
+      padding: 15px 16px;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      text-align: left;
+      box-shadow: 0 1px 0 rgba(0,0,0,0.04);
+    }
+
+    .places-toggle-left {
+      min-width: 0;
     }
 
     .eyebrow {
-      margin-bottom: 8px;
-      font-size: 11px;
-      font-weight: bold;
-      text-transform: uppercase;
-      letter-spacing: 1.4px;
-      color: #888;
-    }
-
-    .sidebar h2 {
-      margin: 0;
-      font-size: 28px;
-      letter-spacing: -1px;
-    }
-
-    .sidebar-description {
-      margin: 10px 0 0;
-      color: #777;
-      font-size: 14px;
-      line-height: 1.5;
-    }
-
-    .country-group {
-      margin-top: 26px;
-    }
-
-    .country-name {
-      padding-bottom: 10px;
-      border-bottom: 1px solid #d7d6d0;
-      font-size: 11px;
+      margin-bottom: 5px;
+      font-size: 10px;
       font-weight: bold;
       text-transform: uppercase;
       letter-spacing: 1.3px;
+      color: #888;
+    }
+
+    .places-toggle h2 {
+      margin: 0;
+      font-size: 24px;
+      letter-spacing: -0.8px;
+    }
+
+    .places-toggle-meta {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: #777;
+      font-size: 12px;
+      white-space: nowrap;
+    }
+
+    .places-arrow {
+      font-size: 18px;
+      transition: transform 0.15s ease;
+    }
+
+    .places-toggle.open .places-arrow {
+      transform: rotate(180deg);
+    }
+
+    .places-panel {
+      margin-top: 8px;
+      background: white;
+      border-radius: 18px;
+      padding: 10px 12px 12px;
+      min-height: 0;
+      overflow: hidden;
+      display: none;
+      flex: 1;
+    }
+
+    .places-panel.open {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .sidebar-description {
+      margin: 0 0 8px;
+      padding: 4px 2px 8px;
+      color: #777;
+      font-size: 12px;
+      line-height: 1.45;
+      border-bottom: 1px solid #e5e4df;
+    }
+
+    #destinationList {
+      min-height: 0;
+      overflow-y: auto;
+      padding-right: 4px;
+      scrollbar-width: thin;
+    }
+
+    .country-group {
+      margin-top: 14px;
+    }
+
+    .country-group:first-child {
+      margin-top: 4px;
+    }
+
+    .country-name {
+      padding: 0 2px 7px;
+      border-bottom: 1px solid #e1e0db;
+      font-size: 10px;
+      font-weight: bold;
+      text-transform: uppercase;
+      letter-spacing: 1.2px;
       color: #888;
     }
 
     .destination-link {
       display: flex;
       align-items: center;
-      gap: 10px;
-      padding: 13px 2px;
-      border-bottom: 1px solid #e1e0db;
+      gap: 9px;
+      padding: 10px 2px;
+      border-bottom: 1px solid #eeede9;
       text-decoration: none;
       color: #111;
-      font-size: 14px;
+      font-size: 13px;
       font-weight: 600;
-      transition: 0.15s ease;
+      transition: 0.12s ease;
     }
 
     .destination-link:hover {
-      padding-left: 7px;
+      padding-left: 6px;
     }
 
     .destination-icon {
-      width: 25px;
+      width: 22px;
       text-align: center;
     }
 
     .empty {
-      margin-top: 24px;
-      padding: 16px;
-      border-radius: 16px;
-      background: white;
+      margin-top: 8px;
+      padding: 14px;
+      border-radius: 14px;
+      background: #f4f3ef;
       color: #777;
-      font-size: 13px;
-      line-height: 1.5;
+      font-size: 12px;
+      line-height: 1.45;
     }
 
     .map-shell {
       position: relative;
       min-width: 0;
+      min-height: 0;
+      height: 100%;
       padding: 7px;
       background: white;
-      border-radius: 30px;
+      border-radius: 26px;
     }
 
     #map {
       width: 100%;
       height: 100%;
-      min-height: 680px;
-      border-radius: 24px;
+      border-radius: 20px;
       overflow: hidden;
       background: #ddd;
     }
@@ -219,24 +314,24 @@
       border: none !important;
       margin-bottom: 4px;
       border-radius: 50% !important;
-      width: 42px !important;
-      height: 42px !important;
-      line-height: 42px !important;
+      width: 40px !important;
+      height: 40px !important;
+      line-height: 40px !important;
       background: rgba(255,255,255,0.94) !important;
       color: #111 !important;
       box-shadow: 0 3px 12px rgba(0,0,0,0.12);
     }
 
     .leaflet-control-zoom {
-      margin-top: 20px !important;
-      margin-left: 20px !important;
+      margin-top: 18px !important;
+      margin-left: 18px !important;
     }
 
     .map-switcher {
       position: absolute;
       z-index: 1000;
-      top: 20px;
-      right: 20px;
+      top: 18px;
+      right: 18px;
       display: flex;
       gap: 4px;
       padding: 4px;
@@ -249,9 +344,9 @@
     .map-switcher button {
       border: 0;
       background: transparent;
-      padding: 9px 14px;
+      padding: 8px 12px;
       border-radius: 999px;
-      font-size: 12px;
+      font-size: 11px;
       font-weight: 600;
       cursor: pointer;
     }
@@ -263,8 +358,8 @@
 
     .destination-marker,
     .point-marker {
-      width: 44px;
-      height: 44px;
+      width: 42px;
+      height: 42px;
       border-radius: 50%;
       background: #111;
       color: white;
@@ -273,13 +368,13 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 19px;
+      font-size: 18px;
     }
 
-    .group-marker {
-      min-width: 72px;
-      height: 44px;
-      padding: 0 15px;
+    .country-marker {
+      min-width: 58px;
+      height: 38px;
+      padding: 0 12px;
       border-radius: 999px;
       background: #111;
       color: white;
@@ -290,23 +385,25 @@
       justify-content: center;
       white-space: nowrap;
       font-size: 12px;
-      font-weight: 700;
+      font-weight: 800;
+      letter-spacing: 0.5px;
     }
 
     .bottom-line {
       display: flex;
       justify-content: space-between;
       gap: 20px;
-      padding: 14px 4px 0;
+      padding: 10px 4px 0;
       color: #777;
-      font-size: 11px;
+      font-size: 10px;
       text-transform: uppercase;
       letter-spacing: 0.8px;
     }
 
     @media (max-width: 850px) {
+
       header {
-        padding: 24px 20px 20px;
+        padding: 20px 16px 14px;
         flex-direction: column;
       }
 
@@ -319,41 +416,35 @@
         justify-content: flex-start;
       }
 
-      .filters-wrap {
-        padding: 0 20px 18px;
+      .filter-menu {
+        left: 0;
+        right: auto;
+        width: min(280px, calc(100vw - 32px));
       }
 
       .main {
-        padding: 0 12px 20px;
+        padding: 0 9px 16px;
       }
 
       .travel-container {
         display: flex;
         flex-direction: column;
-        min-height: 0;
+        height: auto;
       }
 
       .map-shell {
         order: 1;
         height: 60vh;
         min-height: 420px;
-        border-radius: 22px;
-      }
-
-      #map {
-        min-height: 0;
-        height: 100%;
-        border-radius: 17px;
       }
 
       .sidebar {
         order: 2;
-        padding: 18px 8px;
+        height: auto;
       }
 
-      .map-switcher {
-        top: 16px;
-        right: 16px;
+      .places-panel {
+        max-height: 520px;
       }
 
       .bottom-line {
@@ -366,36 +457,46 @@
 <body>
 
 <header>
+
   <div class="brand">
+
     <h1>KAM VYRAZIT?</h1>
 
     <p>
       Místa, která stojí za cestu. Výlety, hory, koupání,
       cyklistika a poznámky, které nechci příště hledat znovu.
     </p>
+
   </div>
 
-<div class="top-actions">
 
-  <button class="nav-button active" data-mode="all">
-    Vše
-  </button>
+  <div class="top-actions">
 
-  <button class="nav-button" data-mode="wishlist">
-    ★ Wishlist
-  </button>
+    <button class="nav-button active" data-mode="all">
+      Vše
+    </button>
 
-</div>
+    <button class="nav-button" data-mode="wishlist">
+      ★ Wishlist
+    </button>
+
+    <button id="filterTrigger" class="filter-trigger">
+      ⚙ Filtry
+    </button>
+
+    <div id="filterMenu" class="filter-menu">
+
+      <div class="filter-menu-title">
+        Kategorie
+      </div>
+
+      <div id="categoryFilters"></div>
+
+    </div>
+
+  </div>
+
 </header>
-
-
-<div class="filters-wrap">
-  <div class="filters-label">
-    Filtry
-  </div>
-
-  <div class="filters" id="categoryFilters"></div>
-</div>
 
 
 <main class="main">
@@ -404,19 +505,47 @@
 
     <aside class="sidebar">
 
-      <div class="sidebar-top">
-        <div class="eyebrow">
-          Explore
+      <button id="placesToggle" class="places-toggle" type="button">
+
+        <div class="places-toggle-left">
+
+          <div class="eyebrow">
+            Explore
+          </div>
+
+          <h2>
+            Místa
+          </h2>
+
         </div>
 
-        <h2>Místa</h2>
+        <div class="places-toggle-meta">
 
-        <p class="sidebar-description" id="sidebarDescription">
-          Vyber zemi nebo oblast a zobraz místa na mapě.
+          <span id="placesCount">
+            0
+          </span>
+
+          <span class="places-arrow">
+            ⌄
+          </span>
+
+        </div>
+
+      </button>
+
+
+      <div id="placesPanel" class="places-panel">
+
+        <p
+          class="sidebar-description"
+          id="sidebarDescription"
+        >
+          Vyber místo ze seznamu nebo přímo z mapy.
         </p>
-      </div>
 
-      <div id="destinationList"></div>
+        <div id="destinationList"></div>
+
+      </div>
 
     </aside>
 
@@ -426,6 +555,7 @@
       <div id="map"></div>
 
       <div class="map-switcher">
+
         <button id="topoButton" class="active">
           Turistická
         </button>
@@ -433,6 +563,7 @@
         <button id="classicButton">
           Klasická
         </button>
+
       </div>
 
     </section>
@@ -441,8 +572,15 @@
 
 
   <div class="bottom-line">
-    <span>Cestování / Evropa</span>
-    <span>Mapa & poznámky</span>
+
+    <span>
+      Cestování / databáze míst
+    </span>
+
+    <span>
+      Mapa & poznámky
+    </span>
+
   </div>
 
 </main>
@@ -459,7 +597,7 @@
 
 const map = L.map("map", {
   zoomControl: true
-}).setView([46.15, 13.65], 6);
+});
 
 
 const topoLayer = L.tileLayer(
@@ -490,24 +628,82 @@ topoLayer.addTo(map);
 ========================= */
 
 const typeInfo = {
-  coffee:       { label: "Kavárny", icon: "☕" },
-  food:         { label: "Jídlo", icon: "🥐" },
-  parking:      { label: "Parkování", icon: "🅿️" },
-  waterfall:    { label: "Vodopády", icon: "💧" },
-  swimming:     { label: "Koupání", icon: "🌊" },
-  shower:       { label: "Sprchy", icon: "🚿" },
-  toilet:       { label: "WC", icon: "🚻" },
-  jumping:      { label: "Skákání", icon: "🧗" },
-  hike:         { label: "Hike", icon: "🥾" },
-  cycling:      { label: "Kolo", icon: "🚴" },
-  paddleboard:  { label: "Paddleboard", icon: "🛶" },
-  sleep:        { label: "Spaní", icon: "🛏️" },
- sight:        { label: "Památky", icon: "🏛️" },
-  "highest-point": { label: "Nejvyšší body", icon: "🏔️" }
+
+  coffee: {
+    label: "Kavárny",
+    icon: "☕"
+  },
+
+  food: {
+    label: "Jídlo",
+    icon: "🥐"
+  },
+
+  parking: {
+    label: "Parkování",
+    icon: "🅿️"
+  },
+
+  waterfall: {
+    label: "Vodopády",
+    icon: "💧"
+  },
+
+  swimming: {
+    label: "Koupání",
+    icon: "🌊"
+  },
+
+  shower: {
+    label: "Sprchy",
+    icon: "🚿"
+  },
+
+  toilet: {
+    label: "WC",
+    icon: "🚻"
+  },
+
+  jumping: {
+    label: "Skákání",
+    icon: "🧗"
+  },
+
+  hike: {
+    label: "Hike",
+    icon: "🥾"
+  },
+
+  cycling: {
+    label: "Kolo",
+    icon: "🚴"
+  },
+
+  paddleboard: {
+    label: "Paddleboard",
+    icon: "🛶"
+  },
+
+  sleep: {
+    label: "Spaní",
+    icon: "🛏️"
+  },
+
+  sight: {
+    label: "Památky",
+    icon: "🏛️"
+  },
+
+  "highest-point": {
+    label: "Nejvyšší body",
+    icon: "🏔️"
+  }
+
 };
 
 
 const destinationIcons = {
+
   hike: "🥾",
   cycling: "🚴",
   paddleboard: "🛶",
@@ -516,29 +712,279 @@ const destinationIcons = {
   coffee: "☕",
   mountain: "⛰️",
   sight: "🏛️"
+
 };
 
 
 /* =========================
-   OBLASTI PRO ODDÁLENÍ
+   STŘEDY ZEMÍ
 ========================= */
 
-const macroRegions = [
-  {
-    name: "Alpy & Jadran",
-    countries: [
-      "Rakousko",
-      "Německo",
-      "Slovinsko",
-      "Itálie",
-      "Chorvatsko"
-    ]
+const countryConfig = {
+
+  "Albánie": {
+    code: "AL",
+    lat: 41.15,
+    lon: 20.00
+  },
+
+  "Andorra": {
+    code: "AD",
+    lat: 42.55,
+    lon: 1.58
+  },
+
+  "Belgie": {
+    code: "BE",
+    lat: 50.64,
+    lon: 4.67
+  },
+
+  "Bělorusko": {
+    code: "BY",
+    lat: 53.70,
+    lon: 27.95
+  },
+
+  "Bosna a Hercegovina": {
+    code: "BA",
+    lat: 44.15,
+    lon: 17.80
+  },
+
+  "Bulharsko": {
+    code: "BG",
+    lat: 42.75,
+    lon: 25.50
+  },
+
+  "Černá Hora": {
+    code: "ME",
+    lat: 42.75,
+    lon: 19.25
+  },
+
+  "Česko": {
+    code: "CZ",
+    lat: 49.82,
+    lon: 15.47
+  },
+
+  "Dánsko": {
+    code: "DK",
+    lat: 56.10,
+    lon: 9.50
+  },
+
+  "Estonsko": {
+    code: "EE",
+    lat: 58.60,
+    lon: 25.00
+  },
+
+  "Finsko": {
+    code: "FI",
+    lat: 64.50,
+    lon: 26.00
+  },
+
+  "Francie": {
+    code: "FR",
+    lat: 46.55,
+    lon: 2.45
+  },
+
+  "Chorvatsko": {
+    code: "HR",
+    lat: 45.10,
+    lon: 15.20
+  },
+
+  "Irsko": {
+    code: "IE",
+    lat: 53.20,
+    lon: -8.10
+  },
+
+  "Island": {
+    code: "IS",
+    lat: 64.95,
+    lon: -18.60
+  },
+
+  "Itálie": {
+    code: "IT",
+    lat: 42.80,
+    lon: 12.80
+  },
+
+  "Kosovo": {
+    code: "XK",
+    lat: 42.60,
+    lon: 20.90
+  },
+
+  "Lichtenštejnsko": {
+    code: "LI",
+    lat: 47.15,
+    lon: 9.55
+  },
+
+  "Litva": {
+    code: "LT",
+    lat: 55.20,
+    lon: 23.90
+  },
+
+  "Lotyšsko": {
+    code: "LV",
+    lat: 56.90,
+    lon: 24.60
+  },
+
+  "Lucembursko": {
+    code: "LU",
+    lat: 49.82,
+    lon: 6.13
+  },
+
+  "Maďarsko": {
+    code: "HU",
+    lat: 47.15,
+    lon: 19.50
+  },
+
+  "Moldavsko": {
+    code: "MD",
+    lat: 47.20,
+    lon: 28.50
+  },
+
+  "Monako": {
+    code: "MC",
+    lat: 43.74,
+    lon: 7.42
+  },
+
+  "Německo": {
+    code: "DE",
+    lat: 51.10,
+    lon: 10.40
+  },
+
+  "Nizozemsko": {
+    code: "NL",
+    lat: 52.20,
+    lon: 5.50
+  },
+
+  "Norsko": {
+    code: "NO",
+    lat: 61.60,
+    lon: 8.50
+  },
+
+  "Polsko": {
+    code: "PL",
+    lat: 52.10,
+    lon: 19.40
+  },
+
+  "Portugalsko": {
+    code: "PT",
+    lat: 39.60,
+    lon: -8.00
+  },
+
+  "Rakousko": {
+    code: "AT",
+    lat: 47.60,
+    lon: 14.10
+  },
+
+  "Rumunsko": {
+    code: "RO",
+    lat: 45.90,
+    lon: 24.90
+  },
+
+  "San Marino": {
+    code: "SM",
+    lat: 43.94,
+    lon: 12.46
+  },
+
+  "Severní Makedonie": {
+    code: "MK",
+    lat: 41.60,
+    lon: 21.70
+  },
+
+  "Slovensko": {
+    code: "SK",
+    lat: 48.67,
+    lon: 19.70
+  },
+
+  "Slovinsko": {
+    code: "SI",
+    lat: 46.15,
+    lon: 14.99
+  },
+
+  "Srbsko": {
+    code: "RS",
+    lat: 44.00,
+    lon: 20.80
+  },
+
+  "Španělsko": {
+    code: "ES",
+    lat: 40.20,
+    lon: -3.70
+  },
+
+  "Švédsko": {
+    code: "SE",
+    lat: 62.00,
+    lon: 15.00
+  },
+
+  "Švýcarsko": {
+    code: "CH",
+    lat: 46.80,
+    lon: 8.20
+  },
+
+  "Ukrajina": {
+    code: "UA",
+    lat: 49.00,
+    lon: 31.00
+  },
+
+  "Vatikán": {
+    code: "VA",
+    lat: 41.90,
+    lon: 12.45
+  },
+
+  "Velká Británie": {
+    code: "GB",
+    lat: 54.50,
+    lon: -2.50
+  },
+
+  "Řecko": {
+    code: "GR",
+    lat: 39.00,
+    lon: 22.00
   }
-];
+
+};
 
 
 /* =========================
-   VŠECHNY BODY
+   BODY A KATEGORIE
 ========================= */
 
 const allPoints = [];
@@ -550,48 +996,34 @@ destinations.forEach(destination => {
     .forEach(point => {
 
       allPoints.push({
+
         ...point,
 
-        destinationId: destination.id,
-        destinationName: destination.name,
-        destinationCountry: destination.country,
-        destinationRegion: destination.region
-      });
+        destinationId:
+          destination.id,
 
-    });
+        destinationName:
+          destination.name,
 
+        destinationCountry:
+          destination.country,
 
-  (destination.routes || [])
-    .forEach(route => {
+        destinationRegion:
+          destination.region
 
-      allPoints.push({
-        id: route.id,
-
-        name: route.name,
-
-        lat: destination.lat,
-        lon: destination.lon,
-
-        type: route.type,
-
-        tags: [route.type],
-
-        status: destination.status,
-
-        destinationId: destination.id,
-        destinationName: destination.name,
-        destinationCountry: destination.country,
-        destinationRegion: destination.region,
-
-        description:
-          route.type === "cycling"
-            ? "Uložená cyklotrasa."
-            : "Uložená turistická trasa."
       });
 
     });
 
 });
+
+
+const destinationLevelCategories =
+  new Set([
+    "hike",
+    "cycling",
+    "highest-point"
+  ]);
 
 
 /* =========================
@@ -606,11 +1038,14 @@ let selectedCategory = "all";
    LAYERS
 ========================= */
 
-const continentLayer = L.layerGroup();
-const macroLayer = L.layerGroup();
-const countryLayer = L.layerGroup();
-const destinationLayer = L.layerGroup();
-const filteredPointLayer = L.layerGroup();
+const countryLayer =
+  L.layerGroup();
+
+const destinationLayer =
+  L.layerGroup();
+
+const filteredPointLayer =
+  L.layerGroup();
 
 
 /* =========================
@@ -620,6 +1055,7 @@ const filteredPointLayer = L.layerGroup();
 function createRoundIcon(icon) {
 
   return L.divIcon({
+
     className: "",
 
     html: `
@@ -628,23 +1064,50 @@ function createRoundIcon(icon) {
       </div>
     `,
 
-    iconSize: [44, 44],
-    iconAnchor: [22, 22],
-    popupAnchor: [0, -24]
+    iconSize: [42, 42],
+    iconAnchor: [21, 21],
+    popupAnchor: [0, -23]
+
   });
 
 }
 
 
-function createPointIcon(type) {
+function createPointIcon(point) {
+
+  if (
+    point.type === "parking" &&
+    point.tags &&
+    point.tags.includes("paid")
+  ) {
+
+    return L.divIcon({
+
+      className: "",
+
+      html: `
+        <div class="point-marker">
+          💰
+        </div>
+      `,
+
+      iconSize: [42, 42],
+      iconAnchor: [21, 21],
+      popupAnchor: [0, -23]
+
+    });
+
+  }
+
 
   const info =
-    typeInfo[type] || {
+    typeInfo[point.type] || {
       icon: "📍"
     };
 
 
   return L.divIcon({
+
     className: "",
 
     html: `
@@ -653,30 +1116,30 @@ function createPointIcon(type) {
       </div>
     `,
 
-    iconSize: [44, 44],
-    iconAnchor: [22, 22],
-    popupAnchor: [0, -24]
+    iconSize: [42, 42],
+    iconAnchor: [21, 21],
+    popupAnchor: [0, -23]
+
   });
 
 }
 
 
-function createGroupIcon(text, width = 90) {
+function createCountryIcon(text) {
 
   return L.divIcon({
+
     className: "",
 
     html: `
-      <div
-        class="group-marker"
-        style="min-width:${width}px;"
-      >
+      <div class="country-marker">
         ${text}
       </div>
     `,
 
-    iconSize: [width, 44],
-    iconAnchor: [width / 2, 22]
+    iconSize: [58, 38],
+    iconAnchor: [29, 19]
+
   });
 
 }
@@ -692,11 +1155,14 @@ function destinationMatchesMode(destination) {
     return true;
   }
 
+
   if (selectedMode === "wishlist") {
     return destination.wishlist === true;
   }
 
+
   return true;
+
 }
 
 
@@ -706,6 +1172,7 @@ function pointMatchesMode(point) {
     return true;
   }
 
+
   if (selectedMode === "wishlist") {
 
     const destination =
@@ -714,14 +1181,19 @@ function pointMatchesMode(point) {
           item.id === point.destinationId
       );
 
+
     return (
       destination &&
       destination.wishlist === true
     );
+
   }
 
+
   return true;
+
 }
+
 
 function pointMatchesCategory(point) {
 
@@ -729,14 +1201,19 @@ function pointMatchesCategory(point) {
     return true;
   }
 
+
   if (point.type === selectedCategory) {
     return true;
   }
 
+
   return (
     point.tags &&
-    point.tags.includes(selectedCategory)
+    point.tags.includes(
+      selectedCategory
+    )
   );
+
 }
 
 
@@ -749,29 +1226,54 @@ function destinationContainsCategory(destination) {
 
   if (
     destination.tags &&
-    destination.tags.includes(selectedCategory)
+    destination.tags.includes(
+      selectedCategory
+    )
   ) {
     return true;
   }
 
 
-  return (destination.points || [])
-    .some(point =>
-      point.type === selectedCategory ||
-      (
-        point.tags &&
-        point.tags.includes(selectedCategory)
+  if (
+    (destination.points || [])
+      .some(point =>
+        point.type === selectedCategory ||
+        (
+          point.tags &&
+          point.tags.includes(
+            selectedCategory
+          )
+        )
       )
-    ) ||
+  ) {
+    return true;
+  }
+
+
+  if (
     (destination.routes || [])
       .some(route =>
         route.type === selectedCategory
-      );
+      )
+  ) {
+    return true;
+  }
+
+
+  return false;
 
 }
 
 
 function getDestinationIcon(destination) {
+
+  if (
+    selectedCategory ===
+    "highest-point"
+  ) {
+    return "🏔️";
+  }
+
 
   const tags =
     destination.tags || [];
@@ -787,157 +1289,84 @@ function getDestinationIcon(destination) {
 
 
   return "📍";
+
 }
 
 
 function getVisibleDestinations() {
 
-  return destinations.filter(destination => {
-
-    return (
-  destinationMatchesMode(destination) &&
-  destinationContainsCategory(destination)
-);
-
-  });
+  return destinations.filter(
+    destination =>
+      destinationMatchesMode(
+        destination
+      ) &&
+      destinationContainsCategory(
+        destination
+      )
+  );
 
 }
 
 
 function getVisiblePoints() {
 
-  return allPoints.filter(point => {
-
-return (
-  pointMatchesMode(point) &&
-  pointMatchesCategory(point)
-);
-
-  });
+  return allPoints.filter(
+    point =>
+      pointMatchesMode(point) &&
+      pointMatchesCategory(point)
+  );
 
 }
 
 
-/* =========================
-   KONTINENT
-========================= */
+function getCountryCenter(
+  country,
+  countryDestinations
+) {
 
-const europeMarker =
-  L.marker(
-    [50.3, 12.5],
-    {
-      icon:
-        createGroupIcon(
-          "EVROPA",
-          100
-        )
-    }
-  );
+  if (countryConfig[country]) {
+
+    return [
+      countryConfig[country].lat,
+      countryConfig[country].lon
+    ];
+
+  }
 
 
-europeMarker.on("click", () => {
-
-  map.flyTo(
-    [47, 13],
-    4,
-    {
-      duration: 1
-    }
-  );
-
-});
+  const lat =
+    countryDestinations.reduce(
+      (sum, item) =>
+        sum + item.lat,
+      0
+    ) /
+    countryDestinations.length;
 
 
-europeMarker.addTo(
-  continentLayer
-);
+  const lon =
+    countryDestinations.reduce(
+      (sum, item) =>
+        sum + item.lon,
+      0
+    ) /
+    countryDestinations.length;
 
 
-/* =========================
-   MAKROREGIONY
-========================= */
+  return [lat, lon];
 
-function buildMacroRegions() {
-
-  macroLayer.clearLayers();
+}
 
 
-  macroRegions.forEach(region => {
+function getCountryCode(country) {
 
-    const regionDestinations =
-      getVisibleDestinations()
-        .filter(destination =>
-          region.countries.includes(
-            destination.country
-          )
-        );
+  if (countryConfig[country]) {
+    return countryConfig[country].code;
+  }
 
 
-    if (
-      regionDestinations.length === 0
-    ) {
-      return;
-    }
-
-
-    const lat =
-      regionDestinations.reduce(
-        (sum, item) =>
-          sum + item.lat,
-        0
-      ) / regionDestinations.length;
-
-
-    const lon =
-      regionDestinations.reduce(
-        (sum, item) =>
-          sum + item.lon,
-        0
-      ) / regionDestinations.length;
-
-
-    const marker =
-      L.marker(
-        [lat, lon],
-        {
-          icon:
-            createGroupIcon(
-              region.name.toUpperCase(),
-              135
-            )
-        }
-      );
-
-
-    marker.on("click", () => {
-
-      const bounds =
-        L.latLngBounds(
-          regionDestinations.map(
-            destination => [
-              destination.lat,
-              destination.lon
-            ]
-          )
-        );
-
-
-      map.fitBounds(
-        bounds,
-        {
-          padding: [90, 90],
-          maxZoom: 6
-        }
-      );
-
-    });
-
-
-    marker.addTo(
-      macroLayer
-    );
-
-  });
+  return country
+    .substring(0, 2)
+    .toUpperCase();
 
 }
 
@@ -964,101 +1393,100 @@ function buildCountries() {
     )];
 
 
-  countryNames.forEach(country => {
+  countryNames
+    .sort((a, b) =>
+      a.localeCompare(
+        b,
+        "cs"
+      )
+    )
+    .forEach(country => {
 
-    const countryDestinations =
-      visible.filter(
-        destination =>
-          destination.country === country
-      );
-
-
-    const lat =
-      countryDestinations.reduce(
-        (sum, item) =>
-          sum + item.lat,
-        0
-      ) / countryDestinations.length;
-
-
-    const lon =
-      countryDestinations.reduce(
-        (sum, item) =>
-          sum + item.lon,
-        0
-      ) / countryDestinations.length;
+      const countryDestinations =
+        visible.filter(
+          destination =>
+            destination.country ===
+            country
+        );
 
 
-    const codeMap = {
-      "Rakousko": "AT",
-      "Německo": "DE",
-      "Slovinsko": "SI",
-      "Itálie": "IT",
-      "Chorvatsko": "HR"
-    };
+      if (
+        countryDestinations.length === 0
+      ) {
+        return;
+      }
 
 
-    const marker =
-      L.marker(
-        [lat, lon],
-        {
-          icon:
-            createGroupIcon(
-              codeMap[country] || country,
-              72
-            )
+      const center =
+        getCountryCenter(
+          country,
+          countryDestinations
+        );
+
+
+      const marker =
+        L.marker(
+          center,
+          {
+            icon:
+              createCountryIcon(
+                getCountryCode(country)
+              )
+          }
+        );
+
+
+      marker.on(
+        "click",
+        () => {
+
+          if (
+            countryDestinations.length === 1
+          ) {
+
+            map.flyTo(
+              [
+                countryDestinations[0].lat,
+                countryDestinations[0].lon
+              ],
+              8,
+              {
+                duration: 0.8
+              }
+            );
+
+          } else {
+
+            const bounds =
+              L.latLngBounds(
+                countryDestinations.map(
+                  destination => [
+                    destination.lat,
+                    destination.lon
+                  ]
+                )
+              );
+
+
+            map.fitBounds(
+              bounds,
+              {
+                padding: [70, 70],
+                maxZoom: 8
+              }
+            );
+
+          }
+
         }
       );
 
 
-    marker.on("click", () => {
-
-      if (
-        countryDestinations.length === 1
-      ) {
-
-        map.flyTo(
-          [
-            countryDestinations[0].lat,
-            countryDestinations[0].lon
-          ],
-          8,
-          {
-            duration: 1
-          }
-        );
-
-      } else {
-
-        const bounds =
-          L.latLngBounds(
-            countryDestinations.map(
-              destination => [
-                destination.lat,
-                destination.lon
-              ]
-            )
-          );
-
-
-        map.fitBounds(
-          bounds,
-          {
-            padding: [80, 80],
-            maxZoom: 8
-          }
-        );
-
-      }
+      marker.addTo(
+        countryLayer
+      );
 
     });
-
-
-    marker.addTo(
-      countryLayer
-    );
-
-  });
 
 }
 
@@ -1075,22 +1503,25 @@ function buildDestinations() {
   getVisibleDestinations()
     .forEach(destination => {
 
-     const icon =
-  selectedCategory === "highest-point"
-    ? "🏔️"
-    : getDestinationIcon(destination);
-
       const marker =
         L.marker(
-          [destination.lat, destination.lon],
+          [
+            destination.lat,
+            destination.lon
+          ],
           {
             icon:
-              createRoundIcon(icon)
+              createRoundIcon(
+                getDestinationIcon(
+                  destination
+                )
+              )
           }
         );
 
 
       marker.bindPopup(`
+
         <div style="
           min-width:220px;
           max-width:260px;
@@ -1112,25 +1543,19 @@ function buildDestinations() {
             ${destination.region}
           </div>
 
-          <div style="
-            margin-top:7px;
-            font-size:11px;
-            color:#777;
-          ">
-           ${
-  destination.wishlist === true
-    ? `
-      <div style="
-        margin-top:7px;
-        font-size:11px;
-        color:#777;
-      ">
-        ★ Chci navštívit
-      </div>
-    `
-    : ""
-}
-          </div>
+          ${
+            destination.wishlist === true
+              ? `
+                <div style="
+                  margin-top:7px;
+                  font-size:11px;
+                  color:#777;
+                ">
+                  ★ Wishlist
+                </div>
+              `
+              : ""
+          }
 
           <p style="
             margin:10px 0;
@@ -1153,6 +1578,7 @@ function buildDestinations() {
           </a>
 
         </div>
+
       `);
 
 
@@ -1166,7 +1592,7 @@ function buildDestinations() {
 
 
 /* =========================
-   KONKRÉTNÍ BODY PO FILTRU
+   KONKRÉTNÍ BODY
 ========================= */
 
 function buildFilteredPoints() {
@@ -1177,26 +1603,42 @@ function buildFilteredPoints() {
   getVisiblePoints()
     .forEach(point => {
 
-      const info =
-        typeInfo[point.type] || {
-          label: point.type,
-          icon: "📍"
-        };
+      let label =
+        (
+          typeInfo[point.type] ||
+          {
+            label: point.type
+          }
+        ).label;
+
+
+      if (
+        point.type === "parking" &&
+        point.tags &&
+        point.tags.includes("paid")
+      ) {
+        label =
+          "Placené parkoviště";
+      }
 
 
       const marker =
         L.marker(
-          [point.lat, point.lon],
+          [
+            point.lat,
+            point.lon
+          ],
           {
             icon:
               createPointIcon(
-                point.type
+                point
               )
           }
         );
 
 
       marker.bindPopup(`
+
         <div style="
           min-width:220px;
           max-width:260px;
@@ -1213,7 +1655,7 @@ function buildFilteredPoints() {
             font-size:12px;
             color:#777;
           ">
-            ${info.label}
+            ${label}
             ·
             ${point.destinationName}
           </div>
@@ -1239,6 +1681,7 @@ function buildFilteredPoints() {
           </a>
 
         </div>
+
       `);
 
 
@@ -1263,14 +1706,30 @@ function buildSidebar() {
     );
 
 
-  destinationList.innerHTML = "";
+  destinationList.innerHTML =
+    "";
 
 
   const visible =
-    getVisibleDestinations();
+    getVisibleDestinations()
+      .slice()
+      .sort((a, b) =>
+        a.name.localeCompare(
+          b.name,
+          "cs"
+        )
+      );
 
 
-  if (visible.length === 0) {
+  document.getElementById(
+    "placesCount"
+  ).textContent =
+    visible.length;
+
+
+  if (
+    visible.length === 0
+  ) {
 
     destinationList.innerHTML = `
       <div class="empty">
@@ -1279,6 +1738,7 @@ function buildSidebar() {
     `;
 
     return;
+
   }
 
 
@@ -1288,15 +1748,23 @@ function buildSidebar() {
         destination =>
           destination.country
       )
-    )];
+    )]
+      .sort((a, b) =>
+        a.localeCompare(
+          b,
+          "cs"
+        )
+      );
 
 
-  countries
-    .sort()
-    .forEach(country => {
+  countries.forEach(
+    country => {
 
       const group =
-        document.createElement("div");
+        document.createElement(
+          "div"
+        );
+
 
       group.className =
         "country-group";
@@ -1315,45 +1783,56 @@ function buildSidebar() {
             destination.country ===
             country
         )
-        .forEach(destination => {
+        .sort((a, b) =>
+          a.name.localeCompare(
+            b.name,
+            "cs"
+          )
+        )
+        .forEach(
+          destination => {
 
-          const link =
-            document.createElement(
-              "a"
+            const link =
+              document.createElement(
+                "a"
+              );
+
+
+            link.href =
+              `place.html?id=${destination.id}`;
+
+
+            link.className =
+              "destination-link";
+
+
+            link.innerHTML = `
+
+              <span class="destination-icon">
+                ${getDestinationIcon(destination)}
+              </span>
+
+              <span>
+                ${destination.name}
+              </span>
+
+            `;
+
+
+            group.appendChild(
+              link
             );
 
-
-          link.href =
-            `place.html?id=${destination.id}`;
-
-
-          link.className =
-            "destination-link";
-
-
-          link.innerHTML = `
-            <span class="destination-icon">
-              ${getDestinationIcon(destination)}
-            </span>
-
-            <span>
-              ${destination.name}
-            </span>
-          `;
-
-
-          group.appendChild(
-            link
-          );
-
-        });
+          }
+        );
 
 
       destinationList.appendChild(
         group
       );
 
-    });
+    }
+  );
 
 }
 
@@ -1370,21 +1849,106 @@ function buildCategoryFilters() {
     );
 
 
-  container.innerHTML = "";
+  container.innerHTML =
+    "";
+
+
+  const definitions =
+    [];
+
+
+  Object.entries(typeInfo)
+    .forEach(
+      ([key, info]) => {
+
+        let used =
+          false;
+
+
+        destinations.forEach(
+          destination => {
+
+            if (
+              destination.tags &&
+              destination.tags.includes(
+                key
+              )
+            ) {
+              used = true;
+            }
+
+
+            if (
+              (destination.points || [])
+                .some(point =>
+                  point.type === key ||
+                  (
+                    point.tags &&
+                    point.tags.includes(
+                      key
+                    )
+                  )
+                )
+            ) {
+              used = true;
+            }
+
+
+            if (
+              (destination.routes || [])
+                .some(route =>
+                  route.type === key
+                )
+            ) {
+              used = true;
+            }
+
+          }
+        );
+
+
+        if (used) {
+
+          definitions.push({
+            key,
+            label: info.label,
+            icon: info.icon
+          });
+
+        }
+
+      }
+    );
+
+
+  definitions.sort(
+    (a, b) =>
+      a.label.localeCompare(
+        b.label,
+        "cs"
+      )
+  );
 
 
   const allButton =
-    document.createElement("button");
+    document.createElement(
+      "button"
+    );
 
 
   allButton.className =
-    "filter-button active";
+    "filter-option active";
+
 
   allButton.dataset.category =
     "all";
 
-  allButton.textContent =
-    "Vše";
+
+  allButton.innerHTML =
+    `
+      <span>✕</span>
+      <span>Bez filtru</span>
+    `;
 
 
   container.appendChild(
@@ -1392,87 +1956,8 @@ function buildCategoryFilters() {
   );
 
 
-  const usedTypes =
-    new Set();
-
-
-  /*
-    Typy a tagy jednotlivých bodů
-    a uložených tras.
-  */
-  allPoints.forEach(point => {
-
-    if (
-      typeInfo[point.type]
-    ) {
-      usedTypes.add(
-        point.type
-      );
-    }
-
-
-    (point.tags || [])
-      .forEach(tag => {
-
-        if (typeInfo[tag]) {
-          usedTypes.add(tag);
-        }
-
-      });
-
-  });
-
-
-  /*
-    Tagy přímo na destinacích.
-
-    Díky tomu může existovat třeba:
-    highest-point
-
-    aniž by musel mít některý
-    konkrétní bod type highest-point.
-  */
-  destinations.forEach(destination => {
-
-    (destination.tags || [])
-      .forEach(tag => {
-
-        if (typeInfo[tag]) {
-          usedTypes.add(tag);
-        }
-
-      });
-
-  });
-
-
-  const order = [
-    "coffee",
-    "food",
-    "parking",
-    "toilet",
-    "shower",
-    "waterfall",
-    "swimming",
-    "jumping",
-    "hike",
-    "cycling",
-    "paddleboard",
-    "sleep",
-    "sight",
-    "highest-point"
-  ];
-
-
-  order
-    .filter(type =>
-      usedTypes.has(type)
-    )
-    .forEach(type => {
-
-      const info =
-        typeInfo[type];
-
+  definitions.forEach(
+    def => {
 
       const button =
         document.createElement(
@@ -1481,40 +1966,150 @@ function buildCategoryFilters() {
 
 
       button.className =
-        "filter-button";
+        "filter-option";
+
 
       button.dataset.category =
-        type;
+        def.key;
 
-      button.textContent =
-        `${info.icon} ${info.label}`;
+
+      button.innerHTML = `
+
+        <span>
+          ${def.icon}
+        </span>
+
+        <span>
+          ${def.label}
+        </span>
+
+      `;
 
 
       container.appendChild(
         button
       );
 
-    });
+    }
+  );
 
 
   container
     .querySelectorAll(
-      ".filter-button"
+      ".filter-option"
     )
-    .forEach(button => {
+    .forEach(
+      button => {
+
+        button.addEventListener(
+          "click",
+          () => {
+
+            container
+              .querySelectorAll(
+                ".filter-option"
+              )
+              .forEach(
+                btn =>
+                  btn.classList.remove(
+                    "active"
+                  )
+              );
+
+
+            button.classList.add(
+              "active"
+            );
+
+
+            selectedCategory =
+              button.dataset.category;
+
+
+            const trigger =
+              document.getElementById(
+                "filterTrigger"
+              );
+
+
+            if (
+              selectedCategory ===
+              "all"
+            ) {
+
+              trigger.textContent =
+                "⚙ Filtry";
+
+
+              trigger.classList.remove(
+                "active"
+              );
+
+            } else {
+
+              const info =
+                typeInfo[
+                  selectedCategory
+                ];
+
+
+              trigger.textContent =
+                `${info.icon} ${info.label} ×`;
+
+
+              trigger.classList.add(
+                "active"
+              );
+
+            }
+
+
+            document
+              .getElementById(
+                "filterMenu"
+              )
+              .classList.remove(
+                "open"
+              );
+
+
+            refreshEverything(
+              true
+            );
+
+          }
+        );
+
+      }
+    );
+
+}
+
+
+/* =========================
+   STATUS / WISHLIST
+========================= */
+
+document
+  .querySelectorAll(
+    ".nav-button[data-mode]"
+  )
+  .forEach(
+    button => {
 
       button.addEventListener(
         "click",
         () => {
 
-          container
+          document
             .querySelectorAll(
-              ".filter-button"
+              ".nav-button[data-mode]"
             )
-            .forEach(btn =>
-              btn.classList.remove(
-                "active"
-              )
+            .forEach(
+              btn =>
+                btn.classList.remove(
+                  "active"
+                )
             );
 
 
@@ -1523,57 +2118,20 @@ function buildCategoryFilters() {
           );
 
 
-          selectedCategory =
-            button.dataset.category;
+          selectedMode =
+            button.dataset.mode;
 
 
-          refreshEverything();
+          refreshEverything(
+            true
+          );
 
         }
       );
 
-    });
+    }
+  );
 
-}
-
-
-/* =========================
-   HLAVNÍ REŽIM
-========================= */
-
-document
-  .querySelectorAll(
-    ".nav-button[data-mode]"
-  )
-  .forEach(button => {
-
-    button.addEventListener(
-      "click",
-      () => {
-
-        document
-          .querySelectorAll(
-            ".nav-button[data-mode]"
-          )
-          .forEach(btn =>
-            btn.classList.remove(
-              "active"
-            )
-          );
-
-        button.classList.add(
-          "active"
-        );
-
-        selectedMode =
-          button.dataset.mode;
-
-        refreshEverything();
-
-      }
-    );
-
-  });
 
 /* =========================
    ZOBRAZENÍ VRSTEV
@@ -1582,18 +2140,23 @@ document
 function hideLayers() {
 
   [
-    continentLayer,
-    macroLayer,
     countryLayer,
     destinationLayer,
     filteredPointLayer
-  ].forEach(layer => {
+  ]
+    .forEach(
+      layer => {
 
-    if (map.hasLayer(layer)) {
-      map.removeLayer(layer);
-    }
+        if (
+          map.hasLayer(layer)
+        ) {
+          map.removeLayer(
+            layer
+          );
+        }
 
-  });
+      }
+    );
 
 }
 
@@ -1603,15 +2166,11 @@ function updateMapMode() {
   hideLayers();
 
 
-  /*
-    Nejvyšší body jsou speciální filtr.
-
-    Nezobrazujeme jednotlivé body,
-    ale celé destinace:
-    Sněžka, Zugspitze, Triglav...
-  */
   if (
-    selectedCategory === "highest-point"
+    selectedCategory !== "all" &&
+    destinationLevelCategories.has(
+      selectedCategory
+    )
   ) {
 
     map.addLayer(
@@ -1619,13 +2178,10 @@ function updateMapMode() {
     );
 
     return;
+
   }
 
 
-  /*
-    Ostatní konkrétní kategorie
-    zobrazují jednotlivé body.
-  */
   if (
     selectedCategory !== "all"
   ) {
@@ -1635,44 +2191,24 @@ function updateMapMode() {
     );
 
     return;
+
   }
 
 
-  /*
-    Bez filtru funguje normální
-    hierarchie mapy podle zoomu.
-  */
   const zoom =
     map.getZoom();
 
 
-  if (zoom <= 3) {
-
-    map.addLayer(
-      continentLayer
-    );
-
-    return;
-  }
-
-
-  if (zoom <= 5) {
-
-    map.addLayer(
-      macroLayer
-    );
-
-    return;
-  }
-
-
-  if (zoom === 6) {
+  if (
+    zoom <= 6
+  ) {
 
     map.addLayer(
       countryLayer
     );
 
     return;
+
   }
 
 
@@ -1684,12 +2220,91 @@ function updateMapMode() {
 
 
 /* =========================
+   FIT MAPY
+========================= */
+
+function fitMapToCurrentSelection() {
+
+  let coordinates =
+    [];
+
+
+  if (
+    selectedCategory !== "all" &&
+    !destinationLevelCategories.has(
+      selectedCategory
+    )
+  ) {
+
+    coordinates =
+      getVisiblePoints()
+        .map(
+          point => [
+            point.lat,
+            point.lon
+          ]
+        );
+
+  } else {
+
+    coordinates =
+      getVisibleDestinations()
+        .map(
+          destination => [
+            destination.lat,
+            destination.lon
+          ]
+        );
+
+  }
+
+
+  if (
+    coordinates.length === 0
+  ) {
+    return;
+  }
+
+
+  if (
+    coordinates.length === 1
+  ) {
+
+    map.setView(
+      coordinates[0],
+      8
+    );
+
+    return;
+
+  }
+
+
+  const bounds =
+    L.latLngBounds(
+      coordinates
+    );
+
+
+  map.fitBounds(
+    bounds,
+    {
+      padding: [45, 45],
+      maxZoom: 7
+    }
+  );
+
+}
+
+
+/* =========================
    REFRESH
 ========================= */
 
-function refreshEverything() {
+function refreshEverything(
+  fitMap = false
+) {
 
-  buildMacroRegions();
   buildCountries();
   buildDestinations();
   buildFilteredPoints();
@@ -1704,36 +2319,142 @@ function refreshEverything() {
     );
 
 
-if (
-  selectedCategory === "all"
-) {
+  if (
+    selectedCategory === "all"
+  ) {
 
-  description.textContent =
-    "Vyber zemi nebo oblast a zobraz místa na mapě.";
+    description.textContent =
+      "Vyber místo ze seznamu nebo přímo z mapy.";
+
+  }
+
+  else if (
+    selectedCategory ===
+    "highest-point"
+  ) {
+
+    description.textContent =
+      "Nejvyšší body evropských států a připravené plány výstupů.";
+
+  }
+
+  else if (
+    destinationLevelCategories.has(
+      selectedCategory
+    )
+  ) {
+
+    description.textContent =
+      `Zobrazené destinace: ${typeInfo[selectedCategory].label.toLowerCase()}.`;
+
+  }
+
+  else {
+
+    description.textContent =
+      `Zobrazené konkrétní body: ${typeInfo[selectedCategory].label.toLowerCase()}.`;
+
+  }
+
+
+  if (fitMap) {
+
+    setTimeout(
+      fitMapToCurrentSelection,
+      0
+    );
+
+  }
 
 }
 
-else if (
-  selectedCategory === "highest-point"
-) {
 
-  description.textContent =
-    "Nejvyšší body evropských států a připravené plány, jak se na ně dostat.";
+/* =========================
+   ROZBALOVACÍ MÍSTA
+========================= */
 
-}
-
-else {
-
-  const info =
-    typeInfo[selectedCategory];
+const placesToggle =
+  document.getElementById(
+    "placesToggle"
+  );
 
 
-  description.textContent =
-    `Zobrazeny jsou konkrétní body: ${info.label.toLowerCase()}.`;
+const placesPanel =
+  document.getElementById(
+    "placesPanel"
+  );
 
-}
 
-}
+placesToggle.addEventListener(
+  "click",
+  () => {
+
+    const open =
+      placesPanel.classList.toggle(
+        "open"
+      );
+
+
+    placesToggle.classList.toggle(
+      "open",
+      open
+    );
+
+  }
+);
+
+
+/* =========================
+   ROZBALOVACÍ FILTRY
+========================= */
+
+const filterTrigger =
+  document.getElementById(
+    "filterTrigger"
+  );
+
+
+const filterMenu =
+  document.getElementById(
+    "filterMenu"
+  );
+
+
+filterTrigger.addEventListener(
+  "click",
+  event => {
+
+    event.stopPropagation();
+
+
+    filterMenu.classList.toggle(
+      "open"
+    );
+
+  }
+);
+
+
+filterMenu.addEventListener(
+  "click",
+  event => {
+
+    event.stopPropagation();
+
+  }
+);
+
+
+document.addEventListener(
+  "click",
+  () => {
+
+    filterMenu.classList.remove(
+      "open"
+    );
+
+  }
+);
 
 
 /* =========================
@@ -1755,6 +2476,7 @@ const topoButton =
     "topoButton"
   );
 
+
 const classicButton =
   document.getElementById(
     "classicButton"
@@ -1766,14 +2488,19 @@ topoButton.addEventListener(
   () => {
 
     if (
-      !map.hasLayer(topoLayer)
+      !map.hasLayer(
+        topoLayer
+      )
     ) {
 
       map.removeLayer(
         classicLayer
       );
 
-      topoLayer.addTo(map);
+
+      topoLayer.addTo(
+        map
+      );
 
     }
 
@@ -1781,6 +2508,7 @@ topoButton.addEventListener(
     topoButton.classList.add(
       "active"
     );
+
 
     classicButton.classList.remove(
       "active"
@@ -1795,14 +2523,19 @@ classicButton.addEventListener(
   () => {
 
     if (
-      !map.hasLayer(classicLayer)
+      !map.hasLayer(
+        classicLayer
+      )
     ) {
 
       map.removeLayer(
         topoLayer
       );
 
-      classicLayer.addTo(map);
+
+      classicLayer.addTo(
+        map
+      );
 
     }
 
@@ -1810,6 +2543,7 @@ classicButton.addEventListener(
     classicButton.classList.add(
       "active"
     );
+
 
     topoButton.classList.remove(
       "active"
@@ -1824,7 +2558,20 @@ classicButton.addEventListener(
 ========================= */
 
 buildCategoryFilters();
+
 refreshEverything();
+
+
+setTimeout(
+  () => {
+
+    map.invalidateSize();
+
+    fitMapToCurrentSelection();
+
+  },
+  0
+);
 
 </script>
 
