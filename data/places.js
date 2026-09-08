@@ -7,5 +7,6 @@ const destinations = [
   ...rakouskoDestinations,
   ...slovenskoDestinations,
   ...slovinskoDestinations,
-  ...spanelskoDestinations
+  ...spanelskoDestinations,
+  ...svycarskoDestinations
 ];
